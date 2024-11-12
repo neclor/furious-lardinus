@@ -6,6 +6,13 @@ playing = True
 
 window = pygame.display.set_mode(DIMENSIONS)
 
+player = {
+    'position': pygame.Vector2,
+    'look_vec': pygame.Vector2,
+    'velocity': float
+}
+
+
 def main() -> None:
     global playing
     pygame.init()
