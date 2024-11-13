@@ -11,6 +11,14 @@
 # |a|b|
 # +-----> x
 
+# why??
+# why not
+# +-> x
+# |
+# v y
+
+
+
 # player is a dictionary
 # 'position'    pygame.Vector2
 # 'look_vec'    pygame.Vector2      it is a unit vector
