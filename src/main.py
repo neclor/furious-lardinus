@@ -3,9 +3,16 @@ import pygame
 import settings
 import enum
 
-a = enum(MENU = 0, GAME = 1, PAUSE = 2)
 
-state = a.GAME
+
+States: dict = {
+	"MENU": 0,
+	"GAME": 0,}
+
+
+
+
+state: int = States["GAME"]
 
 
 
