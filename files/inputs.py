@@ -1,7 +1,9 @@
 # testing functions
 import pygame
 
-def keyboard(player: dict) -> None:
+TURNING_SPEED = 3.1416
+
+def keyboard(player: dict, delta: float) -> None:
     keys = pygame.key.get_pressed()
     zero_vec = pygame.Vector2(0.0, 0.0)
     movement = zero_vec
@@ -14,6 +16,10 @@ def keyboard(player: dict) -> None:
     if keys[pygame.K_s]:
         movement += - player['look_vec']
     if movement.x != 0.0 or movement.y != 0.0:
-        movement = movement.normalize()
-        player['position'] += player['velocity'] * movement
+        player['position'] += delta * player['velocity'] * movement.normalize()
+    
+    if keys[pygame.K_RIGHT]:
+        player['look_vec'] = player['look_vec'].rotate_rad(- TURNING_SPEED * delta)
+    if keys[pygame.K_LEFT]:
+        player['look_vec'] = player['look_vec'].rotate_rad(  TURNING_SPEED * delta)
 

@@ -15,13 +15,6 @@
 # 'position'    pygame.Vector2
 # 'look_vec'    pygame.Vector2      it is a unit vector
 # 'velocity'    float               intensity of the velocity vector
-# 
-# derived from look_vec to avoid 1) :
-# 'look_vec_len float   length of velocity
-# 'direction'   float   angle of velocity, following the unit circle
-
-# avoiding :
-#           1) having to recalculate it each frame
 
 
 # imports
