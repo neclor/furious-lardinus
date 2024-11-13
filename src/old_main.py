@@ -12,15 +12,15 @@ WINDOW_SIZE: Tuple[int, int] = (800, 600)
 
 FOV_H: float = math.pi / 2
 FOV_V: float = math.atan(math.tan(FOV_H / 2) / (WINDOW_SIZE[0] / WINDOW_SIZE[1])) * 2
-RAYS_NUMBER: int = 100
+RAYS_NUMBER: int = 200
 RAY_LENGTH: int = 1000
 
 RAY_WIDTH: int = WINDOW_SIZE[0] // RAYS_NUMBER
 
-WALL_SIZE: int = 100
-HALF_WALL_HEIGHT: int = 50
+WALL_SIZE: int = 10
+HALF_WALL_HEIGHT: int = 1
 
-fps: int = 60
+fps: int = 10
 clock: pygame.time.Clock
 window: pygame.Surface
 
@@ -36,9 +36,9 @@ level_map: list = []
 
 
 player: dict = {
-	"position": [150, 200],
+	"position": pygame.Vector2(64, 64),
 	"rotation": 0.0,
-	"speed": 100,
+	"speed": 10,
 	"rotation_speed": math.pi / 2,
 }
 
@@ -77,33 +77,34 @@ def create_level_map() -> None:
 def move_player() -> None:
 	delta: float = clock.get_time() / 1000
 
-	direction: list[float] = [0.0, 0.0]
+	direction: pygame.Vector2 = pygame.Vector2(0.0, 0.0)
 
 	keys = pygame.key.get_pressed()
 	if keys[pygame.K_w]:
-		direction[1] -= 1
+		direction.y -= 1
 	if keys[pygame.K_s]:
-		direction[1] += 1
+		direction.y += 1
 	if keys[pygame.K_a]:
-		direction[0] -= 1
+		direction.x -= 1
 	if keys[pygame.K_d]:
-		direction[0] += 1
+		direction.x += 1
 
 	if keys[pygame.K_LEFT]:
 		player["rotation"] -= player["rotation_speed"] * delta
 	if keys[pygame.K_RIGHT]:
 		player["rotation"] += player["rotation_speed"] * delta
 
-	direction_rotated: list[float] = [0.0, 0.0]
-	direction_rotated[0] = direction[0] * math.cos(player["rotation"] + math.pi / 2) - direction[1] * math.sin(player["rotation"] + math.pi / 2)
-	direction_rotated[1] = direction[0] * math.sin(player["rotation"] + math.pi / 2) + direction[1] * math.cos(player["rotation"] + math.pi / 2)
 
-	velocity: list[float] = [0.0 ,0.0]
-	velocity[0] = direction_rotated[0] * player["speed"]
-	velocity[1] = direction_rotated[1] * player["speed"]
 
-	player["position"][0] += velocity[0] * delta
-	player["position"][1] += velocity[1] * delta
+	velocity: pygame.Vector2 = direction.rotate_rad(player["rotation"] + math.pi / 2) * player["speed"]
+
+	player["position"] += velocity * delta
+	player["position"][0] = round(player["position"][0])
+	player["position"][1] = round(player["position"][1])
+
+	print(player["position"])
+
+
 
 
 def draw() -> None:
@@ -122,7 +123,7 @@ def ray_cast() -> None:
 	for ray in range(RAYS_NUMBER):
 		x: float = 0
 		y: float = 0
-		for length in range(RAY_LENGTH):
+		for length in range(0, RAY_LENGTH):
 			x = player["position"][0] + length * math.cos(ray_rotation)
 			y = player["position"][1] + length * math.sin(ray_rotation)
 			if (x // WALL_SIZE, y // WALL_SIZE) in level_map:
