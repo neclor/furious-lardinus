@@ -106,3 +106,38 @@ def map_position(x: int, y: int) -> int:
 def change_map(new_map):
     global map
     map = new_map
+
+def raycast(
+    fov: float,
+    resolution: int,
+    wall_height: int,
+    player,
+    dimensions: tuple[int, int],
+    colors,
+    window
+):
+    ray_direction = pygame.Vector2(player['look_vec'].rotate_rad(fov/2.0).x, player['look_vec'].rotate_rad(fov/2.0).y)
+    iteration = 0
+    offset = fov / resolution
+    while iteration < resolution:
+        (wall, wall_position, side) = ray(player['position'], ray_direction)
+        if wall > 0:
+            dist = wall_position.distance_to(player['position']) * math.cos(fov/2.0 - offset * iteration)
+            display_wall(dimensions, resolution, iteration, wall_height * math.atan2(1.0, dist), side, colors[wall], window)
+        ray_direction = ray_direction.rotate_rad(- offset)
+        iteration += 1
+
+def display_wall(
+    dimensions: tuple[int, int],
+    resolution: int,
+    iteration: int,
+    height: float,
+    side: int,
+    color: tuple[int, int, int],
+    window
+):
+    rect = pygame.Rect(iteration * dimensions[0] / resolution, (dimensions[1] - height)/2.0, 2 + dimensions[0] / resolution, height)
+    if side == 1:
+        pygame.draw.rect(window, color, rect)
+    else:
+        pygame.draw.rect(window, (color[0]*0.9, color[1]*0.9, color[2]*0.9), rect)
