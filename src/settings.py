@@ -15,7 +15,7 @@ RAYS_NUMBER: int = 300
 
 
 # Input
-FORWARD: int = pygame.pygame.K_w
+FORWARD: int = pygame.K_w
 BACKWARD: int = pygame.K_s
 LEFT: int = pygame.K_a
 RIGHT: int = pygame.K_d

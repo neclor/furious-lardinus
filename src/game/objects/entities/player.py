@@ -1,6 +1,6 @@
 import pygame
 
-import game.objects.entities.entity as Entity
+import game.objects.entities.base_entity as BaseEntity
 
 
 def new() -> dict:
@@ -10,7 +10,7 @@ def new() -> dict:
 		"stamina": 100,
 		"stamina_regen": 10}
 
-	return Entity.new() | player
+	return BaseEntity.new() | player
 
 
 def update(self: dict, delta: float) -> None:

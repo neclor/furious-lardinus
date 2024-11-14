@@ -13,7 +13,7 @@ import game.game as game
 # States
 MENU: int = 0
 GAME: int = 1
-state: int
+state: int = 0
 
 
 clock: pygame.time.Clock
@@ -43,12 +43,8 @@ def run() -> None:
 			case 1: # GAME
 				game.update(delta)
 
+		clock.tick(settings.FPS)
 		check_events()
-		update()
-
-
-def update() -> None:
-	clock.tick(settings.FPS)
 
 
 def change_state(new_state: int) -> None:
