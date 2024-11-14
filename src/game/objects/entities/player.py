@@ -1,15 +1,19 @@
 import pygame
-import game.objects.entities.base_entity as base_entity
+
+import game.objects.entities.entity as Entity
 
 
 def new() -> dict:
-	new_player: dict = base_entity.new()
-	new_player["rotation"] = 0.0
-	new_player["max_stamina"] = 100
-	new_player["stamina"] = new_player["max_stamina"]
-	new_player["stamina_regen"] = 10
+	player: dict = {
+		"rotation": 0.0,
+		"max_stamina": 100,
+		"stamina": 100,
+		"stamina_regen": 10}
 
-	return new_player
+	return Entity.new() | player
 
 
-def update()
+def update(self: dict, delta: float) -> None:
+	pass
+
+
