@@ -1,5 +1,5 @@
 import pygame
-import menu_test
+import menu
 
 DIMENSIONS = (1280, 1024)
 
@@ -11,7 +11,7 @@ def main() -> None:
     global playing
     pygame.init()
     while playing:
-        menu_test.menu(window,DIMENSIONS)
+        menu.menu(window,DIMENSIONS)
         pygame.display.flip()
         for event in pygame.event.get():
             if event.type == pygame.QUIT:
