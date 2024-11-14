@@ -1,5 +1,4 @@
 import pygame
-import game
 
 
 def new() -> dict:

@@ -1,22 +1,19 @@
 # Furious Lardinus
 # Authors:
-#
-#
-#
+# me, he and another one
 
 
 import sys
 import pygame
 
-
 import settings
-import game
+import game.game as game
 
 
 # States
 MENU: int = 0
 GAME: int = 1
-state: int = GAME
+state: int
 
 
 clock: pygame.time.Clock
@@ -28,22 +25,30 @@ def main() -> None:
 
 
 def init() -> None:
+	global clock
 	pygame.init()
 	pygame.display.set_mode(settings.RESOLUTION)
 	pygame.display.set_caption(settings.NAME)
-	global clock
 	clock = pygame.time.Clock()
+
+	change_state(MENU)
 
 
 def run() -> None:
 	while True:
+		delta: float = clock.get_time() / 1000
 		match state:
 			case 0: # MENU
-				# menu.update()
-				pass
+				pass # menu.update(delta)
 			case 1: # GAME
-				game.update()
+				game.update(delta)
+
 		check_events()
+		update()
+
+
+def update() -> None:
+	clock.tick(settings.FPS)
 
 
 def change_state(new_state: int) -> None:
@@ -53,13 +58,11 @@ def change_state(new_state: int) -> None:
 
 	match new_state:
 		case 0: # MENU
-			# menu.enter()
 			state = MENU
-			pass
+			# menu.enter()
 		case 1: # GAME
-			# game.enter()
 			state = GAME
-			pass
+			game.enter()
 
 
 def check_events() -> None:

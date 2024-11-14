@@ -8,7 +8,7 @@ NAME: str = "Furious Lardinus"
 
 
 # Display
-RESOLUTION: Tuple[int, int] = (1280, 1024)
+RESOLUTION: Tuple[int, int] = (800, 600)
 FPS: int = 60
 FOV_H: float = math.pi / 2
 RAYS_NUMBER: int = 300

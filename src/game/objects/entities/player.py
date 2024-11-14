@@ -10,3 +10,6 @@ def new() -> dict:
 	new_player["stamina_regen"] = 10
 
 	return new_player
+
+
+def update()
