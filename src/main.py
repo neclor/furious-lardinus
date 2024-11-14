@@ -1,19 +1,25 @@
+# Furious Lardinus
+# Authors:
+#
+#
+#
+
+
 import sys
 import pygame
+
+
 import settings
-import enum
+import game
 
 
-
-States: dict = {
-	"MENU": 0,
-	"GAME": 0,}
-
-
+# States
+MENU: int = 0
+GAME: int = 1
+state: int = GAME
 
 
-state: int = States["GAME"]
-
+clock: pygame.time.Clock
 
 
 def main() -> None:
@@ -25,19 +31,35 @@ def init() -> None:
 	pygame.init()
 	pygame.display.set_mode(settings.RESOLUTION)
 	pygame.display.set_caption(settings.NAME)
+	global clock
+	clock = pygame.time.Clock()
 
 
 def run() -> None:
 	while True:
-
-
-
-
-
-
-		#menu
-		#game
+		match state:
+			case 0: # MENU
+				# menu.update()
+				pass
+			case 1: # GAME
+				game.update()
 		check_events()
+
+
+def change_state(new_state: int) -> None:
+	global state
+	if new_state == state:
+		return
+
+	match new_state:
+		case 0: # MENU
+			# menu.enter()
+			state = MENU
+			pass
+		case 1: # GAME
+			# game.enter()
+			state = GAME
+			pass
 
 
 def check_events() -> None:
