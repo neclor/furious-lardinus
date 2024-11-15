@@ -36,18 +36,43 @@ def exit_game():
     quit()
         
 def button_init(DIMENSIONS,menu_screen) -> None:
-    global BUTTON_QUIT, BUTTON_PLAY
+    global BUTTON_QUIT, BUTTON_PLAY,button0_pos,button1_pos
     BUTTON_QUIT = pygame.Rect(DIMENSIONS[0]/2.0 -250/2, DIMENSIONS[1] / 2.0 ,250.0,100.0)
     BUTTON_PLAY = pygame.Rect(DIMENSIONS[0]/2.0 -250/2, DIMENSIONS[1]/ 3.0 + DIMENSIONS[1]/3 , 250.0,100.0 )
     pygame.draw.rect(menu_screen,BUTTON_COLOR,BUTTON_QUIT)
     menu_screen.blit(PLAY_TEXT,(DIMENSIONS[0]/2.0 -244/4, DIMENSIONS[1] / 2.0 +25.0 ))
+    button0_pos = (DIMENSIONS[0]/2.0 -250/2, DIMENSIONS[1] / 2.0  )
     pygame.draw.rect(menu_screen,BUTTON_COLOR,BUTTON_PLAY)
     menu_screen.blit(QUIT_TEXT,(DIMENSIONS[0]/2.0 -244/2, DIMENSIONS[1] / 3.0 + DIMENSIONS[1]/3 +25))
+    button1_pos = (DIMENSIONS[0]/2.0 -250/2, DIMENSIONS[1]/ 3.0 + DIMENSIONS[1]/3) 
+    
 
+def mouse_position():
+    global mouse_crs_position
+    mouse_crs_position = pygame.mouse.get_pos()
+def mouse_click():
+    for event in pygame.event.get():
+        if event.type == pygame.MOUSEBUTTONUP:
+            return True
+def check_mouse_On_button0():
+    global mouse_crs_position,button0_pos
+    if (button0_pos[0]<=mouse_crs_position[0]<=button0_pos[0]+250) and (button0_pos[1]<=mouse_crs_position[1]<=button0_pos[1]+100):
+        return True
+    else:
+        return False
+def check_mouse_On_button1():
+    if (button1_pos[0]<=mouse_crs_position[0]<=button1_pos[0]+250) and (button1_pos[1]<=mouse_crs_position[1]<=button1_pos[1]+100):
+        return True
+    else:
+        return False
+    
 def button_select(menu_screen,DIMENSIONS):
     global down,quit_selected,play_selected,QUIT_TEXT,PLAY_TEXT
     keys=pygame.key.get_pressed()
-    if ( down==0):
+    check_mouse_On_button0()
+    mouse_click()
+    if ( down==0) or check_mouse_On_button0() :
+        down=0
         menu_screen.blit(SELECT_BUTTON_CURSOR,(DIMENSIONS[0]/2.0 -384, DIMENSIONS[1] / 3.0))
         quit_selected=0
         play_selected=210
@@ -55,7 +80,7 @@ def button_select(menu_screen,DIMENSIONS):
         PLAY_TEXT = PLAY_FONT.render("PLAY",False,(0,play_selected,0))
     elif (down==1):
         menu_screen.blit(SELECT_BUTTON_CURSOR,(DIMENSIONS[0]/2.0 -384, DIMENSIONS[1] / 2.0))
-    if ((keys[pygame.K_DOWN] and down==0) or down==1):
+    if ((keys[pygame.K_DOWN] and down==0) or down==1)or check_mouse_On_button1():
         down=1
         play_selected=0
         quit_selected=210
@@ -63,7 +88,7 @@ def button_select(menu_screen,DIMENSIONS):
         down=0
         quit_selected=0
         play_selected=210
-    if down==1 and keys[pygame.K_RETURN] or pygame.mouse.get_pos:
+    if down==1 and (keys[pygame.K_RETURN] or mouse_click()):
         print("aya")
         exit_game()
 
@@ -83,13 +108,17 @@ def title_animation(menu_screen,DIMENSIONS):
         T_anim_timing=0
 
 
-def menu(menu_screen,DIMENSIONS):
-    menu_screen.fill(MENU_BG_COLOR)
-    #menu_inputs
-    button_select(menu_screen,DIMENSIONS)
-    #menu_animation and button_animation/render 
-    title_animation(menu_screen,DIMENSIONS)
-    button_init(DIMENSIONS,menu_screen)
+def menu(menu_screen,DIMENSIONS, in_menu):
+    while in_menu:
+        menu_screen.fill(MENU_BG_COLOR)
+        #menu_animation and button_animation/render 
+        title_animation(menu_screen,DIMENSIONS)
+        button_init(DIMENSIONS,menu_screen)
+        #menu_inputs
+        mouse_position()
+        button_select(menu_screen,DIMENSIONS)
+        pygame.display.flip()
+        
     
 
 
