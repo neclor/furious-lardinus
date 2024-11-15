@@ -24,3 +24,8 @@ def move(self: dict, direction: pygame.Vector2, delta: float) -> None:
 
 def check_collision() -> bool:
 	return False
+
+
+
+
+def take_damage() -> None:

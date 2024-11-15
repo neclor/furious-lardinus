@@ -15,5 +15,3 @@ def new() -> dict:
 
 def update(self: dict, delta: float) -> None:
 	pass
-
-

@@ -12,13 +12,13 @@ WINDOW_SIZE: Tuple[int, int] = (800, 600)
 
 FOV_H: float = math.pi / 2
 FOV_V: float = math.atan(math.tan(FOV_H / 2) / (WINDOW_SIZE[0] / WINDOW_SIZE[1])) * 2
-RAYS_NUMBER: int = 200
+RAYS_NUMBER: int = 100
 RAY_LENGTH: int = 1000
 
 RAY_WIDTH: int = WINDOW_SIZE[0] // RAYS_NUMBER
 
-WALL_SIZE: int = 10
-HALF_WALL_HEIGHT: int = 1
+WALL_SIZE: int = 64
+HALF_WALL_HEIGHT: int = 32
 
 fps: int = 10
 clock: pygame.time.Clock
@@ -38,7 +38,7 @@ level_map: list = []
 player: dict = {
 	"position": pygame.Vector2(64, 64),
 	"rotation": 0.0,
-	"speed": 10,
+	"speed": 64,
 	"rotation_speed": math.pi / 2,
 }
 

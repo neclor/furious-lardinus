@@ -4,7 +4,7 @@ import math
 import pygame
 
 import game.levels as Levels
-import game.objects.object as Object
+import game.objects.base_object as BaseObject
 #import game.objects.entities
 import game.objects.entities.player as Player
 
@@ -16,9 +16,9 @@ pause: bool = False
 level: dict
 
 
-objects: list[dict] = []
-enemies: list[dict] = []
-projectiles: list[dict] = []
+objects_container: list[dict] = []
+enemies_container: list[dict] = []
+projectiles_container: list[dict] = []
 player: dict
 
 
