@@ -6,12 +6,12 @@ import game.game as Game
 def new() -> dict:
 	object: dict = {
 		"class": "BaseObject",
+		"sprite": None,
 		"collision": False,
 		"position": pygame.Vector2(0.0, 0.0),
 		"radius": 16,
 		"position_z": 0.0,
-		"height": 32,
-		"sprite": None}
+		"height": 32}
 
 	return object
 

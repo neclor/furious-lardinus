@@ -3,21 +3,25 @@ import timeit
 
 import test2 as tst
 
+
 window: pygame.Surface
 
+abc = tst.abc
 b = 100
+
 
 def main() -> None:
 	init()
 
-	print(timeit.timeit(close, number = 10000))
-	print(timeit.timeit(far, number = 10000))
-
+	print(timeit.timeit(close, number = 10000000))
+	print(timeit.timeit(far, number = 10000000))
 
 
 def init() -> None:
 	global window
 	window = pygame.display.set_mode((1280, 1024))
+
+
 
 
 def use_var() -> None:
@@ -26,6 +30,8 @@ def use_var() -> None:
 
 def use_get() -> None:
 	a: pygame.Surface = pygame.display.get_surface()
+
+
 
 
 def dist() -> None:
@@ -41,16 +47,13 @@ def dist_sqr() -> None:
 
 
 def close() -> None:
-	a = tst.abc
-	for i in range(10000):
-		c = a
+	a = abc
+	a = abc
+
 
 def far() -> None:
-	for i in range(10000):
-		c = tst.abc
-
-
-
+	a = tst.abc
+	a = tst.abc
 
 
 

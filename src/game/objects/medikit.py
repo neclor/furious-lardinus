@@ -5,15 +5,13 @@ import game.objects.base_object as BaseObject
 import game.objects.entities.player as Player
 
 
-
-
 def new() -> dict:
 	medikit: dict = {
 		"class": "Health",
-		"sprite": None,
+		"sprite": pygame.image.load("assets\sprites\medikit_32.png"),
 		"heal": 20}
 
-	return BaseObject.new() | health
+	return BaseObject.new() | medikit
 
 
 def update(self: dict, delta: float) -> None:
