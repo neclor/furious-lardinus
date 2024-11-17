@@ -88,7 +88,7 @@ def button_select(menu_screen,DIMENSIONS):
         down=0
         quit_selected=0
         play_selected=210
-    if down==1 and (keys[pygame.K_RETURN] or mouse_click()):
+    if down==1 and (keys[pygame.K_RETURN] or (mouse_click() and check_mouse_On_button1())):
         print("aya")
         exit_game()
 
