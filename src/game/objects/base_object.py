@@ -9,7 +9,7 @@ def new() -> dict:
 		"sprite": None,
 		"collision": False,
 		"position": pygame.Vector2(0.0, 0.0),
-		"radius": 16,
+		"radius": 8,
 		"position_z": 0.0,
 		"height": 32}
 

@@ -31,7 +31,17 @@ def draw() -> None:
 
 
 def draw_level() -> None:
-	pass
+	camera_position
+	screen_tile_size: float = Game.level["tile_size"] * Settings.SCALE
+	y: float = offset.y - (camera_position.y * Settings.SCALE)
+	screen_offset_x = offset.x - (camera_position.x * Settings.SCALE)
+	for row in Game.Levels.b37_0["tile_map"]:
+		x: float = screen_offset_x
+		for tile in row:
+			if tile is not None:
+				Display.surface.blit(pygame.transform.scale_by(tile["texture"], Settings.SCALE), (x, y))
+			x += screen_tile_size
+		y += screen_tile_size
 
 
 def draw_objects() -> None:

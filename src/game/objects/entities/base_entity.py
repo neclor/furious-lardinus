@@ -19,7 +19,7 @@ def new() -> dict:
 def move(self: dict, direction: pygame.Vector2, delta: float) -> None:
 	direction = direction.normalize() if direction != pygame.Vector2(0.0, 0.0) else direction
 
-	velocity: pygame.Vector2 = self["velocity"].lerp(direction * self["speed"], 1)
+	velocity: pygame.Vector2 = self["velocity"].lerp(direction * self["speed"], delta * 16)
 	self["velocity"] = velocity
 	self["position"] = pygame.Vector2(self["position"]) + velocity * delta
 
@@ -46,3 +46,7 @@ def take_heal(self: dict, heal: int) -> None:
 
 def die(self: dict) -> None:
 	pass
+
+
+def free(self: dict) -> None:
+	Game.objects_container.remove(self)

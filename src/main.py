@@ -8,12 +8,14 @@ import pygame
 
 import settings as Settings
 import game.game as Game
+import menu.menu as Menu
 
 
 # States
 MENU: int = 0
 GAME: int = 1
-state: int = MENU
+START_STATE: int = MENU
+state: int = -1
 
 
 clock: pygame.time.Clock
@@ -31,17 +33,15 @@ def init() -> None:
 	pygame.display.set_caption(Settings.NAME)
 	clock = pygame.time.Clock()
 
-	change_state(GAME)
+	change_state(START_STATE)
 
 
 def run() -> None:
 	while True:
 		delta: float = clock.get_time() / 1000
 		match state:
-			case 0: # MENU
-				pass # menu.update(delta)
-			case 1: # GAME
-				Game.update(delta)
+			case 0: Menu.update(delta)
+			case 1: Game.update(delta)
 
 		clock.tick(Settings.FPS)
 		check_events()
@@ -54,21 +54,31 @@ def change_state(new_state: int) -> None:
 	if new_state == state:
 		return
 
+	match state:
+		case 0: Menu.exit()
+		case 1: Game.exit()
+
 	match new_state:
 		case 0: # MENU
+			print(state)
 			state = MENU
-			# menu.enter()
+			print(state)
+			Menu.enter()
+			print(state)    # TODO it doesn't work
 		case 1: # GAME
 			state = GAME
 			Game.enter()
+
+	print(state)
 
 
 def check_events() -> None:
 	for event in pygame.event.get():
 		if event.type == pygame.QUIT:
 			exit()
-		if event.type == Settings.FULL_SCREEN:
-			pygame.display.toggle_fullscreen()
+		if event.type == pygame.KEYDOWN:
+			if event.key == Settings.FULL_SCREEN:
+				pygame.display.toggle_fullscreen()
 
 
 def exit() -> None:

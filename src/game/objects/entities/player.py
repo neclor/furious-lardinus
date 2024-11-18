@@ -8,11 +8,12 @@ import game.objects.entities.base_entity as BaseEntity
 def new() -> dict:
 	player: dict = {
 		"class": "Player",
-		"sprite": pygame.image.load("src/assets/sprites/test_player_32.png"),
+		"sprite": pygame.image.load("src/assets/sprites/test_player_16.png"),
 		"rotation": 0.0,
 		"max_stamina": 100,
 		"stamina": 100,
-		"stamina_regen": 10}
+		"stamina_regen": 10,
+		"sprint_speed": 100}
 
 	return BaseEntity.new() | player
 

@@ -14,7 +14,7 @@ timer: float = 0.0
 pause: bool = False
 
 
-level: dict
+level: dict = Levels.b37_0
 
 
 player: dict
@@ -43,6 +43,8 @@ def update(delta: float) -> None:
 	timer += delta
 
 	Player.update(player, delta)
-
-
 	Display.update()
+
+
+def exit() -> None:
+	pass

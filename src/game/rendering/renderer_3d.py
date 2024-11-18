@@ -6,8 +6,8 @@ import game.game as Game
 
 
 def init() -> None:
-    pass
+	pass
 
 
 def update() -> None:
-    pass
+	pass
