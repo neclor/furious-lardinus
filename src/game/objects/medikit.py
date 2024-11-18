@@ -7,7 +7,7 @@ import game.objects.entities.player as Player
 
 def new() -> dict:
 	medikit: dict = {
-		"class": "Health",
+		"class": "Medkit",
 		"sprite": pygame.image.load("assets\sprites\medikit_32.png"),
 		"heal": 20}
 
@@ -16,7 +16,7 @@ def new() -> dict:
 
 def update(self: dict, delta: float) -> None:
 	player: dict = Game.player
-	if BaseObject.overlaps_object(self, player):
+	if BaseObject.collides_object(self, player):
 		if player["health"] < player["max_health"]:
 			Player.take_heal(player, self["heal"])
 

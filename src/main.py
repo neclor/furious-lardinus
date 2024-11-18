@@ -14,7 +14,7 @@ import menu.menu as Menu
 # States
 MENU: int = 0
 GAME: int = 1
-START_STATE: int = MENU
+START_STATE: int = GAME
 state: int = -1
 
 

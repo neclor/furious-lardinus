@@ -26,7 +26,6 @@ def draw() -> None:
 	draw_level()
 	draw_objects()
 	draw_enemies()
-	draw_object(Game.player)
 	draw_projectiles()
 
 
@@ -52,6 +51,10 @@ def draw_objects() -> None:
 def draw_enemies() -> None:
 	for enemy in Game.enemies_container:
 		draw_object(enemy)
+
+
+def draw_player() -> None:
+	draw_object(Game.player)
 
 
 def draw_projectiles() -> None:

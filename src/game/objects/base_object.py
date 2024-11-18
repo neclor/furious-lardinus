@@ -16,18 +16,10 @@ def new() -> dict:
 	return object
 
 
-def get_overlapping_enemies(self: dict) -> list[dict]:
-	overlapping_enemies: list[dict] = []
-	for enemy in Game.enemies_container:
-		if overlaps_object(self, enemy):
-			overlapping_enemies.append(enemy)
-	return overlapping_enemies
-
-
-def overlaps_object(self: dict, object: dict) -> bool:
+def collides_object(self: dict, object: dict) -> bool:
 	dist: float = self["position"].dist(object["position"])
 	return dist <= self["radius"] + object["radius"]
 
 
 def free(self: dict) -> None:
-	Game.objects_container.remove(self)
+	Game.object_container.remove(self)

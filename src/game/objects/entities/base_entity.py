@@ -9,7 +9,7 @@ def new() -> dict:
 		"class": "BaseEntity",
 		"collision": True,
 		"velocity": pygame.Vector2(0.0, 0.0),
-		"speed": 64,
+		"speed": 128,
 		"max_health": 100,
 		"health": 100}
 
@@ -18,10 +18,8 @@ def new() -> dict:
 
 def move(self: dict, direction: pygame.Vector2, delta: float) -> None:
 	direction = direction.normalize() if direction != pygame.Vector2(0.0, 0.0) else direction
-
-	velocity: pygame.Vector2 = self["velocity"].lerp(direction * self["speed"], delta * 16)
-	self["velocity"] = velocity
-	self["position"] = pygame.Vector2(self["position"]) + velocity * delta
+	self["velocity"] = self["velocity"].lerp(direction * self["speed"], delta * 8)
+	self["position"] = pygame.Vector2(self["position"]) + self["velocity"] * delta
 
 
 def check_collision() -> bool:
