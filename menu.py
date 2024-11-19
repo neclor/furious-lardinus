@@ -7,15 +7,18 @@ pygame.init()
                 '''
 
 
-
+pygame.display.set_caption('Furious Lardinous')
 #BG_IMAGE = pygame.image.load("menu_images\WALL_FURIOUS_EYE1.png")
 SELECT_BUTTON_CURSOR=pygame.image.load("menu_images\Skeleton_arm.png")
 MOUSE_MENU_CURSOR = pygame.image.load("menu_images\Cursor.png")
 MENU_BG_COLOR = (0,90,100)
 BUTTON_COLOR = (120,100,120)
 SELECT_BUTTON_COLOR= (120,180,120,0.1)
+GAME_ICON = pygame.image.load("menu_images/furious_lardinous_icon.png")
 #game-menu cursor
-pygame.mouse.set_cursor(pygame.cursors.Cursor((1, 0),MOUSE_MENU_CURSOR))
+pygame.mouse.set_cursor(pygame.cursors.Cursor((64,0),MOUSE_MENU_CURSOR))
+pygame.display.set_icon(GAME_ICON)
+
 quit_selected=0
 play_selected=0
 
@@ -24,7 +27,7 @@ in_manu = True
 TITLE_FONT = pygame.font.Font("menu_fonts\Matrix-MZ4P.ttf",100)
 QUIT_FONT = pygame.font.Font("menu_fonts\Matrix-MZ4P.ttf",40)
 PLAY_FONT = pygame.font.Font("menu_fonts\Matrix-MZ4P.ttf",40)
-#Title_music=pygame.mixer_music.load()
+'''Title_music=pygame.mixer_music.load()'''
 TITLE_TEXT = TITLE_FONT.render("Furious Lardinus", True,(0,0,0))
 QUIT_TEXT = QUIT_FONT.render("QUIT GAME", True,(0,quit_selected,0))
 PLAY_TEXT = PLAY_FONT.render("PLAY",False,(0,play_selected,0))
@@ -32,9 +35,9 @@ PLAY_TEXT = PLAY_FONT.render("PLAY",False,(0,play_selected,0))
 
 #timing initialisation and initialisation of the cursor's position
 T_anim_timing: int = 0
-upload_times=0
-down=0
-crsr_init = False
+upload_times: int = 0
+down: int = 0
+crsr_init: bool = False
 
 def exit_game():
     quit()
