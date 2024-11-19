@@ -8,8 +8,10 @@ def new() -> dict:
 		"class": "BaseObject",
 		"sprite": None,
 		"collision": False,
+
 		"position": pygame.Vector2(0.0, 0.0),
 		"radius": 8,
+
 		"position_z": 0.0,
 		"height": 32}
 

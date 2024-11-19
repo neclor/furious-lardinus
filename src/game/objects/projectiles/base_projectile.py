@@ -13,3 +13,8 @@ def new() -> dict:
 
 def update(self: dict, delta: float) -> None:
 	pass
+
+
+
+def move(self: dict, delta: float) -> None:
+	self["position"] = pygame.Vector2(self["position"]) + self["velocity"] * delta

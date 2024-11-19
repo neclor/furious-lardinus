@@ -5,18 +5,20 @@ import game.objects.base_object as BaseObject
 import game.objects.entities.player as Player
 
 
+HEAL_AMOUNT: int = 25
+
+
 def new() -> dict:
 	medikit: dict = {
 		"class": "Medkit",
-		"sprite": pygame.image.load("assets\sprites\medikit_32.png"),
-		"heal": 20}
+		"sprite": pygame.image.load("assets/sprites/objects/medikit_16.png")}
 
 	return BaseObject.new() | medikit
 
 
 def update(self: dict, delta: float) -> None:
-	player: dict = Game.player
-	if BaseObject.collides_object(self, player):
-		if player["health"] < player["max_health"]:
-			Player.take_heal(player, self["heal"])
+	if BaseObject.collides_object(self, Game.player):
+		if Game.player["health"] < Game.player["max_health"]:
+			Player.take_heal(Game.player, HEAL_AMOUNT)
+			BaseObject.free(self)
 

@@ -9,11 +9,15 @@ def new() -> dict:
 	player: dict = {
 		"class": "Player",
 		"sprite": pygame.image.load("src/assets/sprites/test_player_16.png"),
+
 		"rotation": 0.0,
+
 		"max_stamina": 100,
 		"stamina": 100,
 		"stamina_regen": 10,
-		"sprint_speed": 100}
+		"sprint_speed": 100,
+
+		"weapons": []}
 
 	return BaseEntity.new() | player
 
@@ -40,6 +44,22 @@ def get_move_direction(self: dict) -> pygame.Vector2:
 
 def check_collision() -> bool:
 	return False
+
+
+def take_damage(self: dict, damage: int) -> None:
+	if damage < 0:
+		return
+
+	self["health"] = pygame.math.clamp(self["health"] - damage, 0, self["max_health"])
+
+	if self["health"] == 0:
+		die(self)
+
+
+def take_heal(self: dict, heal: int) -> None:
+	if heal < 0:
+		return
+	self["health"] = pygame.math.clamp(self["health"] + heal, 0, self["max_health"])
 
 
 def die(self: dict) -> None:
