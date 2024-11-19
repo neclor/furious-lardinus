@@ -1,5 +1,4 @@
 import pygame
-import sys
 
 pygame.init()
 '''menu style:      TITLE
@@ -7,19 +6,24 @@ pygame.init()
                 Option2(quit)
                 '''
 
+
+
 #BG_IMAGE = pygame.image.load("menu_images\WALL_FURIOUS_EYE1.png")
 SELECT_BUTTON_CURSOR=pygame.image.load("menu_images\Skeleton_arm.png")
-
+MOUSE_MENU_CURSOR = pygame.image.load("menu_images\Cursor.png")
 MENU_BG_COLOR = (0,90,100)
 BUTTON_COLOR = (120,100,120)
 SELECT_BUTTON_COLOR= (120,180,120,0.1)
-
+#game-menu cursor
+pygame.mouse.set_cursor(pygame.cursors.Cursor((1, 0),MOUSE_MENU_CURSOR))
 quit_selected=0
 play_selected=0
 
-TITLE_FONT = pygame.font.Font("Matrix-MZ4P.ttf",100)
-QUIT_FONT = pygame.font.Font("Matrix-MZ4P.ttf",40)
-PLAY_FONT = pygame.font.Font("Matrix-MZ4P.ttf",40)
+in_manu = True
+
+TITLE_FONT = pygame.font.Font("menu_fonts\Matrix-MZ4P.ttf",100)
+QUIT_FONT = pygame.font.Font("menu_fonts\Matrix-MZ4P.ttf",40)
+PLAY_FONT = pygame.font.Font("menu_fonts\Matrix-MZ4P.ttf",40)
 #Title_music=pygame.mixer_music.load()
 TITLE_TEXT = TITLE_FONT.render("Furious Lardinus", True,(0,0,0))
 QUIT_TEXT = QUIT_FONT.render("QUIT GAME", True,(0,quit_selected,0))
@@ -66,10 +70,9 @@ def check_mouse_On_button1():
     else:
         return False
     
-def button_select(menu_screen,DIMENSIONS):
-    global down,quit_selected,play_selected,QUIT_TEXT,PLAY_TEXT
+def button_select(menu_screen,DIMENSIONS,in_menu):
+    global down,quit_selected,play_selected,QUIT_TEXT,PLAY_TEXT, in_manu
     keys=pygame.key.get_pressed()
-    check_mouse_On_button0()
     mouse_click()
     if ( down==0) or check_mouse_On_button0() :
         down=0
@@ -89,11 +92,13 @@ def button_select(menu_screen,DIMENSIONS):
         quit_selected=0
         play_selected=210
     if down==1 and (keys[pygame.K_RETURN] or (mouse_click() and check_mouse_On_button1())):
-        print("aya")
         exit_game()
-
+    if down==0 and (keys[pygame.K_RETURN] or (mouse_click() and check_mouse_On_button0())):
+        in_manu = in_menu = False 
+        start_game()    
     QUIT_TEXT = QUIT_FONT.render("QUIT GAME", True,(0,quit_selected,0))
     PLAY_TEXT = PLAY_FONT.render("PLAY",False,(0,play_selected,0))
+
 
 def title_animation(menu_screen,DIMENSIONS):
     global T_anim_timing,TITLE_TEXT,upload_times
@@ -108,15 +113,22 @@ def title_animation(menu_screen,DIMENSIONS):
         T_anim_timing=0
 
 
+#start game 
+
+def start_game():
+    pass
+'''write code here'''
+
+
 def menu(menu_screen,DIMENSIONS, in_menu):
-    while in_menu:
+    while in_manu:
         menu_screen.fill(MENU_BG_COLOR)
         #menu_animation and button_animation/render 
         title_animation(menu_screen,DIMENSIONS)
         button_init(DIMENSIONS,menu_screen)
         #menu_inputs
         mouse_position()
-        button_select(menu_screen,DIMENSIONS)
+        button_select(menu_screen,DIMENSIONS,in_menu)
         pygame.display.flip()
         
     
