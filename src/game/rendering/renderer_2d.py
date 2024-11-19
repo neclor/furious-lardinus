@@ -25,8 +25,9 @@ def update() -> None:
 def draw() -> None:
 	draw_level()
 	draw_objects()
-	draw_enemies()
-	draw_projectiles()
+	#draw_enemies()
+	draw_player()
+	#draw_projectiles()
 
 
 def draw_level() -> None:

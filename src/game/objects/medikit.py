@@ -17,8 +17,7 @@ def new() -> dict:
 
 
 def update(self: dict, delta: float) -> None:
-	if BaseObject.collides_object(self, Game.player):
+	if BaseObject.overlaps_object(self, Game.player):
 		if Game.player["health"] < Game.player["max_health"]:
 			Player.take_heal(Game.player, HEAL_AMOUNT)
 			BaseObject.free(self)
-

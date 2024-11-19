@@ -40,5 +40,5 @@ RAYS_NUMBER: int = 300
 # Advanced
 aspect_ratio: float = RESOLUTION[0] / RESOLUTION[1]
 fov_v: float = math.atan(math.tan(FOV_H / 2) / (aspect_ratio)) * 2
-ray_delta_angle: float = FOV_H / RAYS_NUMBER
+ray_delta: float = FOV_H / RAYS_NUMBER
 ray_width: int = RESOLUTION[0] // RAYS_NUMBER

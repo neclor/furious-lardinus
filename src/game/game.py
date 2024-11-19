@@ -20,8 +20,6 @@ level: dict = Levels.b37_0
 
 player: dict
 object_container: list[dict] = []
-enemy_container: list[dict] = []
-projectile_container: list[dict] = []
 
 
 def enter() -> None:
@@ -30,12 +28,10 @@ def enter() -> None:
 
 
 def init() -> None:
-	global timer, pause, object_container, enemy_container, projectile_container, player
+	global timer, pause, object_container, player
 	timer = 0.0
 	pause = False
 	object_container = []
-	enemy_container = []
-	projectile_container = []
 	player = Player.new()
 
 

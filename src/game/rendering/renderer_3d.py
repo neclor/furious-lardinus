@@ -11,3 +11,13 @@ def init() -> None:
 
 def update() -> None:
 	pass
+
+
+
+
+def ray_cast() -> None:
+
+
+	ray_rotation: float = Game.player["roattion"] - Settings.FOV_H / 2
+	for ray in range(Settings.RAYS_NUMBER):
+		pass

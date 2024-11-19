@@ -36,7 +36,7 @@ not_base_objects: list[dict] = []
 
 def main() -> None:
 	init()
-
+	lst = [1, 2, 3]
 	print(timeit.timeit(objects_separate, number = 1000))
 	print(timeit.timeit(all_objects, number = 1000))
 

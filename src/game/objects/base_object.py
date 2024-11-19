@@ -18,9 +18,12 @@ def new() -> dict:
 	return object
 
 
-def collides_object(self: dict, object: dict) -> bool:
-	dist: float = self["position"].dist(object["position"])
-	return dist <= self["radius"] + object["radius"]
+def overlaps_object(self: dict, object: dict) -> bool:
+	return circles_overlap(self["position"], self["radius"], object["position"], object["radius"])
+
+
+def circles_overlap(position_1: pygame.Vector2, radius_1: int, position_2: pygame.Vector2, radius_2: int) -> bool:
+	return position_1.distance_to(position_2) <= radius_1 + radius_2
 
 
 def free(self: dict) -> None:

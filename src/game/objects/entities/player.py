@@ -12,21 +12,25 @@ def new() -> dict:
 
 		"rotation": 0.0,
 
-		"max_stamina": 100,
-		"stamina": 100,
-		"stamina_regen": 10,
-		"sprint_speed": 100,
-
 		"weapons": []}
 
 	return BaseEntity.new() | player
 
 
 def update(self: dict, delta: float) -> None:
-	BaseEntity.move(self, get_move_direction(self), delta)
+
+	direction: pygame.Vector2 = get_input_vector().rotate_rad(self["rotation"] + math.pi / 2)
 
 
-def get_move_direction(self: dict) -> pygame.Vector2:
+	direction = direction.normalize() if direction != pygame.Vector2(0.0, 0.0) else direction
+	self["velocity"] = self["velocity"].lerp(direction * self["speed"], max(delta * 8, 1))
+
+
+	BaseEntity.move_and_collide(self, delta)
+
+
+
+def get_input_vector() -> pygame.Vector2:
 	direction: pygame.Vector2 = pygame.Vector2(0.0, 0.0)
 
 	keys = pygame.key.get_pressed()
@@ -39,7 +43,7 @@ def get_move_direction(self: dict) -> pygame.Vector2:
 	if keys[Settings.RIGHT]:
 		direction.x += 1
 
-	return direction.rotate_rad(self["rotation"] + math.pi / 2)
+	return direction
 
 
 def check_collision() -> bool:

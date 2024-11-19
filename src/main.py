@@ -60,16 +60,11 @@ def change_state(new_state: int) -> None:
 
 	match new_state:
 		case 0: # MENU
-			print(state)
 			state = MENU
-			print(state)
-			Menu.enter()
-			print(state)    # TODO it doesn't work
+			Menu.enter()   # TODO it doesn't work
 		case 1: # GAME
 			state = GAME
 			Game.enter()
-
-	print(state)
 
 
 def check_events() -> None:
