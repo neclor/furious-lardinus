@@ -2,6 +2,7 @@ import math
 import pygame
 
 import settings as Settings
+import game.objects.base_object as BaseObject
 import game.objects.entities.base_entity as BaseEntity
 
 
@@ -18,16 +19,11 @@ def new() -> dict:
 
 
 def update(self: dict, delta: float) -> None:
-
 	direction: pygame.Vector2 = get_input_vector().rotate_rad(self["rotation"] + math.pi / 2)
-
-
 	direction = direction.normalize() if direction != pygame.Vector2(0.0, 0.0) else direction
+
 	self["velocity"] = self["velocity"].lerp(direction * self["speed"], max(delta * 8, 1))
-
-
 	BaseEntity.move_and_collide(self, delta)
-
 
 
 def get_input_vector() -> pygame.Vector2:
@@ -46,24 +42,17 @@ def get_input_vector() -> pygame.Vector2:
 	return direction
 
 
-def check_collision() -> bool:
-	return False
-
-
-def take_damage(self: dict, damage: int) -> None:
-	if damage < 0:
-		return
-
-	self["health"] = pygame.math.clamp(self["health"] - damage, 0, self["max_health"])
-
-	if self["health"] == 0:
-		die(self)
-
-
 def take_heal(self: dict, heal: int) -> None:
 	if heal < 0:
 		return
 	self["health"] = pygame.math.clamp(self["health"] + heal, 0, self["max_health"])
+
+
+def take_damage(self: dict, damage: int) -> None:
+	BaseEntity.take_damage(self, damage)
+
+	if self["health"] == 0:
+		die(self)
 
 
 def die(self: dict) -> None:

@@ -8,7 +8,7 @@ import game.levels as Levels
 import game.objects.base_object as BaseObject
 #import game.objects.entities
 import game.objects.entities.player as Player
-
+import game.objects.medikit as Medikit
 
 timer: float = 0.0
 pause: bool = False
@@ -34,13 +34,41 @@ def init() -> None:
 	object_container = []
 	player = Player.new()
 
+	create_objs()
+
+
+
+def create_objs() -> None:
+	med = Medikit.new()
+	med["position"] = pygame.Vector2(-32, -32)
+	object_container.append(med)
+
+
+
 
 def update(delta: float) -> None:
 	global timer
 	timer += delta
 
+	for object in object_container:
+		match object["class"]:
+			case "Medikit":
+				Medikit.update(object, delta)
+
 	Player.update(player, delta)
 	Display.update()
+
+
+
+
+
+
+
+
+def add_child(object: dict):
+	object_container.append(object)
+
+
 
 
 def exit() -> None:

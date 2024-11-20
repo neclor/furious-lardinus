@@ -4,7 +4,7 @@ import game.game as Game
 import game.objects.base_object as BaseObject
 
 
-def new() -> dict:
+def new(position: pygame.Vector2 = pygame.Vector2(0.0, 0.0)) -> dict:
 	entity: dict = {
 		"class": "BaseEntity",
 		"collision": True,
@@ -15,13 +15,14 @@ def new() -> dict:
 		"max_health": 100,
 		"health": 100}
 
-	return BaseObject.new() | entity
+	return BaseObject.new(position) | entity
 
 
 def move_and_collide(self: dict, delta: float) -> None:
 	next_position: pygame.Vector2 = pygame.Vector2(self["position"]) + self["velocity"] * delta
 	if not check_collision(next_position, self["radius"]):
 		self["position"] = next_position
+	print(check_collision(self["position"], self["radius"]))
 
 
 def check_collision(position: pygame.Vector2, radius: int) -> bool:
@@ -58,3 +59,14 @@ def check_objects_collision(position: pygame.Vector2, radius: int) -> bool:
 			if BaseObject.circles_overlap(position, radius, object["position"], object["radius"]):
 				return True
 	return False
+
+
+def take_damage(self: dict, damage: int) -> None:
+	if damage < 0:
+		return
+
+	self["health"] = pygame.math.clamp(self["health"] - damage, 0, self["max_health"])
+
+
+def die(self: dict) -> None:
+	BaseObject.free(self)

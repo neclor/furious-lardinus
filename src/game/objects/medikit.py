@@ -8,12 +8,13 @@ import game.objects.entities.player as Player
 HEAL_AMOUNT: int = 25
 
 
-def new() -> dict:
+def new(position: pygame.Vector2 = pygame.Vector2(0.0, 0.0)) -> dict:
 	medikit: dict = {
-		"class": "Medkit",
-		"sprite": pygame.image.load("assets/sprites/objects/medikit_16.png")}
+		"class": "Medikit",
+		"collision": True,
+		"sprite": pygame.image.load("src/assets/sprites/objects/medikit_16.png")}
 
-	return BaseObject.new() | medikit
+	return BaseObject.new(position) | medikit
 
 
 def update(self: dict, delta: float) -> None:

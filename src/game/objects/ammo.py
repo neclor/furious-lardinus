@@ -5,7 +5,7 @@ import game.objects.base_object as BaseObject
 import game.objects.entities.player as Player
 
 
-AMMO_AMOUNT: int = 50
+AMMO_AMOUNT: int = 25
 
 
 def new() -> dict:
