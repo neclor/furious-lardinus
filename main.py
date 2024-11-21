@@ -12,7 +12,9 @@ def main() -> None:
     global playing,in_menu
     pygame.init()
 
+    menu.button_init(DIMENSIONS)
     menu.menu(window,DIMENSIONS,in_menu)
+
     pygame.display.flip()
     for event in pygame.event.get():
         if event.type == pygame.QUIT:
