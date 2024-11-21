@@ -23,7 +23,7 @@ def update(self: dict, delta: float) -> None:
 	direction = direction.normalize() if direction != pygame.Vector2(0.0, 0.0) else direction
 
 	self["velocity"] = self["velocity"].lerp(direction * self["speed"], max(delta * 8, 1))
-	BaseEntity.move_and_collide(self, delta)
+	BaseEntity.move_and_slide(self, delta)
 
 
 def get_input_vector() -> pygame.Vector2:

@@ -12,7 +12,7 @@ def new(position: pygame.Vector2 = pygame.Vector2(0.0, 0.0)) -> dict:
 	medikit: dict = {
 		"class": "Medikit",
 		"collision": True,
-		"sprite": pygame.image.load("src/assets/sprites/objects/medikit_16.png")}
+		"sprite": pygame.transform.scale_by(pygame.image.load("src/assets/sprites/100x100.png"), 1)} #objects/medikit_16.png"
 
 	return BaseObject.new(position) | medikit
 

@@ -19,7 +19,7 @@ SPRINT: int = pygame.K_LSHIFT
 
 # Display
 RESOLUTION: Tuple[int, int] = (1280, 720) # 16:9
-FPS: int = 600
+FPS: int = 12
 
 
 # Rendering
@@ -28,7 +28,7 @@ DEBUG_COLOR: pygame.Color = pygame.Color("#0099b36b")
 
 
 # 2D
-SCALE: float = 2.0
+SCALE: float = 5.0
 VISIBLE_COLLISION: bool = True
 
 
