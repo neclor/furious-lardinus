@@ -7,7 +7,7 @@ import game.game as Game
 def new() -> dict:
     weapon: dict = {
         "class": "BaseWeapon",
-        "damage":
+        "damage": 10,
         "max_ammo": 200,
         "ammo": 200,
         "ready":
