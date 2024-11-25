@@ -10,8 +10,16 @@ def new() -> dict:
         "damage": 10,
         "max_ammo": 200,
         "ammo": 200,
-        "ready":
+        "ready": True
 
 	}
     return weapon
 
+
+def update(self: dict, delta: float) -> None:
+    pass
+
+
+
+def shoot() -> None:
+    pass

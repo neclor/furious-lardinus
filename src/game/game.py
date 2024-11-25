@@ -6,7 +6,7 @@ import pygame
 import game.rendering.display as Display
 import game.levels as Levels
 import game.objects.base_object as BaseObject
-#import game.objects.entities
+import game.objects.entities.enemies.base_enemy as BaseEnemy
 import game.objects.entities.player as Player
 import game.objects.medikit as Medikit
 
@@ -31,17 +31,16 @@ def init() -> None:
 	global timer, pause, object_container, player
 	timer = 0.0
 	pause = False
-	object_container = []
 	player = Player.new()
+	object_container = [player]
 
 	create_objs()
 
 
 
 def create_objs() -> None:
-	med = Medikit.new()
-	med["position"] = pygame.Vector2(-32, -32)
-	object_container.append(med)
+	object_container.append(Medikit.new(pygame.Vector2(-32, -32)))
+	object_container.append(BaseEnemy.new(pygame.Vector2(-32, -128)))
 
 
 
@@ -54,15 +53,11 @@ def update(delta: float) -> None:
 		match object["class"]:
 			case "Medikit":
 				Medikit.update(object, delta)
+			case "BaseEnemy":
+				BaseEnemy.update(object, delta)
 
 	Player.update(player, delta)
 	Display.update()
-
-
-
-
-
-
 
 
 def add_child(object: dict):

@@ -19,7 +19,7 @@ SPRINT: int = pygame.K_LSHIFT
 
 # Display
 RESOLUTION: Tuple[int, int] = (1280, 720) # 16:9
-FPS: int = 12100
+FPS: int = 30
 
 
 # Rendering

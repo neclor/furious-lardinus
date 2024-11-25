@@ -12,7 +12,7 @@ def new(position: pygame.Vector2 = pygame.Vector2(0.0, 0.0)) -> dict:
 		"collision": True,
 
 		"velocity": pygame.Vector2(0.0, 0.0),
-		"speed": 128,
+		"speed": 32,
 
 		"max_health": 100,
 		"health": 100}
@@ -25,7 +25,8 @@ def move_and_slide(self: dict, delta: float) -> None:
 	velocity: pygame.Vector2 = self["velocity"]
 	radius: int = self["radius"]
 
-	next_position = position + velocity * delta
+	next_position: pygame.Vector2 = position + velocity * delta
+	self["position"] = next_position
 	self["position"], self["velocity"] = handle_collisions(next_position, velocity, radius)
 
 

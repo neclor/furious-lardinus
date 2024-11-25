@@ -6,7 +6,7 @@ import game.objects.base_object as BaseObject
 import game.objects.entities.base_entity as BaseEntity
 
 
-def new() -> dict:
+def new(position: pygame.Vector2 = pygame.Vector2(0.0, 0.0)) -> dict:
 	player: dict = {
 		"class": "Player",
 		"sprite": pygame.image.load("src/assets/sprites/test_player_16.png"),
@@ -15,7 +15,7 @@ def new() -> dict:
 
 		"weapons": []}
 
-	return BaseEntity.new() | player
+	return BaseEntity.new(position) | player
 
 
 def update(self: dict, delta: float) -> None:
