@@ -25,9 +25,8 @@ def update() -> None:
 def draw() -> None:
 	draw_level()
 	draw_objects()
-	#draw_enemies()
 	draw_player()
-	#draw_projectiles()
+
 
 
 def draw_level() -> None:
@@ -49,18 +48,10 @@ def draw_objects() -> None:
 		draw_object(object)
 
 
-def draw_enemies() -> None:
-	for enemy in Game.enemy_container:
-		draw_object(enemy)
-
 
 def draw_player() -> None:
 	draw_object(Game.player)
 
-
-def draw_projectiles() -> None:
-	for projectile in Game.projectile_container:
-		draw_object(projectile)
 
 
 def draw_object(object: dict) -> None:

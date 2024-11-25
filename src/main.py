@@ -2,7 +2,7 @@
 # Authors:
 # me, he and another one
 
-
+#TODO: To finish
 import sys
 import pygame
 
@@ -61,7 +61,7 @@ def change_state(new_state: int) -> None:
 	match new_state:
 		case 0: # MENU
 			state = MENU
-			Menu.enter()   # TODO it doesn't work
+			Menu.enter()   # TODO: it doesn't work
 		case 1: # GAME
 			state = GAME
 			Game.enter()

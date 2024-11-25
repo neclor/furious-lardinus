@@ -22,7 +22,7 @@ def update(self: dict, delta: float) -> None:
 	direction: pygame.Vector2 = get_input_vector().rotate_rad(self["rotation"] + math.pi / 2)
 	direction = direction.normalize() if direction != pygame.Vector2(0.0, 0.0) else direction
 
-	self["velocity"] = self["velocity"].lerp(direction * self["speed"], max(delta * 8, 1))
+	self["velocity"] = self["velocity"].lerp(direction * self["speed"], min(delta * 8, 1))
 	BaseEntity.move_and_slide(self, delta)
 
 

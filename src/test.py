@@ -3,7 +3,7 @@ import timeit
 
 import test2 as tst
 
-
+# TODO: Delete this file
 window: pygame.Surface
 
 abc = tst.abc

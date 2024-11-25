@@ -1,3 +1,4 @@
+from typing import Tuple
 from typing import Optional
 import pygame
 
@@ -20,87 +21,80 @@ def new(position: pygame.Vector2 = pygame.Vector2(0.0, 0.0)) -> dict:
 
 
 def move_and_slide(self: dict, delta: float) -> None:
+	position: pygame.Vector2 = self["position"]
+	velocity: pygame.Vector2 = self["velocity"]
+	radius: int = self["radius"]
 
-	collide_level(self, delta)
+	next_position = position + velocity * delta
+	self["position"], self["velocity"] = handle_collisions(next_position, velocity, radius)
 
 
-	self["position"] += self["velocity"] * delta
+def handle_collisions(position: pygame.Vector2, velocity: pygame.Vector2, radius: int) -> Tuple[pygame.Vector2, pygame.Vector2]:
+	position, velocity = handle_level_collision(position, velocity, radius)
+	position, velocity = handle_objects_collisions(position, velocity, radius)
+	return (position, velocity)
 
 
-def collide_level(self: dict, delta: float) -> None:
+def handle_level_collision(position: pygame.Vector2, velocity: pygame.Vector2, radius: int) -> Tuple[pygame.Vector2, pygame.Vector2]:
+
+	def find_nearest_tile_point(entity_position: pygame.Vector2, x: int, y: int, tile_size: int) -> pygame.Vector2:
+		tile_position: pygame.Vector2 = pygame.Vector2(x * tile_size, y * tile_size)
+		nearest_tile_point_x: float = pygame.math.clamp(entity_position.x, tile_position.x, tile_position.x + tile_size)
+		nearest_tile_point_y: float = pygame.math.clamp(entity_position.y, tile_position.y, tile_position.y + tile_size)
+		return pygame.Vector2(nearest_tile_point_x, nearest_tile_point_y)
+
+	def handle_tile_collision(position: pygame.Vector2, velocity: pygame.Vector2, radius: int, nearest_tile_point: pygame.Vector2) -> Tuple[pygame.Vector2, pygame.Vector2]:
+		collision_vector: pygame.Vector2 = nearest_tile_point - position
+		distance: float = collision_vector.length()
+		overlap: float = radius - distance
+		if overlap > 0:
+			position, velocity = handle_collision(position, velocity, collision_vector, overlap)
+		return (position, velocity)
+
 	level_size: pygame.Vector2 = Game.level["size"]
 	tile_size: int = int(Game.level["tile_size"])
 	tile_map: list[list[Optional[dict]]] = Game.level["tile_map"]
 
-	def find_nearest_tile_point(position: pygame.Vector2, tile_x: int, tile_y: int, tile_size: int) -> pygame.Vector2:
-		tile_position: pygame.Vector2 = pygame.Vector2(x * tile_size, y * tile_size)
-		nearest_tile_point_x: float = pygame.math.clamp(position.x, tile_position.x, tile_position.x + tile_size)
-		nearest_tile_point_y: float = pygame.math.clamp(position.y, tile_position.y, tile_position.y + tile_size)
-		return pygame.Vector2(nearest_tile_point_x, nearest_tile_point_y)
-
-
-	next_position: pygame.Vector2 = self["position"] + self["velocity"] * delta
-
-	min_tile_index_x: int = int(max(0, (min(self["position"].x, next_position.x) - self["radius"]) // tile_size))
-	max_tile_index_x: int = int(min((max(self["position"].x, next_position.x) + self["radius"]) // tile_size, level_size.x - 1))
-	min_tile_index_y: int = int(max(0, (min(self["position"].y, next_position.y) - self["radius"]) // tile_size))
-	max_tile_index_y: int = int(min((max(self["position"].y, next_position.y) + self["radius"]) // tile_size, level_size.y - 1))
+	min_tile_index_x: int = int(max(0, (position.x - radius) // tile_size))
+	max_tile_index_x: int = int(min((position.x + radius) // tile_size, level_size.x - 1))
+	min_tile_index_y: int = int(max(0, (position.y - radius) // tile_size))
+	max_tile_index_y: int = int(min((position.y + radius) // tile_size, level_size.y - 1))
 
 	for y in range(min_tile_index_y, max_tile_index_y + 1):
 		for x in range(min_tile_index_x, max_tile_index_x + 1):
 			if tile_map[y][x] is not None:
+				nearest_tile_point: pygame.Vector2 = find_nearest_tile_point(position, x, y, tile_size)
+				position, velocity = handle_tile_collision(position, velocity, radius, nearest_tile_point)
 
-				nearest_p = find_nearest_tile_point(next_position, x, y, tile_size)
-
-				dist = next_position.distance_to(nearest_p)
-				if dist <= self["radius"]:
-
-					collision_vector = next_position - nearest_p
-					collision_vector = collision_vector.normalize() if collision_vector != pygame.Vector2(0.0, 0.0) else collision_vector
-
-					next_position += collision_vector * (self["radius"] - dist)
-					normal_vector = pygame.Vector2(-collision_vector.y, collision_vector.x)
-
-					self["velocity"].dot(normal_vector)
+	return (position, velocity)
 
 
+def handle_objects_collisions(position: pygame.Vector2, velocity: pygame.Vector2, radius: int) -> Tuple[pygame.Vector2, pygame.Vector2]:
 
-				collide_vector = next_position - nearest_p
-				tile_position: pygame.Vector2 = pygame.Vector2(x * tile_size, y * tile_size)
-				nearest_tile_point_x: float = pygame.math.clamp(next_position.x, tile_position.x, tile_position.x + tile_size)
-				nearest_tile_point_y: float = pygame.math.clamp(next_position.y, tile_position.y, tile_position.y + tile_size)
+	def handle_object_collision(position: pygame.Vector2, velocity: pygame.Vector2, radius: int, object: dict) -> Tuple[pygame.Vector2, pygame.Vector2]:
+		object_position: pygame.Vector2 = object["position"]
+		object_radius: int = object["radius"]
+		collision_vector: pygame.Vector2 = object_position - position
+		distance: float = collision_vector.length()
+		overlap: float = radius + object_radius - distance
+		if overlap > 0:
+			position, velocity = handle_collision(position, velocity, collision_vector, overlap)
+		return (position, velocity)
 
-				if next_position.distance_to(pygame.Vector2(nearest_tile_point_x, nearest_tile_point_y)) <= self["radius"]:
-					new_nearest_tile_point_y: float = pygame.math.clamp(self["position"].y, tile_position.y, tile_position.y + tile_size)
-					next_position_x: pygame.Vector2 = pygame.Vector2(next_position.x, self["position"].y)
-					collide_x: bool = next_position_x.distance_to(pygame.Vector2(nearest_tile_point_x, new_nearest_tile_point_y)) <= self["radius"]
-
-					new_nearest_tile_point_x: float = pygame.math.clamp(self["position"].x, tile_position.x, tile_position.x + tile_size)
-					next_position_y: pygame.Vector2 = pygame.Vector2(self["position"].x, next_position.y)
-					collide_y: bool = next_position_y.distance_to(pygame.Vector2(new_nearest_tile_point_x, nearest_tile_point_y)) <= self["radius"]
-
-					if collide_x: self["velocity"].x = 0.0
-					if collide_y: self["velocity"].y = 0.0
-					if not collide_x and not collide_y: self["velocity"] = pygame.Vector2(0.0, 0.0)
-
-
-
-def collide(self: dict, collision_vector: pygame.Vector2):
-
-
-
-
-
-
-
-
-
-def check_objects_collision(position: pygame.Vector2, radius: int) -> bool:
 	for object in Game.object_container:
 		if object["collision"]:
-			if BaseObject.circles_overlap(position, radius, object["position"], object["radius"]):
-				return True
-	return False
+			position, velocity = handle_object_collision(position, velocity, radius, object)
+
+	return (position, velocity)
+
+
+def handle_collision(position: pygame.Vector2, velocity: pygame.Vector2, collision_vector: pygame.Vector2, overlap: float) -> Tuple[pygame.Vector2, pygame.Vector2]:
+	if collision_vector.length() != 0.0: collision_vector.normalize_ip()
+	position -= collision_vector * overlap
+	velocity_projection_length: float = velocity.dot(collision_vector)
+	velocity -= collision_vector * velocity_projection_length
+
+	return (position, velocity)
 
 
 def take_damage(self: dict, damage: int) -> None:
