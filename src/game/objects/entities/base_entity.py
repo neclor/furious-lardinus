@@ -86,7 +86,7 @@ def collide_level(self: dict, delta: float) -> None:
 
 
 def collide(self: dict, collision_vector: pygame.Vector2):
-
+	pass
 
 
 
