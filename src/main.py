@@ -7,6 +7,7 @@ import sys
 import pygame
 
 import settings as Settings
+import event_handler as EventHandler
 import game.game as Game
 import menu.menu as Menu
 
@@ -39,6 +40,9 @@ def init() -> None:
 def run() -> None:
 	while True:
 		delta: float = clock.get_time() / 1000
+
+
+
 		match state:
 			case 0: Menu.update(delta)
 			case 1: Game.update(delta)
@@ -73,6 +77,8 @@ def check_events() -> None:
 			exit()
 		if event.type == pygame.KEYDOWN:
 			if event.key == Settings.FULL_SCREEN:
+				pygame.display.toggle_fullscreen()
+			elif event.key == Settings.PAUSE:
 				pygame.display.toggle_fullscreen()
 
 

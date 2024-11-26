@@ -36,6 +36,9 @@ def init() -> None:
 
 	create_objs()
 
+	pygame.mouse.set_visible(False)
+	pygame.event.set_grab(True)
+
 
 
 def create_objs() -> None:
@@ -46,6 +49,9 @@ def create_objs() -> None:
 
 
 def update(delta: float) -> None:
+	if pause:
+		return
+
 	global timer
 	timer += delta
 
@@ -58,6 +64,12 @@ def update(delta: float) -> None:
 
 	Player.update(player, delta)
 	Display.update()
+
+
+def pause_game() -> None:
+	pause != pause
+	pygame.mouse.set_visible(pause)
+	pygame.event.set_grab(not pause)
 
 
 def add_child(object: dict):

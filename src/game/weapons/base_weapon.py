@@ -5,21 +5,27 @@ import pygame
 import game.game as Game
 
 def new() -> dict:
-    weapon: dict = {
-        "class": "BaseWeapon",
-        "damage": 10,
-        "max_ammo": 200,
-        "ammo": 200,
-        "ready": True
+	weapon: dict = {
+		"class": "BaseWeapon",
+		"available": False,
+		"shot_delay": 0.5,
+		"shot_delay_left": 0.0,
 
-	}
-    return weapon
+		"damage": 10,
+
+		"max_ammo": 200,
+		"ammo": 200}
+	return weapon
 
 
 def update(self: dict, delta: float) -> None:
-    pass
+	pass
 
 
 
 def shoot() -> None:
-    pass
+	pass
+
+
+def update_()Ж
+	pass

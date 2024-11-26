@@ -15,7 +15,6 @@ VISION_RANGE: int = 500
 def new(position: pygame.Vector2 = pygame.Vector2(0.0, 0.0)) -> dict:
 	enemy: dict = {
 		"class": "BaseEnemy",
-		"speed": 10,
 		"sprite": pygame.image.load("src/assets/sprites/enemies/test_enemy_16.png")}
 
 	return BaseEntity.new(position) | enemy
