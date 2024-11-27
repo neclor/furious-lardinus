@@ -3,10 +3,10 @@ import pygame
 import game.objects.base_object as BaseObject
 
 
-def new() -> dict:
+def new(position: pygame.Vector2 = pygame.Vector2()) -> dict:
 	projectile: dict = {
 		"class": "BaseProjectile",
-		"velocity": pygame.Vector2(0.0, 0.0),
+		"velocity": pygame.Vector2(),
 		"damage": 100}
 
-	return projectile
+	return BaseObject.new(position) | projectile

@@ -12,7 +12,7 @@ import game.objects.ammo as Ammo
 VISION_RANGE: int = 500
 
 
-def new(position: pygame.Vector2 = pygame.Vector2(0.0, 0.0)) -> dict:
+def new(position: pygame.Vector2 = pygame.Vector2()) -> dict:
 	enemy: dict = {
 		"class": "BaseEnemy",
 		"sprite": pygame.image.load("src/assets/sprites/enemies/test_enemy_16.png")}

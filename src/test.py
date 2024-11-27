@@ -10,6 +10,34 @@ abc = tst.abc
 b = 100
 
 
+def main() -> None:
+	init()
+	lst = [1, 2, 3]
+	print(timeit.timeit(new_vector_empty, number = 10000000))
+	print(timeit.timeit(new_vector_zero, number = 10000000))
+
+
+def init() -> None:
+	global window
+	window = pygame.display.set_mode((1280, 1024))
+
+	for i in range(10000):
+		objects.append(create_base_obj())
+		objects.append(create_not_base_obj())
+
+		base_objects.append(create_base_obj())
+		not_base_objects.append(create_not_base_obj())
+
+
+
+
+def new_vector_empty() -> None:
+	a = pygame.Vector2()
+
+
+def new_vector_zero() -> None:
+	a = pygame.Vector2(0.0, 0.0)
+
 
 
 
@@ -30,28 +58,6 @@ objects: list[dict] = []
 
 base_objects: list[dict] = []
 not_base_objects: list[dict] = []
-
-
-
-
-def main() -> None:
-	init()
-	lst = [1, 2, 3]
-	print(timeit.timeit(objects_separate, number = 1000))
-	print(timeit.timeit(all_objects, number = 1000))
-
-
-def init() -> None:
-	global window
-	window = pygame.display.set_mode((1280, 1024))
-
-	for i in range(10000):
-		objects.append(create_base_obj())
-		objects.append(create_not_base_obj())
-
-		base_objects.append(create_base_obj())
-		not_base_objects.append(create_not_base_obj())
-
 
 
 

@@ -8,7 +8,7 @@ import game.objects.entities.player as Player
 HEAL_AMOUNT: int = 25
 
 
-def new(position: pygame.Vector2 = pygame.Vector2(0.0, 0.0)) -> dict:
+def new(position: pygame.Vector2 = pygame.Vector2()) -> dict:
 	medikit: dict = {
 		"class": "Medikit",
 		"sprite": pygame.image.load("src/assets/sprites/objects/medikit_16.png")}

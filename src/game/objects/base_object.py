@@ -3,7 +3,7 @@ import pygame
 import game.game as Game
 
 
-def new(position: pygame.Vector2 = pygame.Vector2(0.0, 0.0)) -> dict:
+def new(position: pygame.Vector2 = pygame.Vector2()) -> dict:
 	object: dict = {
 		"class": "BaseObject",
 		"sprite": None,

@@ -6,7 +6,7 @@ import game.objects.base_object as BaseObject
 import game.objects.entities.base_entity as BaseEntity
 
 
-def new(position: pygame.Vector2 = pygame.Vector2(0.0, 0.0)) -> dict:
+def new(position: pygame.Vector2 = pygame.Vector2()) -> dict:
 	player: dict = {
 		"class": "Player",
 		"sprite": pygame.image.load("src/assets/sprites/test_player_16.png"),
@@ -19,27 +19,32 @@ def new(position: pygame.Vector2 = pygame.Vector2(0.0, 0.0)) -> dict:
 
 
 def update(self: dict, delta: float) -> None:
+	move(self, delta)
+
+
+def move(self: dict, delta: float) -> None:
+
+	def get_input_vector() -> pygame.Vector2:
+		direction: pygame.Vector2 = pygame.Vector2()
+		keys = pygame.key.get_pressed()
+		if keys[Settings.FORWARD]:
+			direction.y -= 1
+		if keys[Settings.BACKWARD]:
+			direction.y += 1
+		if keys[Settings.LEFT]:
+			direction.x -= 1
+		if keys[Settings.RIGHT]:
+			direction.x += 1
+		return direction
+
 	direction: pygame.Vector2 = get_input_vector().rotate_rad(self["rotation"] + math.pi / 2)
-	direction = direction.normalize() if direction != pygame.Vector2(0.0, 0.0) else direction
+	direction = direction.normalize() if direction != pygame.Vector2() else direction
 
 	self["velocity"] = self["velocity"].lerp(direction * self["speed"], min(delta * 8, 1))
 	BaseEntity.move_and_slide(self, delta)
 
 
-def get_input_vector() -> pygame.Vector2:
-	direction: pygame.Vector2 = pygame.Vector2(0.0, 0.0)
 
-	keys = pygame.key.get_pressed()
-	if keys[Settings.FORWARD]:
-		direction.y -= 1
-	if keys[Settings.BACKWARD]:
-		direction.y += 1
-	if keys[Settings.LEFT]:
-		direction.x -= 1
-	if keys[Settings.RIGHT]:
-		direction.x += 1
-
-	return direction
 
 
 def take_heal(self: dict, heal: int) -> None:

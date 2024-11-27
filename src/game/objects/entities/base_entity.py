@@ -6,12 +6,12 @@ import game.game as Game
 import game.objects.base_object as BaseObject
 
 
-def new(position: pygame.Vector2 = pygame.Vector2(0.0, 0.0)) -> dict:
+def new(position: pygame.Vector2 = pygame.Vector2()) -> dict:
 	entity: dict = {
 		"class": "BaseEntity",
 		"collision": True,
 
-		"velocity": pygame.Vector2(0.0, 0.0),
+		"velocity": pygame.Vector2(),
 		"speed": 32,
 
 		"max_health": 100,

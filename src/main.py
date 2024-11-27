@@ -7,7 +7,7 @@ import sys
 import pygame
 
 import settings as Settings
-import event_handler as EventHandler
+import events as EventHandler
 import game.game as Game
 import menu.menu as Menu
 
@@ -40,17 +40,15 @@ def init() -> None:
 def run() -> None:
 	while True:
 		delta: float = clock.get_time() / 1000
-
-
+		EventHandler.update()
+		check_events()
 
 		match state:
 			case 0: Menu.update(delta)
 			case 1: Game.update(delta)
 
 		clock.tick(Settings.FPS)
-		check_events()
-
-		pygame.display.set_caption(str(round(clock.get_fps())))
+		pygame.display.set_caption(str(round(clock.get_fps()))) # for debug
 
 
 def change_state(new_state: int) -> None:
@@ -72,7 +70,7 @@ def change_state(new_state: int) -> None:
 
 
 def check_events() -> None:
-	for event in pygame.event.get():
+	for event in EventHandler:
 		if event.type == pygame.QUIT:
 			exit()
 		if event.type == pygame.KEYDOWN:
