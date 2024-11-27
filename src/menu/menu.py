@@ -1,13 +1,13 @@
 #TODO: To finish
 import pygame
 
-import main as Main
+import state_machine as StateMachine
 
 
 def enter() -> None:
-	print("enter", Main.state)
-	Main.change_state(Main.GAME)
-	print("enter", Main.state)
+	print("enter", StateMachine.state)
+	StateMachine.change_state(StateMachine.GAME)
+	print("enter", StateMachine.state)
 
 
 def update(delta: float) -> None:

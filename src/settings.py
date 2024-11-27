@@ -10,11 +10,12 @@ NAME: str = "Furious Lardinus"
 # Input
 FULL_SCREEN: int = pygame.K_F11
 PAUSE: int = pygame.K_ESCAPE
+
 FORWARD: int = pygame.K_w
 BACKWARD: int = pygame.K_s
 LEFT: int = pygame.K_a
 RIGHT: int = pygame.K_d
-SPRINT: int = pygame.K_LSHIFT
+# SPRINT: int = pygame.K_LSHIFT
 
 
 # Display

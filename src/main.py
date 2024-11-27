@@ -7,16 +7,8 @@ import sys
 import pygame
 
 import settings as Settings
-import events as EventHandler
-import game.game as Game
-import menu.menu as Menu
-
-
-# States
-MENU: int = 0
-GAME: int = 1
-START_STATE: int = GAME
-state: int = -1
+import events as Events
+import state_machine as StateMachine
 
 
 clock: pygame.time.Clock
@@ -34,55 +26,31 @@ def init() -> None:
 	pygame.display.set_caption(Settings.NAME)
 	clock = pygame.time.Clock()
 
-	change_state(START_STATE)
+	StateMachine.init()
 
 
 def run() -> None:
 	while True:
 		delta: float = clock.get_time() / 1000
-		EventHandler.update()
-		check_events()
+		Events.update()
+		StateMachine.update(delta)
 
-		match state:
-			case 0: Menu.update(delta)
-			case 1: Game.update(delta)
+		handle_events()
 
 		clock.tick(Settings.FPS)
-		pygame.display.set_caption(str(round(clock.get_fps()))) # for debug
+
+		# for debug
+		pygame.display.set_caption(str(round(clock.get_fps())))
 
 
-def change_state(new_state: int) -> None:
-	global state
-	if new_state == state:
-		return
-
-	match state:
-		case 0: Menu.exit()
-		case 1: Game.exit()
-
-	match new_state:
-		case 0: # MENU
-			state = MENU
-			Menu.enter()   # TODO: it doesn't work
-		case 1: # GAME
-			state = GAME
-			Game.enter()
-
-
-def check_events() -> None:
-	for event in EventHandler:
+def handle_events() -> None:
+	for event in Events.get():
 		if event.type == pygame.QUIT:
-			exit()
+			pygame.quit()
+			sys.exit()
 		if event.type == pygame.KEYDOWN:
 			if event.key == Settings.FULL_SCREEN:
 				pygame.display.toggle_fullscreen()
-			elif event.key == Settings.PAUSE:
-				pygame.display.toggle_fullscreen()
-
-
-def exit() -> None:
-	pygame.quit()
-	sys.exit()
 
 
 if __name__ == "__main__":
