@@ -15,17 +15,17 @@ def stat_FPS():
 
 
 window = pygame.display.set_mode(DIMENSIONS)
-FPS = 60
+FPS = 300
 def main() -> None:
     global playing,in_menu
     pygame.init()
-    menu.button_init(DIMENSIONS)
+    menu.menu_init(DIMENSIONS)
     while playing:
         clock.tick(FPS)
         stat_FPS()
         playing=menu.menu(window,DIMENSIONS,in_menu,RFPS)
         
-        pygame.display.flip()
+        pygame.display.update()
         for event in pygame.event.get():
             if event.type == pygame.QUIT:
                 playing = False

@@ -10,9 +10,12 @@ screen_update =False
 #
 RFPS : float
 def button_init(DIMENSIONS):
-    global BUTTON_PLAY,BUTTON_QUIT
+    global BUTTON_PLAY,BUTTON_QUIT,button0_pos,button1_pos
     BUTTON_QUIT = pygame.Rect(DIMENSIONS[0]/2.0 -250/2, DIMENSIONS[1] / 2.0 ,250.0,100.0)
     BUTTON_PLAY = pygame.Rect(DIMENSIONS[0]/2.0 -250/2, DIMENSIONS[1]/ 3.0 + DIMENSIONS[1]/3 , 250.0,100.0 )
+    button0_pos = (DIMENSIONS[0]/2.0 -250/2, DIMENSIONS[1] / 2.0  )
+    button1_pos = (DIMENSIONS[0]/2.0 -250/2, DIMENSIONS[1]/ 3.0 + DIMENSIONS[1]/3) 
+
 
 
 
@@ -21,11 +24,11 @@ def menu_image_init():
     global SELECT_BUTTON_COLOR,MENU_BG_COLOR, SELECT_BUTTON_CURSOR,BUTTON_COLOR, BG_image_center_X,quit_color,play_color,BG
     SELECT_BUTTON_CURSOR=pygame.image.load("menu_images\Skeleton_arm.png")
     MOUSE_MENU_CURSOR = pygame.image.load("menu_images\Cursor.png")
-    MENU_BG_COLOR = (0,90,100)
+    MENU_BG_COLOR = (110,10,10)
     BUTTON_COLOR = (120,100,120)
     SELECT_BUTTON_COLOR= (120,180,120,0.1)
     GAME_ICON = pygame.image.load("menu_images/furious_lardinous_icon.png")
-    BG = pygame.image.load("menu_images\BG.png")
+    BG = pygame.image.load("menu_images\BG.png").convert()
     BG_image_center_X = (BG.get_size()[0])/2
     BG_image_center_Y = (BG.get_size()[1])/2
     BG = pygame.transform.scale(BG,(BG_image_center_X*4,BG_image_center_Y*4))
@@ -64,17 +67,17 @@ def button(DIMENSIONS,menu_screen) -> None:
     global BUTTON_QUIT, BUTTON_PLAY,button0_pos,button1_pos
     pygame.draw.rect(menu_screen,BUTTON_COLOR,BUTTON_QUIT)
     menu_screen.blit(PLAY_TEXT,(DIMENSIONS[0]/2.0 -244/4, DIMENSIONS[1] / 2.0 +25.0 ))
-    button0_pos = (DIMENSIONS[0]/2.0 -250/2, DIMENSIONS[1] / 2.0  )
+    
     pygame.draw.rect(menu_screen,BUTTON_COLOR,BUTTON_PLAY)
     menu_screen.blit(QUIT_TEXT,(DIMENSIONS[0]/2.0 -244/2, DIMENSIONS[1] / 3.0 + DIMENSIONS[1]/3 +25))
-    button1_pos = (DIMENSIONS[0]/2.0 -250/2, DIMENSIONS[1]/ 3.0 + DIMENSIONS[1]/3) 
+   
 
 def cursor_draw(DIMENSIONS,menu_screen):
     menu_screen.blit(SELECT_BUTTON_CURSOR,(DIMENSIONS[0]/2.0 -384, DIMENSIONS[1] / (3.0-down)))
 
 def interactive_element_draw(DIMENSIONS,menu_screen):
     button(DIMENSIONS,menu_screen)
-    cursor_draw(DIMENSIONS,menu_screen)
+    #cursor_draw(DIMENSIONS,menu_screen)
 
 def check_mouse_On_button0():
     global mouse_crs_position,button0_pos
@@ -158,6 +161,7 @@ def title_animation(menu_screen,DIMENSIONS):
     else:
         TITLE_TEXT = TITLE_FONT.render("Furious Lardinus", True,(0,0,0))
         menu_screen.blit(TITLE_TEXT, (DIMENSIONS[0]/4-40,DIMENSIONS[1]/4))
+
         return False
 
 def menu_BG(menu_screen, DIMENSIONS):
@@ -165,10 +169,12 @@ def menu_BG(menu_screen, DIMENSIONS):
     menu_screen.blit(BG,(DIMENSIONS[0]/2-BG_image_center_X,-64))
     screen_update = False
 
-def menu_init():
+def menu_init(DIMENSIONS):
     menu_image_init()
     text_init()
     timing_init()
+    button_init(DIMENSIONS)
+
 
 #start game 
 
@@ -178,9 +184,8 @@ def start_game():
 '''write code here'''
 
 
-menu_init()
+
 def menu(menu_screen,DIMENSIONS, in_menu,RFPS:float):
-    menu_screen.fill(MENU_BG_COLOR)
     menu_BG(menu_screen,DIMENSIONS)
     #menu_animation and button_animation/render
     mouse_position()
