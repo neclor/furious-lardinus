@@ -15,7 +15,7 @@ def stat_FPS():
 
 
 window = pygame.display.set_mode(DIMENSIONS)
-FPS = 300
+FPS = 60
 def main() -> None:
     global playing,in_menu
     pygame.init()

@@ -31,7 +31,7 @@ def menu_image_init():
     BG = pygame.image.load("menu_images\BG.png").convert()
     BG_image_center_X = (BG.get_size()[0])/2
     BG_image_center_Y = (BG.get_size()[1])/2
-    BG = pygame.transform.scale(BG,(BG_image_center_X*4,BG_image_center_Y*4))
+    BG = pygame.transform.scale(BG,(BG_image_center_X*2,BG_image_center_Y*2))
     BG_image_center_X = (BG.get_size()[0])/2
     #game-menu cursor
     pygame.mouse.set_cursor(pygame.cursors.Cursor((64,0),MOUSE_MENU_CURSOR))
