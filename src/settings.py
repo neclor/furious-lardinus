@@ -35,6 +35,7 @@ VISIBLE_COLLISION: bool = True
 # 3D
 FOV_H: float = math.pi / 2
 RAYS_NUMBER: int = 300
+RAYS_DEPTH: int = 30
 
 
 # Advanced
