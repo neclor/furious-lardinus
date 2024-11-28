@@ -1,4 +1,3 @@
-from typing import Tuple
 import pygame
 
 import settings as Settings

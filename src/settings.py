@@ -1,4 +1,3 @@
-from typing import Tuple
 import math
 import pygame
 
@@ -15,16 +14,15 @@ FORWARD: int = pygame.K_w
 BACKWARD: int = pygame.K_s
 LEFT: int = pygame.K_a
 RIGHT: int = pygame.K_d
-# SPRINT: int = pygame.K_LSHIFT
 
 
 # Display
-RESOLUTION: Tuple[int, int] = (1280, 720) # 16:9
-FPS: int = 30
+RESOLUTION: tuple[int, int] = (1280, 720) # 16:9
+FPS: int = 60
 
 
 # Rendering
-CLEAR_COLOR: pygame.Color = pygame.Color("#000000")
+CLEAR_COLOR: pygame.Color = pygame.Color("#181818")
 DEBUG_COLOR: pygame.Color = pygame.Color("#0099b36b")
 
 
@@ -40,6 +38,6 @@ RAYS_NUMBER: int = 300
 
 # Advanced
 aspect_ratio: float = RESOLUTION[0] / RESOLUTION[1]
-fov_v: float = math.atan(math.tan(FOV_H / 2) / (aspect_ratio)) * 2
-ray_delta: float = FOV_H / RAYS_NUMBER
+fov_v: float = 2 * math.atan(math.tan(FOV_H / 2) / aspect_ratio)
+ray_delta_angle: float = FOV_H / RAYS_NUMBER
 ray_width: int = RESOLUTION[0] // RAYS_NUMBER

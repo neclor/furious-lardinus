@@ -7,7 +7,7 @@ import sys
 import pygame
 
 import settings as Settings
-import events as Events
+import core.events as Events
 import state_machine as StateMachine
 
 
@@ -31,16 +31,18 @@ def init() -> None:
 
 def run() -> None:
 	while True:
-		delta: float = clock.get_time() / 1000
+		delta: float = get_delta()
 		Events.update()
 		StateMachine.update(delta)
-
 		handle_events()
-
 		clock.tick(Settings.FPS)
 
 		# for debug
-		pygame.display.set_caption(str(round(clock.get_fps())))
+		pygame.display.set_caption(str(int(clock.get_fps())))
+
+
+def get_delta() -> float:
+	return clock.get_time() / 1000
 
 
 def handle_events() -> None:

@@ -24,7 +24,7 @@ def update(delta: float) -> None:
 
 def change_state(new_state: int) -> None:
 	global state
-	if new_state == state or new_state < 0 or 1 < new_state:
+	if (new_state == state) or (new_state < 0 or 1 < new_state):
 		return
 
 	match state:

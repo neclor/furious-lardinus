@@ -1,4 +1,3 @@
-from typing import Tuple
 import pygame
 
 import settings as Settings
@@ -6,14 +5,14 @@ import game.rendering.display as Display
 import game.game as Game
 
 
-offset: pygame.Vector2 = pygame.Vector2(0.0, 0.0)
-camera_position: pygame.Vector2 = pygame.Vector2(0.0, 0.0)
+display_surface_center: pygame.Vector2 = pygame.Vector2()
+camera_position: pygame.Vector2 = pygame.Vector2()
 
 
 def init() -> None:
-	global offset, camera_position
-	offset = pygame.Vector2(Display.surface.get_size()) / 2
-	camera_position = pygame.Vector2(0.0, 0.0)
+	global display_surface_center, camera_position
+	display_surface_center = pygame.Vector2(Display.surface.get_size()) / 2
+	camera_position = pygame.Vector2()
 
 
 def update() -> None:
@@ -25,22 +24,23 @@ def update() -> None:
 def draw() -> None:
 	draw_level()
 	draw_objects()
-	draw_player()
-
 
 
 def draw_level() -> None:
-	camera_position
-	screen_tile_size: float = Game.level["tile_size"] * Settings.SCALE
-	y: float = offset.y - (camera_position.y * Settings.SCALE)
-	screen_offset_x = offset.x - (camera_position.x * Settings.SCALE)
-	for row in Game.Levels.b37_0["tile_map"]:
-		x: float = screen_offset_x
+	tile_size: int = Game.level["tile_size"]
+	tile_map: list[list[dict | None]] = Game.Levels.b37_0["tile_map"]
+
+	scaled_tile_size: float = tile_size * Settings.SCALE
+
+	tile_position_y: float = display_surface_center.y - (camera_position.y * Settings.SCALE)
+	surface_offset_x = display_surface_center.x - (camera_position.x * Settings.SCALE)
+	for row in tile_map:
+		tile_position_x: float = surface_offset_x
 		for tile in row:
 			if tile is not None:
-				Display.surface.blit(pygame.transform.scale_by(tile["texture"], Settings.SCALE), (x, y))
-			x += screen_tile_size
-		y += screen_tile_size
+				Display.surface.blit(pygame.transform.scale_by(tile["texture"], Settings.SCALE), (tile_position_x, tile_position_y))
+			tile_position_x += scaled_tile_size
+		tile_position_y += scaled_tile_size
 
 
 def draw_objects() -> None:
@@ -48,17 +48,23 @@ def draw_objects() -> None:
 		draw_object(object)
 
 
-
-def draw_player() -> None:
-	draw_object(Game.player)
-
-
-
 def draw_object(object: dict) -> None:
-	screen_position: pygame.Vector2 = (object["position"] - camera_position) * Settings.SCALE + offset
+
+	def scale_and_draw(surface: pygame.Surface, center_position: pygame.Vector2, ) -> None:
+		scaled_surface: pygame.Surface = pygame.transform.scale(surface, pygame.Vector2(surface.get_size()) *Settings.SCALE) # pygame.Vector2(surface.get_size()) *
+		surface_offset: pygame.Vector2 = pygame.Vector2(scaled_surface.get_size()) / 2
+		position: pygame.Vector2 = display_surface_center + (center_position - camera_position) * Settings.SCALE - surface_offset
+		Display.surface.blit(scaled_surface, position)
+
+	position: pygame.Vector2 = object["position"]
+	radius: int = object["radius"]
+	sprite = object["sprite"]
+
+	scale_and_draw(sprite, position)
 
 	if Settings.VISIBLE_COLLISION:
-		pygame.draw.circle(Display.surface, Settings.DEBUG_COLOR, screen_position, object["radius"] * Settings.SCALE)
+		diameter: int = radius * 2
+		circle_surface = pygame.Surface((100, 100), pygame.SRCALPHA)
+		pygame.draw.circle(circle_surface, Settings.DEBUG_COLOR, (50, 50), radius)
 
-	transformed_sprite: pygame.Surface = pygame.transform.scale_by(object["sprite"], Settings.SCALE)
-	Display.surface.blit(transformed_sprite, screen_position - pygame.Vector2(transformed_sprite.get_size()) / 2)
+		scale_and_draw(circle_surface, position)

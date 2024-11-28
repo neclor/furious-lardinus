@@ -1,6 +1,7 @@
 import pygame
 import timeit
 
+import settings as Settings
 import test2 as tst
 
 # TODO: Delete this file
@@ -13,8 +14,8 @@ b = 100
 def main() -> None:
 	init()
 	lst = [1, 2, 3]
-	print(timeit.timeit(new_vector_empty, number = 10000000))
-	print(timeit.timeit(new_vector_zero, number = 10000000))
+	print(timeit.timeit(ints, number =   10000000))
+	print(timeit.timeit(floats, number = 10000000))
 
 
 def init() -> None:
@@ -39,6 +40,12 @@ def new_vector_zero() -> None:
 	a = pygame.Vector2(0.0, 0.0)
 
 
+def ints() -> None:
+	a: int = 369 * 123
+
+
+def floats() -> None:
+	a: float = 369.33333 * 123.11111
 
 
 def create_base_obj() -> dict:

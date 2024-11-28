@@ -5,12 +5,24 @@ textures: list = []
 
 
 
+def create_tile_map() -> dict:
+
+	tile_map: dict = {
+		"position": pygame.Vector2(),
+		"size": pygame.Vector2(),
+		"tiles": 1
+
+
+
+
+	}
+
+	return tile_map
+
 
 
 wall: dict = {
-	"collision": True,
 	"texture": pygame.image.load("src/assets/sprites/wall_32.png"),
-	"position_z": 16,
 	"height": 128}
 
 
@@ -26,8 +38,9 @@ b37_0: dict = {
         [None, None, None, wall,],]}
 
 b37_1: dict = {
+	"position": pygame.Vector2(),
 	"size": 4,
-	"tile_size": 32,
+	"tile_size": pygame.Vector2(32, 32),
 	"tile_map": [
 		[None, None, None, wall, wall, wall, wall, wall, wall, wall, wall, wall, wall, wall, wall, wall, wall, wall,],
 		[None, None, None, wall, None, None, None, None, None, None, None, None, None, None, None, None, None, wall,],
