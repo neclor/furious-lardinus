@@ -33,26 +33,35 @@ def draw_level() -> None:
 
 	ray_rotation: float = rotation - Settings.FOV_H / 2
 	for ray in range(Settings.RAYS_NUMBER):
+		sin_ray: float = math.sin(ray_rotation)
+
+		distance_to_vertical: float = -1
+		cos_ray: float = math.cos(ray_rotation)
+		if cos_ray != 0.0:
+			ray_direction_sign_x: int = 1 if cos_ray > 0 else -1
+
+			start_tile_index: int = int(pygame.math.clamp(position.x // tile_size.x, 0, level_size.x - 1))
+			end_tile_index: int = int(level_size.x - 1 if ray_direction_sign_x > 0 else 0)
+
+			for tile_index_x in range(start_tile_index + ray_direction_sign_x, end_tile_index + ray_direction_sign_x, ray_direction_sign_x):
+
+
+				ray_position_x: float = tile_index_x * tile_size.x
+
+				ray_length: float = (ray_position_x - position) / cos_ray
+
+				ray_position_y: float = position + ray_length * sin_ray
+
+
+				tile_index_y =
+				pass
 
 
 
-		ray_cos: float = math.cos(ray_rotation)
-		if ray_cos != 0.0:
-			ray_sign_x: int = 1 if ray_cos > 0 else -1
-			ray_x: float = position.x
-
-
-
-			for i in range(int(max(0, position.x // tile_size.x)), int(min(position.x // tile_size.x, level_size.x - 1)))
-			min_tile_index_x: int = int(max(0, position.x // tile_size.x))
-			max_tile_index_x: int = int(min((position.x + radius) // tile_size.x, level_size.x - 1))
 
 
 
 
-
-
-		ray_sin: float = math.sin(ray_rotation)
 
 
 		ray_rotation += Settings.ray_delta_angle

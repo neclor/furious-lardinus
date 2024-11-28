@@ -61,7 +61,7 @@ def handle_level_collision(position: pygame.Vector2, velocity: pygame.Vector2, r
 
 	for tile_index_y in range(min_tile_index_y, max_tile_index_y + 1):
 		for tile_index_x in range(min_tile_index_x, max_tile_index_x + 1):
-			if tile_map[y][x] is not None:
+			if tile_map[tile_index_y][tile_index_x] is not None:
 				nearest_tile_point: pygame.Vector2 = find_nearest_tile_point(position, tile_index_x, tile_index_y, tile_size)
 				position, velocity = handle_tile_collision(position, velocity, radius, nearest_tile_point)
 
