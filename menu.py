@@ -1,16 +1,14 @@
+'''made with love! and DRUGS!!!'''
 from pygame import mixer
 import pygame
 
 
 pygame.init()
-'''menu style:      TITLE
-                Option1(game)
-                Option2(quit)
-                '''
-screen_update =False
+
+
 clock=pygame.time.Clock()
 
-
+menu_volume = 1.0
 
 RFPS : float
 def button_init(DIMENSIONS):
@@ -27,7 +25,6 @@ def button_init(DIMENSIONS):
 #+ sound yay!
 def menu_image_init(DIMENSIONS,menu_music):
     global SELECT_BUTTON_COLOR,MENU_BG_COLOR, SELECT_BUTTON_CURSOR,BUTTON_COLOR, BG_image_center_X,quit_color,play_color,BG,THEME_SONG,settings_color
-    SELECT_BUTTON_CURSOR=pygame.image.load("menu_images\Skeleton_arm.png")
     MOUSE_MENU_CURSOR = pygame.image.load("menu_images\Cursor.png")
     MENU_BG_COLOR = (110,10,10)
     BUTTON_COLOR = (120,100,120)
@@ -66,13 +63,13 @@ def text_init():
 
 #timing initialisation and initialisation of the cursor's position
 def timing_init():
-    global T_anim_timing,down, upload_times,in_menu, key_timing, menu_music
+    global T_anim_timing,down, upload_times,in_menu, key_timing, menu_music,settings_key_timing
     T_anim_timing = 0
     upload_times= 0
     down = 0
     in_menu = True
     key_timing = 101
-
+    settings_key_timing =101
 
 
   
@@ -116,15 +113,17 @@ def mouse_position():
     mouse_crs_position = pygame.mouse.get_pos()
 
 def mouse_click():
-    if (check_mouse_On_button0() or check_mouse_On_button1()):
+    if (check_mouse_On_button0() or check_mouse_On_button1() or check_mouse_On_button2()):
         for event in pygame.event.get():
             if event.type == pygame.MOUSEBUTTONDOWN:
                 return True
 
 def keys_up():
     for event in pygame.event.get():
-        if event.type == pygame.KEYDOWN:
+        if event.type == pygame.KEYUP and keys[pygame.K_RETURN]:
             return True
+        else:
+            return False
 
 def down_control(keys,down,RFPS:float):
     global key_timing
@@ -143,8 +142,23 @@ def down_control(keys,down,RFPS:float):
     down %= 3
     return down
 
-def button_select(menu_screen,DIMENSIONS,in_menu,RFPS:float):
-    global down,quit_color,play_color,settings_color,QUIT_TEXT,PLAY_TEXT,key_timing,SETTINGS_TEXT
+def down_control_for_settings(keys,down,RFPS:float):
+    global settings_key_timing
+    if keys[pygame.K_DOWN] and settings_key_timing>RFPS/6:
+        down += 1
+        settings_key_timing = 0
+    elif keys[pygame.K_UP] and settings_key_timing>RFPS/6:
+        down -= 1
+        settings_key_timing = 0
+    elif check_mouse_On_button0():
+        down =2
+    elif check_mouse_On_button1():
+        down =1
+    down %= 2
+    return down
+
+def button_select(menu_screen,DIMENSIONS,in_menu,RFPS:float,FPS):
+    global down,quit_color,play_color,settings_color,QUIT_TEXT,PLAY_TEXT,key_timing,SETTINGS_TEXT,keys
     keys=pygame.key.get_pressed()
     key_timing+=1
     down = down_control(keys,down,RFPS)
@@ -167,7 +181,7 @@ def button_select(menu_screen,DIMENSIONS,in_menu,RFPS:float):
         quit()
         
     elif (down==2 and (keys[pygame.K_RETURN])) or (check_mouse_On_button2() and mouse_click()):
-        settings_menu(menu_screen, DIMENSIONS)
+        settings_menu(menu_screen, DIMENSIONS,FPS)
     
     elif (down==0 and (keys[pygame.K_RETURN])) or (mouse_click() and check_mouse_On_button0()):
         in_menu = False
@@ -179,6 +193,7 @@ def button_select(menu_screen,DIMENSIONS,in_menu,RFPS:float):
     return in_menu
 
 def menu_volume_button(menu_screen, DIMENSIONS):
+
     volume_text = PLAY_FONT.render("menu_volume",False,play_color)
     pygame.draw.rect(menu_screen,BUTTON_COLOR,BUTTON_QUIT)
     menu_screen.blit(volume_text,(DIMENSIONS[0]/2.0 -244/2, DIMENSIONS[1] / 2.0 +25.0 ))
@@ -187,36 +202,45 @@ def menu_settings_quit(menu_screen, DIMENSIONS):
     pygame.draw.rect(menu_screen,BUTTON_COLOR, BUTTON_PLAY)
     menu_screen.blit(exit_settings,(DIMENSIONS[0]/2.0 -244/2, DIMENSIONS[1]/ 3.0 + DIMENSIONS[1]/3 +25))
 
-def settings_button(menu_screen, DIMENSIONS):
-    global menu_volume,in_settings,BG_MUSIC
+def settings_button(menu_screen, DIMENSIONS,RFPS):
+    global menu_volume,in_settings,BG_MUSIC,down,play_color,quit_color,settings_key_timing
+    settings_key_timing+=1
+    keys = pygame.key.get_pressed()
     menu_volume_button(menu_screen, DIMENSIONS)
     menu_settings_quit(menu_screen, DIMENSIONS)
-    if check_mouse_On_button0() and mouse_click():
+    down=down_control_for_settings(keys,down,RFPS)
+    if down==0:
+        play_color = (0,210,0)
+        quit_color = (0,0,0)
+    if down ==1:
+        quit_color = (0,210,0)
+        play_color = (0,0,0)
+    if (check_mouse_On_button0() and mouse_click()) or (down ==0 and (keys[pygame.K_RETURN] and keys_up())):
         menu_volume -= 0.25
+        settings_key_timing = 0
     if menu_volume<0:
         menu_volume += 1.25
-    
-    if check_mouse_On_button1() and mouse_click():
+    menu_volume_button(menu_screen, DIMENSIONS)
+    if (check_mouse_On_button1() and mouse_click() ) or (down ==1 and (keys[pygame.K_RETURN] and keys_up())):
+        settings_key_timing = 0
         in_settings = False
-    
     pygame.mixer.music.set_volume(menu_volume)
-    
 
-def settings_menu(menu_screen,DIMENSIONS):
+def settings_menu(menu_screen,DIMENSIONS,FPS):
     global menu_volume, in_settings
     in_settings = True
     settings_screen = pygame.display.set_mode(DIMENSIONS)
-    menu_volume = 1.0
+    
     while in_settings:
         #must remove####
         RFPS=clock.get_fps()
         print(RFPS)
-        clock.tick(60)
         ################
+        clock.tick(FPS)
         menu_BG(menu_screen, DIMENSIONS)
         mouse_position()
         button_init(DIMENSIONS)
-        settings_button(menu_screen, DIMENSIONS)
+        settings_button(menu_screen, DIMENSIONS,RFPS)
         pygame.display.update()
         for event in pygame.event.get():
             if event.type == pygame.QUIT:
@@ -225,7 +249,7 @@ def settings_menu(menu_screen,DIMENSIONS):
 
 
 def title_animation(menu_screen,DIMENSIONS):
-    global T_anim_timing,TITLE_TEXT,upload_times,screen_update
+    global T_anim_timing,TITLE_TEXT,upload_times
     T_anim_timing +=1
     if T_anim_timing>1200:
         T_anim_timing=0
@@ -236,13 +260,12 @@ def title_animation(menu_screen,DIMENSIONS):
     else:
         TITLE_TEXT = TITLE_FONT.render("Furious Lardinus", True,(0,0,0))
         menu_screen.blit(TITLE_TEXT, (DIMENSIONS[0]/4-40,DIMENSIONS[1]/4))
-
         return False
 
 def menu_BG(menu_screen, DIMENSIONS):
-    global screen_update
+
     menu_screen.blit(BG,(DIMENSIONS[0]/2-BG_image_center_X,-64))
-    screen_update = False
+
 
 def menu_init(DIMENSIONS,menu_music):
     menu_image_init(DIMENSIONS,menu_music)
@@ -255,8 +278,8 @@ def out_loud(menu_music):
     global BG_MUSIC
     if menu_music:
         menu_music = False
-        BG_MUSIC=pygame.mixer_music.load('menu_sond/Furious_lardinous_menu(test)theme(mp3).mp3')
-        pygame.mixer_music.play()
+        BG_MUSIC=pygame.mixer_music.load('menu_sond/furious_lardinous_menu_theme.ogg')
+        pygame.mixer_music.play(10)
 
 
 
@@ -276,12 +299,12 @@ def start_game():
 
 
     
-def menu(menu_screen,DIMENSIONS, in_menu,RFPS:float):
+def menu(menu_screen,DIMENSIONS, in_menu,RFPS:float,FPS):
     menu_BG(menu_screen,DIMENSIONS)
     #menu_animation and button_animation/render
     mouse_position()
     button(DIMENSIONS,menu_screen) 
-    button_select(menu_screen,DIMENSIONS,in_menu,RFPS)
+    button_select(menu_screen,DIMENSIONS,in_menu,RFPS,FPS)
     interactive_element_draw(DIMENSIONS,menu_screen)
     title_animation(menu_screen,DIMENSIONS)
 
