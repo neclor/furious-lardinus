@@ -42,7 +42,7 @@ def init() -> None:
 
 def create_objs() -> None:
 	object_container.append(Medikit.new(pygame.Vector2(-32, -32)))
-	object_container.append(BaseEnemy.new(pygame.Vector2(-32, -128)))
+	#object_container.append(BaseEnemy.new(pygame.Vector2(-32, -128)))
 
 
 

@@ -20,7 +20,8 @@ def init() -> None:
 def update() -> None:
 	surface.fill(Settings.CLEAR_COLOR)
 
-	Renderer2D.update()
+	Renderer3D.update()
+	#Renderer2D.update()
 	HUD.update()
 
 	pygame.display.flip()

@@ -20,6 +20,7 @@ def new(position: pygame.Vector2 = pygame.Vector2()) -> dict:
 
 def update(self: dict, delta: float) -> None:
 	move(self, delta)
+	rotate(self)
 
 
 def move(self: dict, delta: float) -> None:
@@ -44,7 +45,10 @@ def move(self: dict, delta: float) -> None:
 	BaseEntity.move_and_slide(self, delta)
 
 
-
+def rotate(self: dict) -> None:
+	rel_x: int = pygame.mouse.get_rel()[0]
+	yaw: float = Settings.CAMERA_SENSITIVITY * Settings.FOV_H * rel_x / Settings.RESOLUTION.x
+	self["rotation"] += yaw
 
 
 def take_heal(self: dict, heal: int) -> None:

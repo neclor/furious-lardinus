@@ -22,7 +22,7 @@ def main() -> None:
 def init() -> None:
 	global clock
 	pygame.init()
-	pygame.display.set_mode(Settings.RESOLUTION)
+	pygame.display.set_mode(pygame.Vector2(Settings.RESOLUTION))
 	pygame.display.set_caption(Settings.NAME)
 	clock = pygame.time.Clock()
 

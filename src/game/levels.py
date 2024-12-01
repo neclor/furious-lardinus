@@ -23,24 +23,29 @@ def create_tile_map() -> dict:
 
 wall: dict = {
 	"texture": pygame.image.load("src/assets/sprites/wall_32.png"),
-	"height": 128}
+	"height": 32}
 
-
+wakk: dict = {
+	"texture": pygame.image.load("src/assets/sprites/wall_32.png"),
+	"height": 64}
 
 
 b37_0: dict = {
-	"size": pygame.Vector2(4 ,4),
-	"tile_size": 32,
+	"tile_size": pygame.Vector2(32, 32),
+	"tile_map_size": pygame.Vector2(8, 8),
 	"tile_map": [
-		[None, None, wall, None,],
-		[None, None, wall, None,],
-        [wall, wall, wall, None,],
-        [None, None, None, wall,],]}
+		[None, wall, wall, wakk, wall, wakk, wall, None,],
+		[None, None, None, None, None, None, wall, None,],
+        [None, None, None, None, None, None, wakk, None,],
+        [None, None, None, None, None, wall, wall, None,],
+		[None, None, None, wall, None, None, wall, None,],
+		[wall, wakk, None, None, None, None, wakk, None,],
+		[None, None, None, wall, None, wall, wall, None,],
+		[None, None, None, wall, wakk, wall, None, wall,],]}
 
 b37_1: dict = {
-	"position": pygame.Vector2(),
-	"size": 4,
 	"tile_size": pygame.Vector2(32, 32),
+	"tile_map_size": pygame.Vector2(4, 4),
 	"tile_map": [
 		[None, None, None, wall, wall, wall, wall, wall, wall, wall, wall, wall, wall, wall, wall, wall, wall, wall,],
 		[None, None, None, wall, None, None, None, None, None, None, None, None, None, None, None, None, None, wall,],

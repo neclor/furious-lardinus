@@ -1,5 +1,6 @@
 import pygame
 import timeit
+import random
 
 import settings as Settings
 import test2 as tst
@@ -11,11 +12,22 @@ abc = tst.abc
 b = 100
 
 
+
+result_int: int
+result_float: float
+
+
+
 def main() -> None:
 	init()
 	lst = [1, 2, 3]
-	print(timeit.timeit(ints, number =   10000000))
-	print(timeit.timeit(floats, number = 10000000))
+
+
+	print(timeit.timeit(ints, number =   1000000))
+	print(timeit.timeit(floats, number = 1000000))
+
+	print(result_int)
+	print(result_float)
 
 
 def init() -> None:
@@ -41,11 +53,17 @@ def new_vector_zero() -> None:
 
 
 def ints() -> None:
-	a: int = 369 * 123
+	global result_int
+	result_int = random.randint(0, 100)
+	for i in range(1, 100):
+		result_int = result_int * i
 
 
 def floats() -> None:
-	a: float = 369.33333 * 123.11111
+	global result_float
+	result_float = random.random()
+	for i in range(1, 100):
+		result_float = result_float * i
 
 
 def create_base_obj() -> dict:

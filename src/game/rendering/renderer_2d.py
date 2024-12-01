@@ -27,10 +27,10 @@ def draw() -> None:
 
 
 def draw_level() -> None:
-	tile_size: int = Game.level["tile_size"]
+	tile_size: pygame.Vector2 = Game.level["tile_size"]
 	tile_map: list[list[dict | None]] = Game.Levels.b37_0["tile_map"]
 
-	scaled_tile_size: float = tile_size * Settings.SCALE
+	scaled_tile_size: float = tile_size.x * Settings.SCALE
 
 	tile_position_y: float = display_surface_center.y - (camera_position.y * Settings.SCALE)
 	surface_offset_x = display_surface_center.x - (camera_position.x * Settings.SCALE)
