@@ -29,7 +29,7 @@ def menu_image_init(DIMENSIONS,menu_music):
     MENU_BG_COLOR = (110,10,10)
     BUTTON_COLOR = (120,100,120)
     SELECT_BUTTON_COLOR= (120,180,120,0.1)
-    GAME_ICON = pygame.image.load("menu_images/furious_lardinous_icon.png")
+    GAME_ICON = pygame.image.load("menu_images/FL_logo.png")
     BG = pygame.image.load("menu_images\BG.png").convert()
     BG_image_center_X = (BG.get_size()[0])/2
     BG_image_center_Y = (BG.get_size()[1])/2
@@ -49,10 +49,10 @@ def menu_image_init(DIMENSIONS,menu_music):
 
 def text_init():
     global TITLE_TEXT,QUIT_TEXT,PLAY_TEXT, TITLE_FONT, QUIT_FONT, PLAY_FONT,SETTINGS_FONT,SETTINGS_TEXT
-    TITLE_FONT = pygame.font.Font("menu_fonts/Matrix-MZ4P.ttf",100)
-    QUIT_FONT = pygame.font.Font("menu_fonts/Matrix-MZ4P.ttf",40)
-    PLAY_FONT = pygame.font.Font("menu_fonts/Matrix-MZ4P.ttf",40)
-    SETTINGS_FONT =  pygame.font.Font("menu_fonts\Matrix-MZ4P.ttf",40)
+    TITLE_FONT = pygame.font.Font("menu_fonts\Mantinia Regular.otf",100)
+    QUIT_FONT = pygame.font.Font("menu_fonts\Mantinia Regular.otf",40)
+    PLAY_FONT = pygame.font.Font("menu_fonts\Mantinia Regular.otf",40)
+    SETTINGS_FONT =  pygame.font.Font("menu_fonts\Mantinia Regular.otf",40)
 
     TITLE_TEXT = TITLE_FONT.render("Furious Lardinus", True,(0,0,0))
     QUIT_TEXT = QUIT_FONT.render("QUIT GAME", True,quit_color)
