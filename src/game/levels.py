@@ -1,72 +1,53 @@
 import pygame
 
 
-textures: list = []
+import game.objects.medikit as Medikit
 
 
+TEST_LEVEL = [
+	"..##",
+	"..M#",
+	"#..#",
+	"####"]
 
-def create_tile_map() -> dict:
-
-	tile_map: dict = {
-		"position": pygame.Vector2(),
-		"size": pygame.Vector2(),
-		"tiles": 1
-
-
-
-
-	}
-
-	return tile_map
-
-
-
-wall: dict = {
-	"texture": pygame.image.load("src/assets/sprites/wall_32.png"),
-	"height": 32}
-
-wakk: dict = {
-	"texture": pygame.image.load("src/assets/sprites/wall_32.png"),
-	"height": 64}
-
-
-b37_0: dict = {
+DUNGEON_TILE_SET: dict = {
 	"tile_size": pygame.Vector2(32, 32),
-	"tile_map_size": pygame.Vector2(8, 8),
-	"tile_map": [
-		[None, None, wall, None, None, None, None, None,],
-		[None, None, None, wakk, wakk, wakk, wakk, None,],
-        [wall, None, None, None, None, None, wakk, None,],
-        [wall, None, None, None, wakk, None, wakk, None,],
-		[wall, None, wakk, None, None, None, wakk, None,],
-		[wall, None, None, None, wakk, wakk, wakk, None,],
-		[wall, wall, wall, wall, None, None, None, None,],
-		[None, None, None, None, None, None, None, None,],]}
-
-b37_1: dict = {
-	"tile_size": pygame.Vector2(32, 32),
-	"tile_map_size": pygame.Vector2(4, 4),
-	"tile_map": [
-		[None, None, None, wall, wall, wall, wall, wall, wall, wall, wall, wall, wall, wall, wall, wall, wall, wall,],
-		[None, None, None, wall, None, None, None, None, None, None, None, None, None, None, None, None, None, wall,],
-		[None, None, None, wall, None, None, None, None, None, None, None, None, None, None, None, None, None, wall,],
-		[None, None, None, wall, None, None, None, None, None, None, None, None, None, None, None, None, None, wall,],
-		[None, None, None, wall, None, None, None, None, None, None, None, None, None, None, None, None, None, wall,],
-		[None, None, None, wall, None, None, None, None, None, None, None, None, None, None, None, None, None, wall,],
-		[wall, wall, wall, wall, None, None, None, None, None, None, None, None, None, None, None, None, None, wall,],
-		[wall, None, None, wall, None, None, None, None, None, None, None, None, None, None, None, None, None, wall,],
-		[wall, None, None, wall, wall, None, wall, wall, wall, wall, wall, wall, wall, wall, wall, None, wall, wall,],
-		[wall, None, None, None, None, None, None, None, None, None, None, None, None, None, None, None, None, None,],
-		[wall, None, None, None, None, None, None, None, None, None, None, None, None, None, None, None, None, None,],
-		[wall, wall, wall, wall, wall, None, wall, wall, wall, wall, wall, wall, None, wall, wall, wall, None, wall,],
-		[None, None, None, wall, None, None, None, None, None, None, None, None, None, None, wall, None, None, None,],
-		[None, None, None, wall, None, None, None, None, None, None, None, None, None, None, wall, None, None, None,],
-		[None, None, None, wall, None, None, None, None, None, None, None, None, None, None, wall, None, None, None,],
-		[None, None, None, wall, None, None, None, None, None, None, None, None, None, None, wall, None, None, None,],
-		[None, None, None, wall, None, None, None, None, None, None, None, None, None, None, wall, None, None, None,],
-		[None, None, None, wall, None, None, None, None, None, None, None, None, None, None, wall, None, None, None,],
-		[None, None, None, wall, wall, wall, wall, wall, wall, wall, wall, wall, wall, wall, wall, wall, wall, wall,],]}
+	"tiles": {
+		"#": {
+			"texture": pygame.image.load("src/assets/sprites/wall_32.png"),
+			"height": 32}}}
+DUNGEON_OBJECT_SET: dict = {
+	"objects": {
+		"M": "Medikit"}}
 
 
-def generate_level() -> dict:
-	return {}
+def load_level(data: list[str], tile_set: dict, object_set: dict) -> tuple[pygame.Vector2, pygame.Vector2, list[list[dict | None]], list[dict]]:
+	tile_size: pygame.Vector2 = tile_set["tile_size"]
+	tiles: dict = tile_set["tiles"]
+	objects: dict = object_set["objects"]
+
+	tile_map: list[list[dict | None]] = []
+	object_conatiner: list[dict] = []
+	y: int = 0
+	x: int = 0
+	for y, row in enumerate(data):
+		tile_row: list[dict | None] = []
+		for x, char in enumerate(row):
+			game_object: dict | None = create_object(objects.get(char))
+			if game_object is not None:
+				game_object["position"] = pygame.Vector2(x + tile_size.x + tile_size.x // 2, y * tile_size.y + tile_size.y // 2)
+				object_conatiner.append(game_object)
+			tile: dict | None = tiles.get(char)
+			tile_row.append(tile)
+		tile_map.append(tile_row)
+	tile_map_size: pygame.Vector2 = pygame.Vector2(x + 1, y + 1)
+	print(tile_size, tile_map_size, tile_map, object_conatiner)
+	return (tile_size, tile_map_size, tile_map, object_conatiner)
+
+
+def create_object(class_name: str | None) -> dict | None:
+	match class_name:
+		case "Medikit":
+			return Medikit.new()
+		case _:
+			return None

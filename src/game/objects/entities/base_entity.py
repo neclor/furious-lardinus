@@ -50,9 +50,9 @@ def handle_level_collision(position: pygame.Vector2, velocity: pygame.Vector2, r
 			position, velocity = handle_collision(position, velocity, collision_vector, overlap)
 		return (position, velocity)
 
-	tile_size: pygame.Vector2 = Game.level["tile_size"]
-	tile_map_size: pygame.Vector2 = Game.level["tile_map_size"]
-	tile_map: list[list[dict | None]] = Game.level["tile_map"]
+	tile_size: pygame.Vector2 = Game.tile_size
+	tile_map_size: pygame.Vector2 = Game.tile_map_size
+	tile_map: list[list[dict | None]] = Game.tile_map
 
 	min_tile_index_x: int = int(max(0, (position.x - radius) // tile_size.x))
 	max_tile_index_x: int = int(min((position.x + radius) // tile_size.x, tile_map_size.x - 1))

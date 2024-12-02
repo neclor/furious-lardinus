@@ -16,7 +16,7 @@ Just play
 ## Requirements
 Make sure you have `Python 3.10` or higher.<br>
 The following libraries are also required:
-- `Pygame 2.6.1`
+- `pygame 2.6.1`
 
 To install dependencies, run the command:
 ```bash
