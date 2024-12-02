@@ -34,14 +34,14 @@ b37_0: dict = {
 	"tile_size": pygame.Vector2(32, 32),
 	"tile_map_size": pygame.Vector2(8, 8),
 	"tile_map": [
-		[None, wall, wall, wakk, wall, wakk, wall, None,],
-		[None, None, None, None, None, None, wall, None,],
-        [None, None, None, None, None, None, wakk, None,],
-        [None, None, None, None, None, wall, wall, None,],
-		[None, None, None, wall, None, None, wall, None,],
-		[wall, wakk, None, None, None, None, wakk, None,],
-		[None, None, None, wall, None, wall, wall, None,],
-		[None, None, None, wall, wakk, wall, None, wall,],]}
+		[None, None, wall, None, None, None, None, None,],
+		[None, None, None, wakk, wakk, wakk, wakk, None,],
+        [wall, None, None, None, None, None, wakk, None,],
+        [wall, None, None, None, wakk, None, wakk, None,],
+		[wall, None, wakk, None, None, None, wakk, None,],
+		[wall, None, None, None, wakk, wakk, wakk, None,],
+		[wall, wall, wall, wall, None, None, None, None,],
+		[None, None, None, None, None, None, None, None,],]}
 
 b37_1: dict = {
 	"tile_size": pygame.Vector2(32, 32),

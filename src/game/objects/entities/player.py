@@ -47,7 +47,7 @@ def move(self: dict, delta: float) -> None:
 
 def rotate(self: dict) -> None:
 	rel_x: int = pygame.mouse.get_rel()[0]
-	yaw: float = Settings.CAMERA_SENSITIVITY * Settings.FOV_H * rel_x / Settings.RESOLUTION.x
+	yaw: float = Settings.FOV_H * rel_x / Settings.RESOLUTION.x * Settings.CAMERA_SENSITIVITY
 	self["rotation"] += yaw
 
 

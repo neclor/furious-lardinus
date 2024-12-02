@@ -33,8 +33,8 @@ VISIBLE_COLLISION: bool = True
 
 # 3D
 CAMERA_SENSITIVITY: float = 1.0
-FOV_H: float = math.pi / 2
-RAYS_NUMBER: int = 1000
+FOV_H: float = math.pi - 0.1
+RAYS_NUMBER: int = 500
 
 
 # Advanced

@@ -1,4 +1,3 @@
-
 import math
 import pygame
 
@@ -118,3 +117,17 @@ def draw_column(ray_relative_angle: float, distance: float, tile: dict, tile_sid
 	column_position: pygame.Vector2 = pygame.Vector2(math.floor(column_position_x_normalized * Settings.RESOLUTION.x), math.floor(column_position_y_normalized * Settings.RESOLUTION.y))
 
 	Display.surface.blit(column_texture, column_position)
+
+
+
+def get_sprites() -> None:
+
+
+	for game_object in Game.object_container:
+		object_position: pygame.Vector2 = game_object["position"]
+		object_radius: int = game_object["radius"]
+
+
+		(object_position - position)
+
+		pass
