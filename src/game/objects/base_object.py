@@ -4,7 +4,7 @@ import game.game as Game
 
 
 def new(position: pygame.Vector2 = pygame.Vector2()) -> dict:
-	object: dict = {
+	game_object: dict = {
 		"class": "BaseObject",
 		"sprite": None,
 		"collision": False,
@@ -15,11 +15,11 @@ def new(position: pygame.Vector2 = pygame.Vector2()) -> dict:
 		"position_z": 0.0,
 		"height": 16}
 
-	return object
+	return game_object
 
 
-def overlaps_object(self: dict, object: dict) -> bool:
-	return self["position"].distance_to(object["position"]) < self["radius"] + object["radius"]
+def overlaps_object(self: dict, game_object: dict) -> bool:
+	return self["position"].distance_to(game_object["position"]) < self["radius"] + game_object["radius"]
 
 
 def free(self: dict) -> None:
