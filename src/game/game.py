@@ -3,7 +3,7 @@ import math
 import pygame
 
 import game.rendering.display as Display
-import game.levels as Levels
+import game.level as Level
 import game.objects.base_object as BaseObject
 import game.objects.entities.enemies.base_enemy as BaseEnemy
 import game.objects.entities.player as Player
@@ -37,7 +37,7 @@ def init() -> None:
 	object_container = [player]
 
 
-	change_level()
+	Level.change_level()
 	create_objs()
 
 
@@ -58,10 +58,6 @@ def create_objs() -> None:
 	#object_container.append(BaseEnemy.new(pygame.Vector2(-32, -128)))
 
 
-def change_level() -> None:
-	global tile_size, tile_map_size, tile_map, object_container
-	tile_size, tile_map_size, tile_map, object_container = Levels.load_level(Levels.TEST_LEVEL, Levels.DUNGEON_TILE_SET, Levels.DUNGEON_OBJECT_SET)
-	object_container.append(player)
 
 
 

@@ -21,7 +21,7 @@ RIGHT: int = pygame.K_d
 
 # Display
 RESOLUTION: pygame.Vector2 = pygame.Vector2(1280, 720) # 16:9
-FPS: int = 1000
+FPS: int = 5
 
 
 # Rendering
@@ -37,7 +37,7 @@ VISIBLE_COLLISION: bool = True
 # 3D
 CAMERA_SENSITIVITY: float = 1.0
 FOV_H: float = math.pi / 2
-RAYS_NUMBER: int = 200
+RAYS_NUMBER: int = 100
 
 
 # Advanced
