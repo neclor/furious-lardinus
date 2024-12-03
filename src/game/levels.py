@@ -14,7 +14,7 @@ DUNGEON_TILE_SET: dict = {
 	"tile_size": pygame.Vector2(32, 32),
 	"tiles": {
 		"#": {
-			"sprite": pygame.image.load("src/assets/sprites/wall_32.png"),
+			"texture": pygame.image.load("src/assets/sprites/wall_32.png"),
 			"position_z" : 0.0,
 			"height": 32}}}
 DUNGEON_OBJECT_SET: dict = {

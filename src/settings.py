@@ -41,11 +41,11 @@ RAYS_NUMBER: int = 100
 
 
 # Advanced
+half_resolution: pygame.Vector2 = RESOLUTION / 2
 aspect_ratio: float = RESOLUTION.x / RESOLUTION.y
 fov_v: float = 2 * math.atan(math.tan(FOV_H / 2) / aspect_ratio)
 half_fov_h: float = FOV_H / 2
 half_fov_v: float = fov_v / 2
-tan_half_fov_h: float = math.tan(half_fov_h)
-tan_half_fov_v: float = math.tan(half_fov_v)
-
+double_tan_half_fov_h: float = math.tan(half_fov_h) * 2
+double_tan_half_fov_v: float = math.tan(half_fov_v) * 2
 ray_delta_angle: float = FOV_H / RAYS_NUMBER
