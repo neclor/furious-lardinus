@@ -4,11 +4,13 @@ import game.game as Game
 import game.levels as Levels
 
 
+skybox: pygame.Surface = pygame.Surface((0, 0))
+floor_color: pygame.Color = pygame.Color("#000000")
+
+
 tile_size: pygame.Vector2 = pygame.Vector2()
 tile_map_size: pygame.Vector2 = pygame.Vector2()
 tile_map: list[list[dict | None]] = []
-
-floor_color: pygame.Color | None = pygame.Color("#000000")
 
 
 def change_level() -> None:
