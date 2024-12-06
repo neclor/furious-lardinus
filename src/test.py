@@ -1,3 +1,4 @@
+import math
 import pygame
 import timeit
 import random
@@ -18,7 +19,10 @@ result_float: float
 
 
 
+
 def main() -> None:
+	print(math.inf)
+	return
 	init()
 	lst = [1, 2, 3]
 
