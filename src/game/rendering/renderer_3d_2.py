@@ -8,15 +8,10 @@ import game.game as Game
 import game.level as Level
 
 
-SKYBOX_COLOR: pygame.Color = pygame.Color("#03193f")
-STAR_COLOR: pygame.Color = pygame.Color("#f9e6cf")
-
-
 position: pygame.Vector2 = pygame.Vector2()
 rotation: float = 0.0
+rotation_tan: float = 0.0
 camera_position_z: float = 0.0
-
-skybox: pygame.Surface
 
 
 def init() -> None:
@@ -42,9 +37,10 @@ def update() -> None:
 
 
 def update_camera() -> None:
-	global position, rotation, camera_position_z
+	global position, rotation, rotation_tan, camera_position_z
 	position = Game.player["position"]
 	rotation = Game.player["rotation"]
+	rotation_tan = math.tan(rotation)
 	camera_position_z = Game.player["position_z"] - Game.player["height"]
 
 
@@ -66,7 +62,7 @@ def draw_game() -> None:
 def get_tile_map_projections() -> list[tuple[pygame.Surface, pygame.Vector2, float]]:
 	tile_projections: list[tuple[pygame.Surface, pygame.Vector2, float]] = []
 
-	ray_rotation: float = (rotation - Settings.half_fov_h)
+	ray_rotation: float = rotation - Settings.half_fov_h
 	for _ in range(Settings.RAYS_NUMBER):
 		tile_projections += cast_ray(ray_rotation)
 		ray_rotation += Settings.ray_step_angle
@@ -75,28 +71,29 @@ def get_tile_map_projections() -> list[tuple[pygame.Surface, pygame.Vector2, flo
 
 
 def cast_ray(ray_rotation: float) -> list[tuple[pygame.Surface, pygame.Vector2, float]]:
+	tile_projections: list[tuple[pygame.Surface, pygame.Vector2, float]] = []
+
 	ray_rotation = ray_rotation % math.tau
 	ray_sign: pygame.Vector2 = pygame.Vector2((Settings.THREE_HALF_PI < ray_rotation < math.tau or 0 < ray_rotation < Settings.HALF_PI) - (Settings.HALF_PI < ray_rotation < Settings.THREE_HALF_PI), (0 < ray_rotation < math.pi) - (math.pi < ray_rotation < math.tau))
+	ray_tan: float = math.tan(ray_rotation)
+
+	next_line: pygame.Vector2 = pygame.Vector2(
+		(position.x // Level.tile_size.x + ((0 <= ray_sign.x) or (0 < position.x % Level.tile_size.x)) - (ray_sign.x < 0)) * Level.tile_size.x,
+		(position.y // Level.tile_size.y + ((0 <= ray_sign.y) or (0 < position.y % Level.tile_size.y)) - (ray_sign.y < 0)) * Level.tile_size.y)
+
 
 	left_relative_angle: float = ray_rotation - rotation
 	cos_left_relative_angle: float = math.cos(left_relative_angle)
 
-	ray_tan: float = math.tan(ray_rotation)
+
 	ray_position: pygame.Vector2 = position
 
-
-	next_line: pygame.Vector2 = pygame.Vector2(
-		math.ceil(ray_local_position.x) - 1 if ray_sign.x < 0 else math.floor(ray_local_position.x) + 1,
-		math.ceil(ray_local_position.y) - 1 if ray_sign.y < 0 else math.floor(ray_local_position.y) + 1)
-
-	tile_projections: list[tuple[pygame.Surface, pygame.Vector2, float]] = []
-
 	tan_min_obscured_angle: float = Settings.tan_half_fov_v
-	tan_max_obscured_angle: float = -Settings.tan_half_fov_v
+	tan_max_obscured_angle: float = -1 * Settings.tan_half_fov_v
 	while not line_out_of_bounds(ray_sign, next_line):
 		tile_offset: pygame.Vector2 = pygame.Vector2()
 
-		distance_to_next_line: pygame.Vector2 = next_line - ray_local_position
+		distance_to_next_line: pygame.Vector2 = next_line - ray_position
 		distance_ratio: float = distance_to_next_line.y / distance_to_next_line.x
 		if abs(ray_local_tan) < abs(distance_ratio):
 			ray_local_position = pygame.Vector2(next_line.x, local_position.y + (next_line.x - local_position.x) * ray_local_tan)
