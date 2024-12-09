@@ -1,7 +1,6 @@
 import pygame
 
 import settings as Settings
-import game.rendering.renderer_2d as Renderer2D
 import game.rendering.renderer_3d as Renderer3D
 import game.rendering.hud as HUD
 
@@ -13,7 +12,7 @@ def init() -> None:
 	global surface
 	surface = pygame.display.get_surface()
 
-	Renderer2D.init()
+	#Renderer2D.init()
 	HUD.init()
 
 

@@ -2,11 +2,13 @@ import math
 import pygame
 
 
+# Math
+HALF_PI: float = math.pi / 2
+THREE_HALF_PI: float = 3 * HALF_PI
+
+
 # Config
 NAME: str = "Furious Lardinus"
-
-
-print(pygame.Vector2(1, 1).as_polar())
 
 
 # Input
@@ -20,8 +22,8 @@ RIGHT: int = pygame.K_d
 
 
 # Display
-RESOLUTION: pygame.Vector2 = pygame.Vector2(1280, 720) # 16:9
-FPS: int = 5
+RESOLUTION: tuple[int, int] = (1280, 720)
+FPS: int = 1000
 
 
 # Rendering
@@ -29,23 +31,41 @@ CLEAR_COLOR: pygame.Color = pygame.Color("#181818")
 DEBUG_COLOR: pygame.Color = pygame.Color("#0099b36b")
 
 
-# 2D
-SCALE: float = 1.0
-VISIBLE_COLLISION: bool = True
-
-
 # 3D
 CAMERA_SENSITIVITY: float = 1.0
-FOV_H: float = math.pi / 2
-RAYS_NUMBER: int = 100
+FOV_H: float = HALF_PI
+RAYS_NUMBER: int = 256
 
 
-# Advanced
-half_resolution: pygame.Vector2 = RESOLUTION / 2
-aspect_ratio: float = RESOLUTION.x / RESOLUTION.y
-fov_v: float = 2 * math.atan(math.tan(FOV_H / 2) / aspect_ratio)
-half_fov_h: float = FOV_H / 2
-half_fov_v: float = fov_v / 2
-double_tan_half_fov_h: float = math.tan(half_fov_h) * 2
-double_tan_half_fov_v: float = math.tan(half_fov_v) * 2
-ray_delta_angle: float = FOV_H / RAYS_NUMBER
+# Parameters
+half_resolution: tuple[int, int] = (0, 0)
+aspect_ratio: float = 0.0
+ray_step_angle: float = 0.0
+fov_v: float = 0.0
+half_fov_h: float = 0.0
+half_fov_v: float = 0.0
+tan_half_fov_h: float = 0.0
+tan_half_fov_v: float = 0.0
+double_tan_half_fov_h: float = 0.0
+double_tan_half_fov_v: float = 0.0
+resolution_x_div_double_tan_half_fov_h: float = 0.0
+resolution_y_div_double_tan_half_fov_v: float = 0.0
+
+
+def calculate_parameters() -> None:
+	global half_resolution, aspect_ratio, ray_step_angle, fov_v, half_fov_h, half_fov_v, tan_half_fov_h, tan_half_fov_v, double_tan_half_fov_h, double_tan_half_fov_v, resolution_x_div_double_tan_half_fov_h, resolution_y_div_double_tan_half_fov_v
+	half_resolution = (RESOLUTION[0] // 2, RESOLUTION[1] // 2)
+	aspect_ratio = RESOLUTION[0] / RESOLUTION[1]
+	ray_step_angle = FOV_H / RAYS_NUMBER
+	fov_v = 2 * math.atan(math.tan(FOV_H / 2) / aspect_ratio)
+	half_fov_h = FOV_H / 2
+	half_fov_v = fov_v / 2
+	tan_half_fov_h = math.tan(half_fov_h)
+	tan_half_fov_v = math.tan(half_fov_v)
+	double_tan_half_fov_h = tan_half_fov_h * 2
+	double_tan_half_fov_v = tan_half_fov_v * 2
+	resolution_x_div_double_tan_half_fov_h = RESOLUTION[0] / double_tan_half_fov_h
+	resolution_y_div_double_tan_half_fov_v = RESOLUTION[1] / double_tan_half_fov_v
+
+
+calculate_parameters()

@@ -1,6 +1,7 @@
 import pygame
 
 import game.game as Game
+import game.level as Level
 import game.objects.base_object as BaseObject
 
 
@@ -22,8 +23,8 @@ def move_and_slide(self: dict, delta: float) -> None:
 	position: pygame.Vector2 = self["position"]
 	velocity: pygame.Vector2 = self["velocity"]
 	radius: int = self["radius"]
-
 	next_position: pygame.Vector2 = position + velocity * delta
+
 	self["position"] = next_position
 	self["position"], self["velocity"] = handle_collisions(next_position, velocity, radius)
 
@@ -50,19 +51,15 @@ def handle_level_collision(position: pygame.Vector2, velocity: pygame.Vector2, r
 			position, velocity = handle_collision(position, velocity, collision_vector, overlap)
 		return (position, velocity)
 
-	tile_size: pygame.Vector2 = Game.tile_size
-	tile_map_size: pygame.Vector2 = Game.tile_map_size
-	tile_map: list[list[dict | None]] = Game.tile_map
-
-	min_tile_index_x: int = int(max(0, (position.x - radius) // tile_size.x))
-	max_tile_index_x: int = int(min((position.x + radius) // tile_size.x, tile_map_size.x - 1))
-	min_tile_index_y: int = int(max(0, (position.y - radius) // tile_size.y))
-	max_tile_index_y: int = int(min((position.y + radius) // tile_size.y, tile_map_size.y - 1))
+	min_tile_index_x: int = int(max(0, (position.x - radius) // Level.tile_size.x))
+	max_tile_index_x: int = int(min((position.x + radius) // Level.tile_size.x, Level.tile_map_size.x - 1))
+	min_tile_index_y: int = int(max(0, (position.y - radius) // Level.tile_size.y))
+	max_tile_index_y: int = int(min((position.y + radius) // Level.tile_size.y, Level.tile_map_size.y - 1))
 
 	for tile_index_y in range(min_tile_index_y, max_tile_index_y + 1):
 		for tile_index_x in range(min_tile_index_x, max_tile_index_x + 1):
-			if tile_map[tile_index_y][tile_index_x] is not None:
-				nearest_tile_point: pygame.Vector2 = find_nearest_tile_point(position, tile_index_x, tile_index_y, tile_size)
+			if Level.tile_map[tile_index_y][tile_index_x] is not None:
+				nearest_tile_point: pygame.Vector2 = find_nearest_tile_point(position, tile_index_x, tile_index_y, Level.tile_size)
 				position, velocity = handle_tile_collision(position, velocity, radius, nearest_tile_point)
 
 	return (position, velocity)

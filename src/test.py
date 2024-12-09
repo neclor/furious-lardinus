@@ -12,26 +12,27 @@ window: pygame.Surface
 abc = tst.abc
 b = 100
 
+result_int: int = 0
+result_float: float = 0
+
+angl: float = 0.33
 
 
-result_int: int
-result_float: float
 
+print(314252.3423 // 1)
 
-
+print(abs(0.3 - max(0, -1)) % 1)
+print(abs(0.3 + min(0, 1)) % 1)
 
 def main() -> None:
-	print(math.inf)
-	return
 	init()
 	lst = [1, 2, 3]
 
-
-	print(timeit.timeit(ints, number =   1000000))
-	print(timeit.timeit(floats, number = 1000000))
-
-	print(result_int)
+	print(timeit.timeit(ints, number = 100000))
 	print(result_float)
+	print(timeit.timeit(floats, number = 100000))
+	print(result_float)
+
 
 
 def init() -> None:
@@ -46,6 +47,30 @@ def init() -> None:
 		not_base_objects.append(create_not_base_obj())
 
 
+def angle_sum() -> None:
+	global result_float
+	result_float = 0
+	for _ in range(10000):
+		result_float += tst.angl
+
+
+def angle_mul() -> None:
+	global result_float
+	result_float = 0
+	for i in range(10000):
+		result_float = i * tst.angl
+
+
+def without_if() -> None:
+	global result_int
+	a = random.randint(-1, 1) < 0
+	result_int += a
+
+
+def with_if() -> None:
+	global result_int
+	a = 1 if random.randint(-1, 1) < 0 else 0
+	result_int += a
 
 
 def new_vector_empty() -> None:
@@ -60,14 +85,14 @@ def ints() -> None:
 	global result_int
 	result_int = random.randint(0, 100)
 	for i in range(1, 100):
-		result_int = result_int * i
+		result_int = result_int * -2
 
 
 def floats() -> None:
 	global result_float
 	result_float = random.random()
 	for i in range(1, 100):
-		result_float = result_float * i
+		result_float = result_float * -2.2
 
 
 def create_base_obj() -> dict:

@@ -50,7 +50,6 @@ def rotate(self: dict) -> None:
 	yaw: float = (rel_x / Settings.RESOLUTION.x) * Settings.FOV_H * Settings.CAMERA_SENSITIVITY
 	self["rotation"] = (self["rotation"] + yaw) % math.tau
 
-
 def take_heal(self: dict, heal: int) -> None:
 	if heal < 0:
 		return

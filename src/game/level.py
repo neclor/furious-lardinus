@@ -12,6 +12,9 @@ tile_size: pygame.Vector2 = pygame.Vector2()
 tile_map_size: pygame.Vector2 = pygame.Vector2()
 tile_map: list[list[dict | None]] = []
 
+min_point_z: float = -64
+max_point_z: float = 0
+
 
 def change_level() -> None:
 	global tile_size, tile_map_size, tile_map

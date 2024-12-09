@@ -12,8 +12,8 @@ def new(position: pygame.Vector2 = pygame.Vector2()) -> dict:
 		"position": position,
 		"radius": 8,
 
-		"position_z": 0.0,
-		"height": 16}
+		"height": 16,
+		"position_z": 0.0}
 
 	return game_object
 

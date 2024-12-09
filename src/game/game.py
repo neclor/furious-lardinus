@@ -13,13 +13,6 @@ import game.objects.medikit as Medikit
 timer: float = 0.0
 pause: bool = False
 
-
-floor_color: pygame.Color = pygame.Color("#000000")
-tile_size: pygame.Vector2 = pygame.Vector2()
-tile_map_size: pygame.Vector2 = pygame.Vector2()
-tile_map: list[list[dict | None]] = []
-
-
 player: dict
 object_container: list[dict] = []
 
@@ -54,7 +47,8 @@ def pause_game() -> None:
 
 
 def create_objs() -> None:
-	object_container.append(Medikit.new(pygame.Vector2(-32, -32)))
+	pass
+	#object_container.append(Medikit.new(pygame.Vector2(-32, -32)))
 	#object_container.append(BaseEnemy.new(pygame.Vector2(-32, -128)))
 
 
