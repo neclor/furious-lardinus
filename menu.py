@@ -1,4 +1,4 @@
-'''made with love! and DRUGS!!!'''
+
 from pygame import mixer
 import pygame
 
@@ -25,18 +25,18 @@ def button_init(DIMENSIONS):
 #+ sound yay!
 def menu_image_init(DIMENSIONS,menu_music):
     global SELECT_BUTTON_COLOR,MENU_BG_COLOR, SELECT_BUTTON_CURSOR,BUTTON_COLOR, BG_image_center_X,quit_color,play_color,BG,THEME_SONG,settings_color
-    MOUSE_MENU_CURSOR = pygame.image.load("menu_images\Cursor.png")
+    MOUSE_MENU_CURSOR = pygame.image.load("menu_images/Cursor.png")
     MENU_BG_COLOR = (110,10,10)
     BUTTON_COLOR = (120,100,120)
     SELECT_BUTTON_COLOR= (120,180,120,0.1)
     GAME_ICON = pygame.image.load("menu_images/FL_logo.png")
     BG = pygame.image.load("menu_images\BG.png").convert()
     BG_image_center_X = (BG.get_size()[0])/2
-    BG_image_center_Y = (BG.get_size()[1])/2
-    BG = pygame.transform.scale(BG,(BG_image_center_X*2,BG_image_center_Y*2))
+    BG = pygame.transform.scale(BG,(DIMENSIONS[0],DIMENSIONS[1]))
     BG_image_center_X = (BG.get_size()[0])/2
+    BG_image_center_Y = (BG.get_size()[1])/2
     #game-menu cursor
-    pygame.mouse.set_cursor(pygame.cursors.Cursor((64,0),MOUSE_MENU_CURSOR))
+    pygame.mouse.set_cursor(pygame.cursors.Cursor((0,0),MOUSE_MENU_CURSOR))
     pygame.display.set_icon(GAME_ICON)
     #button color when selected
     quit_color=(0,0,0)
@@ -48,11 +48,12 @@ def menu_image_init(DIMENSIONS,menu_music):
 
 
 def text_init():
-    global TITLE_TEXT,QUIT_TEXT,PLAY_TEXT, TITLE_FONT, QUIT_FONT, PLAY_FONT,SETTINGS_FONT,SETTINGS_TEXT
-    TITLE_FONT = pygame.font.Font("menu_fonts\Mantinia Regular.otf",100)
-    QUIT_FONT = pygame.font.Font("menu_fonts\Mantinia Regular.otf",40)
-    PLAY_FONT = pygame.font.Font("menu_fonts\Mantinia Regular.otf",40)
-    SETTINGS_FONT =  pygame.font.Font("menu_fonts\Mantinia Regular.otf",40)
+    global TITLE_TEXT,QUIT_TEXT,PLAY_TEXT, TITLE_FONT, QUIT_FONT, PLAY_FONT,SETTINGS_FONT,SETTINGS_TEXT,SETTINGS_BUTTON_FONT
+    TITLE_FONT = pygame.font.Font("menu_fonts\Pixel Game.otf",120)
+    QUIT_FONT = pygame.font.Font("menu_fonts\Pixel Game.otf",60)
+    PLAY_FONT = pygame.font.Font("menu_fonts\Pixel Game.otf",60)
+    SETTINGS_FONT =  pygame.font.Font("menu_fonts\Pixel Game.otf",60)
+    SETTINGS_BUTTON_FONT= pygame.font.Font("menu_fonts\Pixel Game.otf",40)
 
     TITLE_TEXT = TITLE_FONT.render("Furious Lardinus", True,(0,0,0))
     QUIT_TEXT = QUIT_FONT.render("QUIT GAME", True,quit_color)
@@ -69,7 +70,7 @@ def timing_init():
     down = 0
     in_menu = True
     key_timing = 101
-    settings_key_timing =101
+    settings_key_timing =1
 
 
   
@@ -78,7 +79,7 @@ def button(DIMENSIONS,menu_screen) -> None:
     pygame.draw.rect(menu_screen,BUTTON_COLOR,BUTTON_QUIT)
     menu_screen.blit(PLAY_TEXT,(DIMENSIONS[0]/2.0 -244/4, DIMENSIONS[1] / 2.0 +25.0 ))
     pygame.draw.rect(menu_screen,BUTTON_COLOR,BUTTON_PLAY)
-    menu_screen.blit(QUIT_TEXT,(DIMENSIONS[0]/2.0 -244/2, DIMENSIONS[1] / 3.0 + DIMENSIONS[1]/3 +25))
+    menu_screen.blit(QUIT_TEXT,(DIMENSIONS[0]/2.0 -210/2, DIMENSIONS[1] / 3.0 + DIMENSIONS[1]/3 +25))
     pygame.draw.rect(menu_screen,BUTTON_COLOR,BUTTON_SETTINGS)
     menu_screen.blit(SETTINGS_TEXT,(DIMENSIONS[0]/2.0 -244/2 + 15,DIMENSIONS[1]/2.0 + DIMENSIONS[1]/3 +25)) 
    
@@ -115,7 +116,7 @@ def mouse_position():
 def mouse_click():
     if (check_mouse_On_button0() or check_mouse_On_button1() or check_mouse_On_button2()):
         for event in pygame.event.get():
-            if event.type == pygame.MOUSEBUTTONDOWN:
+            if event.type == pygame.MOUSEBUTTONDOWN and event.button == 1: 
                 return True
 
 def keys_up():
@@ -193,14 +194,15 @@ def button_select(menu_screen,DIMENSIONS,in_menu,RFPS:float,FPS):
     return in_menu
 
 def menu_volume_button(menu_screen, DIMENSIONS):
-
-    volume_text = PLAY_FONT.render("menu_volume",False,play_color)
+    menu_volume_text = SETTINGS_BUTTON_FONT.render("menu volume:",False,(0,0,0))
+    volume_text = SETTINGS_BUTTON_FONT.render("%5.3u" %(menu_volume*100)+"%",False,(play_color))
     pygame.draw.rect(menu_screen,BUTTON_COLOR,BUTTON_QUIT)
-    menu_screen.blit(volume_text,(DIMENSIONS[0]/2.0 -244/2, DIMENSIONS[1] / 2.0 +25.0 ))
+    menu_screen.blit(volume_text,(DIMENSIONS[0]/2.0 -50, DIMENSIONS[1] / 2.0 +25 ))
+    menu_screen.blit(menu_volume_text,(DIMENSIONS[0]/2.0 -200/2, DIMENSIONS[1] / 2.0 -30 ))
 def menu_settings_quit(menu_screen, DIMENSIONS):
-    exit_settings = PLAY_FONT.render("apply settings", False, quit_color)
+    exit_settings = SETTINGS_BUTTON_FONT.render("apply settings", False, quit_color)
     pygame.draw.rect(menu_screen,BUTTON_COLOR, BUTTON_PLAY)
-    menu_screen.blit(exit_settings,(DIMENSIONS[0]/2.0 -244/2, DIMENSIONS[1]/ 3.0 + DIMENSIONS[1]/3 +25))
+    menu_screen.blit(exit_settings,(DIMENSIONS[0]/2.0 -220/2, DIMENSIONS[1]/ 3.0 + DIMENSIONS[1]/3 +25))
 
 def settings_button(menu_screen, DIMENSIONS,RFPS):
     global menu_volume,in_settings,BG_MUSIC,down,play_color,quit_color,settings_key_timing
@@ -215,7 +217,7 @@ def settings_button(menu_screen, DIMENSIONS,RFPS):
     if down ==1:
         quit_color = (0,210,0)
         play_color = (0,0,0)
-    if (check_mouse_On_button0() and mouse_click()) or (down ==0 and (keys[pygame.K_RETURN] and keys_up())):
+    if (check_mouse_On_button0() and mouse_click()) or (down ==0 and (keys[pygame.K_RETURN] and keys_up() and settings_key_timing >15 )):
         menu_volume -= 0.25
         settings_key_timing = 0
     if menu_volume<0:
@@ -249,22 +251,24 @@ def settings_menu(menu_screen,DIMENSIONS,FPS):
 
 
 def title_animation(menu_screen,DIMENSIONS):
-    global T_anim_timing,TITLE_TEXT,upload_times
+    global T_anim_timing,TITLE_TEXT,upload_times,TITLE_FONT
     T_anim_timing +=1
     if T_anim_timing>1200:
         T_anim_timing=0
     if 480>T_anim_timing >= 450 or 542>T_anim_timing>=520 :
-        TITLE_TEXT = TITLE_FONT.render("F̴̵̨͚̲͕͖̣͍͓̥̫̥̩̉̒̀͋͗̓ͨ̍̈́̃͋̆̾ͭͪ͐̈́́̈́͜͝ů̸̸̴̸̦̯͇̦̮̮̻̩̞̹̹̪̺͈̝͈͋ͩ́́̎ͮ̒͐ͥ̈́̓ͩ̆́͜͝ͅr̵̡̘͖͙͔̪̫͆̈͌ͦi̵̷̧̨̨͓͉̠̹̬̠̳̺͈͇̮̰̘̯̽͗ͩ̅̌̀̅̽̓̕̚͜͜͝͞ͅo̵̵̷̡̡̝̮̜̞̙̟̟͈̮͎͐̌ͧ̆ͮ̓̏̏͂̄ͭ̉̑̑̿̆̋ͬ̏̋͛͘͜͟͢͝͞͝ü͚̖̙̫̺̻̔͊̑̊ͫ͟s̴̴̷̡̛̲̭̬̞͙͔̘̲̖̩̤̺̫̑̍̂͗̎̅͒̆ͥ̓ͯͬ̈́͐͘̕͞͡ͅ Ļ̸̵̧̢̢̫̦̬̖̗̱̦̳̣̘̣̭̖̯̹̠̫͉ͮ̇́̃̋͗̍̍͂͂̓ͥͬ̋͟͜͟͢ȁ̵̟͓ͤ͊ͫ̚r̶̵̭̪̞̖̥̥̟̠̻͇̭̳͉̭̟̗̩̝͗̄̐̓̈̎̏̋̄̎͌͐̊͌ͤͥ̀͊͘d̏͌ͭ̓ͅi͈͇̗̤̟ͥ̍̎͌͟n̻̩ͯͪ̈́͋ͮừ̱̥̗̳̮̞̅͋̓͘͟_s̯̭̥̏ͤ̀ͪ̈", True,(255,0,0))
-        menu_screen.blit(TITLE_TEXT, (DIMENSIONS[0]/4-40,DIMENSIONS[1]/5 -15))
+        TITLE_FONT = pygame.font.Font("menu_fonts\Matrix-MZ4P.ttf",100)
+        TITLE_TEXT = TITLE_FONT.render("Furious Lardinus", True,(255,0,0))
+        menu_screen.blit(TITLE_TEXT, (DIMENSIONS[0]/5,DIMENSIONS[1]/4.2))
         return True
     else:
+        TITLE_FONT = pygame.font.Font("menu_fonts\Pixel Game.otf",120)
         TITLE_TEXT = TITLE_FONT.render("Furious Lardinus", True,(0,0,0))
         menu_screen.blit(TITLE_TEXT, (DIMENSIONS[0]/4-40,DIMENSIONS[1]/4))
         return False
 
 def menu_BG(menu_screen, DIMENSIONS):
 
-    menu_screen.blit(BG,(DIMENSIONS[0]/2-BG_image_center_X,-64))
+    menu_screen.blit(BG,(0,0))
 
 
 def menu_init(DIMENSIONS,menu_music):
