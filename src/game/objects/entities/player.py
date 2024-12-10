@@ -47,7 +47,7 @@ def move(self: dict, delta: float) -> None:
 
 def rotate(self: dict) -> None:
 	rel_x: int = pygame.mouse.get_rel()[0]
-	yaw: float = (rel_x / Settings.RESOLUTION.x) * Settings.FOV_H * Settings.CAMERA_SENSITIVITY
+	yaw: float = (rel_x / Settings.RESOLUTION[0]) * Settings.FOV_H * Settings.CAMERA_SENSITIVITY / 4
 	self["rotation"] = (self["rotation"] + yaw) % math.tau
 
 def take_heal(self: dict, heal: int) -> None:

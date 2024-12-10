@@ -1,7 +1,7 @@
 import pygame
 
 import settings as Settings
-import game.rendering.renderer_3d as Renderer3D
+import game.rendering.renderer_3d_2 as Renderer3D
 import game.rendering.hud as HUD
 
 
