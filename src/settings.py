@@ -2,73 +2,89 @@ import math
 import pygame
 
 
+# Config
+NAME: str = "Furious Lardinus"
+
+
+# Dispaly
+resolution: tuple[int, int] = (640, 360)
+fps: int = 60
+
+
+# Game settings
+camera_sensitivity: float = 1.0
+fov_h: float = math.tau / 3
+
+
+# Input
+full_screen: int = pygame.K_F11
+pause: int = pygame.K_ESCAPE
+
+move_forward: int = pygame.K_w
+move_backward: int = pygame.K_s
+move_left: int = pygame.K_a
+move_right: int = pygame.K_d
+
+
+# Advanced
+MIN_FOV_H: float = math.pi / 3
+MAX_FOV_H: float = math.tau / 3
+fps_amplitude: int = 20
+current_fps: float = fps
+
+
+# Calculated parameters
+half_resolution: tuple[int, int]
+aspect_ratio: float
+
+max_fps_limit: int
+tick_fps: int
+
+fov_v: float
+half_fov_h: float
+half_fov_v: float
+
+tan_half_fov_h: float
+tan_half_fov_v: float
+double_tan_half_fov_h: float
+double_tan_half_fov_v: float
+
+resolution_x_div_double_tan_half_fov_h: float
+resolution_y_div_double_tan_half_fov_v: float
+
+
 # Math
 HALF_PI: float = math.pi / 2
 THREE_HALF_PI: float = 3 * HALF_PI
 
 
-# Config
-NAME: str = "Furious Lardinus"
+def calculate_resolution_parameters() -> None:
+	global half_resolution, aspect_ratio
+	half_resolution = (resolution[0] // 2, resolution[1] // 2)
+	aspect_ratio = resolution[0] / resolution[1]
+	calculate_fov_parameters()
 
 
-# Input
-FULL_SCREEN: int = pygame.K_F11
-PAUSE: int = pygame.K_ESCAPE
-
-FORWARD: int = pygame.K_w
-BACKWARD: int = pygame.K_s
-LEFT: int = pygame.K_a
-RIGHT: int = pygame.K_d
-
-
-# Display
-WINDOW_SIZE: tuple[int, int] = (1280, 720)
-RESOLUTION: tuple[int, int] = (100, 100)#(640, 360)
-FPS: int = 1000
-
-
-# Rendering
-CLEAR_COLOR: pygame.Color = pygame.Color("#181818")
-DEBUG_COLOR: pygame.Color = pygame.Color("#0099b36b")
-
-
-# 3D
-CAMERA_SENSITIVITY: float = 1.0
-FOV_H: float = HALF_PI
-RAYS_NUMBER: int = 600
-
-
-# Parameters
-half_resolution: tuple[int, int] = (0, 0)
-aspect_ratio: float = 0.0
-ray_step_angle: float = 0.0
-ray_step_angle_tan: float = 0.0
-fov_v: float = 0.0
-half_fov_h: float = 0.0
-half_fov_v: float = 0.0
-tan_half_fov_h: float = 0.0
-tan_half_fov_v: float = 0.0
-double_tan_half_fov_h: float = 0.0
-double_tan_half_fov_v: float = 0.0
-resolution_x_div_double_tan_half_fov_h: float = 0.0
-resolution_y_div_double_tan_half_fov_v: float = 0.0
-
-
-def calculate_parameters() -> None:
-	global half_resolution, aspect_ratio, ray_step_angle, ray_step_angle_tan, fov_v, half_fov_h, half_fov_v, tan_half_fov_h, tan_half_fov_v, double_tan_half_fov_h, double_tan_half_fov_v, resolution_x_div_double_tan_half_fov_h, resolution_y_div_double_tan_half_fov_v
-	half_resolution = (RESOLUTION[0] // 2, RESOLUTION[1] // 2)
-	aspect_ratio = RESOLUTION[0] / RESOLUTION[1]
-	ray_step_angle = FOV_H / RAYS_NUMBER
-	ray_step_angle_tan = math.tan(ray_step_angle)
-	fov_v = 2 * math.atan(math.tan(FOV_H / 2) / aspect_ratio)
-	half_fov_h = FOV_H / 2
+def calculate_fov_parameters() -> None:
+	global fov_h, fov_v, half_fov_h, half_fov_v, tan_half_fov_h, tan_half_fov_v, double_tan_half_fov_h, double_tan_half_fov_v, resolution_x_div_double_tan_half_fov_h, resolution_y_div_double_tan_half_fov_v
+	fov_h = pygame.math.clamp(fov_h, MIN_FOV_H, MAX_FOV_H)
+	fov_v = 2 * math.atan(math.tan(fov_h / 2) / aspect_ratio)
+	half_fov_h = fov_h / 2
 	half_fov_v = fov_v / 2
+
 	tan_half_fov_h = math.tan(half_fov_h)
 	tan_half_fov_v = math.tan(half_fov_v)
 	double_tan_half_fov_h = tan_half_fov_h * 2
 	double_tan_half_fov_v = tan_half_fov_v * 2
-	resolution_x_div_double_tan_half_fov_h = RESOLUTION[0] / double_tan_half_fov_h
-	resolution_y_div_double_tan_half_fov_v = RESOLUTION[1] / double_tan_half_fov_v
+	resolution_x_div_double_tan_half_fov_h = resolution[0] / double_tan_half_fov_h
+	resolution_y_div_double_tan_half_fov_v = resolution[1] / double_tan_half_fov_v
 
 
-calculate_parameters()
+def calculate_fps_parameters() -> None:
+	global max_fps_limit, tick_fps
+	max_fps_limit = fps + fps_amplitude
+	tick_fps = fps + fps_amplitude * 2
+
+
+calculate_resolution_parameters()
+calculate_fps_parameters()

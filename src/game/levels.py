@@ -5,9 +5,9 @@ import game.objects.medikit as Medikit
 
 
 TEST_LEVEL = [
-	"...###.####....@",
-	"##.###....#....@",
-	".#...#....#....@",
+	"..........#....@",
+	"##..#@#...#....@",
+	".#........@....@",
 	".###.###..#....@",
 	"...#...#..#....@",
 	"...###.####....@",
@@ -37,12 +37,14 @@ DUNGEON_TILE_SET: dict = {
 	"tile_size": pygame.Vector2(32, 32),
 	"tiles": {
 		"#": {
+			"transparent": False,
 			"texture": pygame.image.load("src/assets/sprites/wall_32.png"),
 			"height": 32,
 			"position_z" : 0.0},
 		"@": {
-			"texture": pygame.image.load("src/assets/sprites/wall_32.png"),
-			"height": 64,
+			"transparent": True,
+			"texture": pygame.image.load("src/assets/sprites/wall_32_t.png"),
+			"height": 32,
 			"position_z" : 0.0},
 		"$": {
 			"texture": pygame.image.load("src/assets/sprites/wall_32.png"),

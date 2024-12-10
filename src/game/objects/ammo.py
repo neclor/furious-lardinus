@@ -10,6 +10,7 @@ AMMO_AMOUNT: int = 25
 
 def new(position: pygame.Vector2 = pygame.Vector2()) -> dict:
 	ammo: dict = {
+		"group": "Object",
 		"class": "Ammo",
 		"sprite": pygame.image.load("assets/sprites/objects/ammo_16.png")}
 

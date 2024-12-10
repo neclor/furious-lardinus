@@ -4,18 +4,19 @@ import game.game as Game
 
 
 def new(position: pygame.Vector2 = pygame.Vector2()) -> dict:
-	game_object: dict = {
+	base_object: dict = {
+		"group": "Object",
 		"class": "BaseObject",
 		"sprite": None,
 		"collision": False,
 
 		"position": position,
-		"radius": 8,
+		"radius": 4,
 
+		"position_z": 0.0,
 		"height": 16,
-		"position_z": 0.0}
-
-	return game_object
+	}
+	return base_object
 
 
 def overlaps_object(self: dict, game_object: dict) -> bool:

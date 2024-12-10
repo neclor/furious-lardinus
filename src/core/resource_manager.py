@@ -1,14 +1,12 @@
 import pygame
 
 
-sprites: dict = {}
+images: dict = {}
 
 
-def load_sprite(path: str) -> pygame.Surface:
-	sprite: pygame.Surface | None = sprites.get(path)
-	if sprite is None:
-		sprite = pygame.image.load(path)
-		sprites[path] = sprite
-	return sprite
-
-
+def load_image(path: str) -> pygame.Surface:
+	image: pygame.Surface | None = images.get(path)
+	if image is None:
+		image = pygame.image.load(path)
+		images[path] = image
+	return image

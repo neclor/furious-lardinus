@@ -8,6 +8,7 @@ import game.objects.entities.base_entity as BaseEntity
 
 def new(position: pygame.Vector2 = pygame.Vector2()) -> dict:
 	player: dict = {
+		"group": "Player",
 		"class": "Player",
 		"sprite": pygame.image.load("src/assets/sprites/test_player_16.png"),
 
@@ -28,13 +29,13 @@ def move(self: dict, delta: float) -> None:
 	def get_input_vector() -> pygame.Vector2:
 		direction: pygame.Vector2 = pygame.Vector2()
 		keys = pygame.key.get_pressed()
-		if keys[Settings.FORWARD]:
+		if keys[Settings.move_forward]:
 			direction.y -= 1
-		if keys[Settings.BACKWARD]:
+		if keys[Settings.move_backward]:
 			direction.y += 1
-		if keys[Settings.LEFT]:
+		if keys[Settings.move_left]:
 			direction.x -= 1
-		if keys[Settings.RIGHT]:
+		if keys[Settings.move_right]:
 			direction.x += 1
 		return direction
 
@@ -47,8 +48,9 @@ def move(self: dict, delta: float) -> None:
 
 def rotate(self: dict) -> None:
 	rel_x: int = pygame.mouse.get_rel()[0]
-	yaw: float = (rel_x / Settings.RESOLUTION[0]) * Settings.FOV_H * Settings.CAMERA_SENSITIVITY / 4
+	yaw: float = (rel_x / Settings.resolution[0]) * Settings.fov_h * Settings.camera_sensitivity / 4
 	self["rotation"] = (self["rotation"] + yaw) % math.tau
+
 
 def take_heal(self: dict, heal: int) -> None:
 	if heal < 0:

@@ -1,5 +1,4 @@
 import math
-import random
 import pygame
 
 import settings as Settings
@@ -8,21 +7,54 @@ import game.game as Game
 import game.level as Level
 
 
-position: pygame.Vector2 = pygame.Vector2()
-rotation: float = 0.0
-rotation_tan: float = 0.0
-camera_position_z: float = 0.0
+MIN_RAY_COUNT: int = 64
+MAX_RAY_COUNT: int = 640
+ray_count: int
+ray_step_angle: float
+ray_step_angle_tan: float
+adjust_ray_counter: int
+
+
+position: pygame.Vector2
+rotation: float
+rotation_tan: float
+camera_position_z: float
 
 
 def init() -> None:
-	#generate_skybox()
-	pass
+	global ray_count, adjust_ray_counter
+	ray_count = (MAX_RAY_COUNT - MIN_RAY_COUNT) // 2
+	adjust_ray_counter = 0
+	update_ray_parameters()
 
 
 def update() -> None:
+
+	adjust_ray_number()
 	update_camera()
 	#draw_backgrond()
 	draw_game()
+
+
+def adjust_ray_number() -> None:
+	global adjust_ray_counter
+	adjust_ray_counter += 1
+	if adjust_ray_counter < 10: return
+	adjust_ray_counter = 0
+
+	global ray_count
+	if Settings.current_fps < Settings.fps and ray_count > MIN_RAY_COUNT:
+		ray_count -= 8
+	elif Settings.current_fps > Settings.max_fps_limit and ray_count < MAX_RAY_COUNT:
+		ray_count += 8
+	else: return
+	update_ray_parameters()
+
+
+def update_ray_parameters():
+	global ray_step_angle, ray_step_angle_tan
+	ray_step_angle = Settings.fov_h / ray_count
+	ray_step_angle_tan = math.tan(ray_step_angle)
 
 
 def update_camera() -> None:
@@ -45,9 +77,9 @@ def get_tile_map_projections() -> list[tuple[pygame.Surface, pygame.Vector2, flo
 	tile_projections: list[tuple[pygame.Surface, pygame.Vector2, float]] = []
 
 	ray_rotation: float = rotation - Settings.half_fov_h
-	for _ in range(Settings.RAYS_NUMBER):
+	for _ in range(ray_count):
 		tile_projections += cast_ray(ray_rotation)
-		ray_rotation += Settings.ray_step_angle
+		ray_rotation += ray_step_angle
 
 	return tile_projections
 
@@ -64,15 +96,20 @@ def cast_ray(ray_rotation: float) -> list[tuple[pygame.Surface, pygame.Vector2, 
 	abs_ray_tan: float = abs(ray_tan)
 	ray_relative_angle_cos: float = math.cos(ray_relative_angle)
 	ray_relative_angle_tan: float = (ray_tan - rotation_tan) / (1 + ray_tan * rotation_tan)
-	right_ray_relative_angle_tan: float = (ray_relative_angle_tan + Settings.ray_step_angle_tan) / (1 - ray_relative_angle_tan * Settings.ray_step_angle_tan)
+	right_ray_relative_angle_tan: float = (ray_relative_angle_tan + ray_step_angle_tan) / (1 - ray_relative_angle_tan * ray_step_angle_tan)
 
 	ray_position: pygame.Vector2 = position
+
+	tile_index_x_whole, tile_index_x_fractional = divmod(ray_position.x, Level.tile_size.x)
+	tile_index_y_whole, tile_index_y_fractional = divmod(ray_position.y, Level.tile_size.y)
 	tile_index: pygame.Vector2 = pygame.Vector2(
-		ray_position.x // Level.tile_size.x - (ray_sign.x < 0 and ray_position.x % Level.tile_size.x == 0),
-		ray_position.y // Level.tile_size.y - (ray_sign.y < 0 and ray_position.y % Level.tile_size.y == 0))
+		tile_index_x_whole - (ray_sign.x < 0 and tile_index_x_fractional == 0),
+		tile_index_y_whole - (ray_sign.y < 0 and tile_index_y_fractional == 0))
 	next_line: pygame.Vector2 = pygame.Vector2(
 		(tile_index.x + (0 <= ray_sign.x)) * Level.tile_size.x,
 		(tile_index.y + (0 <= ray_sign.y)) * Level.tile_size.y)
+
+	#previous_tile: dict | None = None #TODO add drawing transparent tiles backside
 
 	tan_min_obscured_angle: float = Settings.tan_half_fov_v
 	tan_max_obscured_angle: float = -1 * Settings.tan_half_fov_v
@@ -105,28 +142,27 @@ def cast_ray(ray_rotation: float) -> list[tuple[pygame.Surface, pygame.Vector2, 
 		if tile is None: continue
 
 		tile_height: int = tile["height"]
-
 		relative_tile_bottom: float = tile["position_z"] - camera_position_z
 		relative_tile_top: float = relative_tile_bottom - tile_height
 
 		relative_min_tile_point: float = min(relative_tile_top, relative_tile_bottom)
 		relative_max_tile_point: float = max(relative_tile_top, relative_tile_bottom)
 
-		tile_hidden: bool = True
-		if relative_min_tile_point < relative_min_obscured_point:
-			tan_min_obscured_angle = relative_min_tile_point / distance
-			tile_hidden = False
-		if relative_max_obscured_point < relative_max_tile_point:
-			tan_max_obscured_angle = relative_max_tile_point / distance
-		elif tile_hidden:
-			continue
+		min_tile_point_visible: bool = relative_min_tile_point < relative_min_obscured_point
+		max_tile_point_visible: bool = relative_max_tile_point > relative_max_obscured_point
+		if not (min_tile_point_visible or min_tile_point_visible): continue
+		if not tile["transparent"]:
+			tan_min_obscured_angle = relative_min_tile_point / distance if min_tile_point_visible else tan_min_obscured_angle
+			tan_max_obscured_angle = relative_max_tile_point / distance if max_tile_point_visible else tan_max_obscured_angle
 
 		texture_offset_x: float = abs((ray_position.x % Level.tile_size.x) / Level.tile_size.x - max(ray_sign.y, 0)) % 1
 		texture_offset_y: float = abs((ray_position.y % Level.tile_size.y) / Level.tile_size.y + min(ray_sign.x, 0)) % 1
 		x_offset_larger_y_offset: bool = texture_offset_x > texture_offset_y
-		tile_side_length: int = Level.tile_size.x * (x_offset_larger_y_offset) + Level.tile_size.y * (not x_offset_larger_y_offset)
-		texture_offset: float = texture_offset_x * (x_offset_larger_y_offset) + texture_offset_y * (not x_offset_larger_y_offset)
 
+		tile_side_length: int = Level.tile_size.x if x_offset_larger_y_offset else Level.tile_size.y
+		texture_offset: float = texture_offset_x if x_offset_larger_y_offset else texture_offset_y
+
+		#TODO change texture сut
 		#column_texture = pygame.transform.scale(tile["texture"], (abs(tile_side_length), abs(tile_height))).subsurface(abs(tile_side_length) * texture_offset, 0, 1, abs(tile_height))
 
 		texture: pygame.Surface = tile["texture"]
@@ -136,7 +172,6 @@ def cast_ray(ray_rotation: float) -> list[tuple[pygame.Surface, pygame.Vector2, 
 		scale_x = texture_size[0] * ceil_column_width / column_width
 
 		column_texture = pygame.transform.scale(tile["texture"], (scale_x, texture_size[1])).subsurface(min(scale_x * texture_offset,scale_x - ceil_column_width), 0, ceil_column_width, texture_size[1])
-
 
 		tile_projections.append(calculate_projection(ray_relative_angle_tan, right_ray_relative_angle_tan, distance * ray_relative_angle_cos, relative_tile_top, relative_tile_bottom, column_texture))
 
@@ -151,8 +186,8 @@ def line_out_of_bounds(ray_sign: pygame.Vector2, tile_index: pygame.Vector2) -> 
 		(0 < ray_sign.y and Level.tile_map_size.y <= tile_index.y))
 
 
-def calculate_projection(ray_relative_angle_tan: float, right_ray_relative_angle_tan: float, distance: float, relative_top: float, relative_bottom: float, texture: pygame.Surface) -> tuple[pygame.Surface, pygame.Vector2, float]:
-	projection_position_x: float = ray_relative_angle_tan * Settings.resolution_x_div_double_tan_half_fov_h + Settings.half_resolution[0]
+def calculate_projection(left_ray_relative_angle_tan: float, right_ray_relative_angle_tan: float, distance: float, relative_top: float, relative_bottom: float, texture: pygame.Surface) -> tuple[pygame.Surface, pygame.Vector2, float]:
+	projection_position_x: float = left_ray_relative_angle_tan * Settings.resolution_x_div_double_tan_half_fov_h + Settings.half_resolution[0]
 	projection_width: float = right_ray_relative_angle_tan * Settings.resolution_x_div_double_tan_half_fov_h + Settings.half_resolution[0] - projection_position_x
 
 	projection_position_y: float = 0
@@ -170,8 +205,6 @@ def calculate_projection(ray_relative_angle_tan: float, right_ray_relative_angle
 	projection_surface = pygame.transform.scale(texture, (math.ceil(projection_width), math.ceil(projection_height)))
 
 	return (projection_surface, projection_position, distance)
-
-
 
 
 def get_object_projections() -> list[tuple[pygame.Surface, pygame.Vector2, float]]:

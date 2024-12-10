@@ -1,10 +1,6 @@
-# Furious Lardinus
-# Authors:
-# me, he and another one
-
-#TODO: To finish
 import sys
 import pygame
+
 
 import settings as Settings
 import core.events as Events
@@ -22,28 +18,24 @@ def main() -> None:
 def init() -> None:
 	global clock
 	pygame.init()
-	pygame.display.set_mode(Settings.RESOLUTION, pygame.SCALED)
-	pygame.display.set_mode(Settings.WINDOW_SIZE, pygame.SCALED )
+	pygame.display.set_mode(Settings.resolution, pygame.SCALED)
 	pygame.display.set_caption(Settings.NAME)
 	clock = pygame.time.Clock()
-
 	StateMachine.init()
 
 
 def run() -> None:
 	while True:
-		delta: float = get_delta()
+		update()
 		Events.update()
-		StateMachine.update(delta)
 		handle_events()
-		clock.tick(Settings.FPS)
-
-		# for debug
+		StateMachine.update(clock.get_time() / 1000)
 		pygame.display.set_caption(str(int(clock.get_fps())))
 
 
-def get_delta() -> float:
-	return clock.get_time() / 1000
+def update():
+	clock.tick(Settings.tick_fps)
+	Settings.current_fps = clock.get_fps()
 
 
 def handle_events() -> None:
@@ -52,7 +44,7 @@ def handle_events() -> None:
 			pygame.quit()
 			sys.exit()
 		if event.type == pygame.KEYDOWN:
-			if event.key == Settings.FULL_SCREEN:
+			if event.key == Settings.full_screen:
 				pygame.display.toggle_fullscreen()
 
 

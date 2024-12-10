@@ -1,7 +1,11 @@
-#TODO: To finish
 import pygame
 
+
 import state_machine as StateMachine
+
+
+
+#TODO: To finish
 
 
 def enter() -> None:

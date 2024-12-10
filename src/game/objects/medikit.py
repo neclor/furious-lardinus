@@ -10,6 +10,7 @@ HEAL_AMOUNT: int = 25
 
 def new(position: pygame.Vector2 = pygame.Vector2()) -> dict:
 	medikit: dict = {
+		"group": "Object",
 		"class": "Medikit",
 		"sprite": pygame.image.load("src/assets/sprites/objects/medikit_16.png"),
 		"height": -8,

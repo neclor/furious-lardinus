@@ -7,6 +7,7 @@ import game.objects.base_object as BaseObject
 
 def new(position: pygame.Vector2 = pygame.Vector2()) -> dict:
 	entity: dict = {
+		"group": "Entity",
 		"class": "BaseEntity",
 		"collision": True,
 

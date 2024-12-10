@@ -12,15 +12,14 @@ def init() -> None:
 	global surface
 	surface = pygame.display.get_surface()
 
-	#Renderer2D.init()
+	Renderer3D.init()
 	HUD.init()
 
 
 def update() -> None:
-	surface.fill(Settings.CLEAR_COLOR)
+	surface.fill(pygame.Color(0, 0, 0))
 
 	Renderer3D.update()
-	#Renderer2D.update()
 	HUD.update()
 
 	pygame.display.flip()
