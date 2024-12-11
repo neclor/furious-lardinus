@@ -103,3 +103,14 @@ def take_damage(self: dict, damage: int) -> None:
 
 def die(self: dict) -> None:
 	BaseObject.free(self)
+
+
+def take_damage(self: dict, damage: int) -> None:
+	if damage < 0:
+		return
+
+	self["health"] = pygame.math.clamp(self["health"] - damage, 0, self["max_health"])
+
+
+def die(self: dict) -> None:
+	BaseObject.free(self)

@@ -5,8 +5,8 @@ import game.game as Game
 import game.objects.base_object as BaseObject
 import game.objects.entities.base_entity as BaseEntity
 
-import game.objects.medikit as Medikit
-import game.objects.ammo as Ammo
+import game.objects.interactive_objects.medikit as Medikit
+import game.objects.interactive_objects.ammo as Ammo
 
 
 VISION_RANGE: int = 500

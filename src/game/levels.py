@@ -1,7 +1,7 @@
 import pygame
 
-
-import game.objects.medikit as Medikit
+import core.resource_manager as ResourceManager
+import game.objects.interactive_objects.medikit as Medikit
 
 
 TEST_LEVEL = [
@@ -38,24 +38,24 @@ DUNGEON_TILE_SET: dict = {
 	"tiles": {
 		"#": {
 			"transparent": False,
-			"texture": pygame.image.load("src/assets/sprites/wall_32.png"),
+			"texture": ResourceManager.load_image("src/assets/sprites/wall_32.png"),
 			"height": 32,
 			"position_z" : 0.0},
 		"@": {
 			"transparent": True,
-			"texture": pygame.image.load("src/assets/sprites/wall_32_t.png"),
+			"texture": ResourceManager.load_image("src/assets/sprites/wall_32_t.png"),
 			"height": 32,
 			"position_z" : 0.0},
 		"$": {
-			"texture": pygame.image.load("src/assets/sprites/wall_32.png"),
+			"texture": ResourceManager.load_image("src/assets/sprites/wall_32.png"),
 			"height": -64,
 			"position_z" : -32.0},
 		"1": {
-			"texture": pygame.image.load("src/assets/sprites/wall_32.png"),
+			"texture": ResourceManager.load_image("src/assets/sprites/wall_32.png"),
 			"height": 8,
 			"position_z" : 0.0},
 		"2": {
-			"texture": pygame.image.load("src/assets/sprites/wall_32.png"),
+			"texture": ResourceManager.load_image("src/assets/sprites/wall_32.png"),
 			"height": 4,
 			"position_z" : 0.0},
 	}

@@ -2,16 +2,18 @@ import sys
 import math
 import pygame
 
+
 import game.rendering.display as Display
+import objects.class_manager as ClassManager
 import game.level as Level
-import game.objects.base_object as BaseObject
-import game.objects.entities.enemies.base_enemy as BaseEnemy
+
 import game.objects.entities.player as Player
-import game.objects.medikit as Medikit
 
 
-timer: float = 0.0
-pause: bool = False
+
+timer: float
+pause: bool
+
 
 player: dict
 object_container: list[dict] = []
@@ -29,59 +31,36 @@ def init() -> None:
 	player = Player.new()
 	object_container = [player]
 
-
 	Level.change_level()
-	create_objs()
+
+	hide_mouse()
 
 
+def hide_mouse() -> None:
 	pygame.mouse.set_visible(False)
 	pygame.event.set_grab(True)
 
 
-
-def pause_game() -> None:
-	pause != pause
+def toggle_pause() -> None:
+	pause = not pause
 	pygame.mouse.set_visible(pause)
 	pygame.event.set_grab(not pause)
 
 
-
-def create_objs() -> None:
-	pass
-	#object_container.append(Medikit.new(pygame.Vector2(-32, -32)))
-	#object_container.append(BaseEnemy.new(pygame.Vector2(-32, -128)))
-
-
-
-
-
 def update(delta: float) -> None:
-	if pause:
-		return
+	if pause: return
 
 	global timer
 	timer += delta
-
 	for object in object_container:
-		match object["class"]:
-			case "Medikit":
-				Medikit.update(object, delta)
-			case "BaseEnemy":
-				BaseEnemy.update(object, delta)
+		ClassManager.update(object, delta)
 
-	Player.update(player, delta)
 	Display.update()
-
-
-
-
-
-
-
 
 
 def add_child(object: dict):
 	object_container.append(object)
+
 
 def exit() -> None:
 	pass

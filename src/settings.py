@@ -7,7 +7,7 @@ NAME: str = "Furious Lardinus"
 
 
 # Dispaly
-resolution: tuple[int, int] = (640, 360)
+resolution: tuple[int, int] = (2 * 640, 2 * 360)
 fps: int = 60
 
 
@@ -83,7 +83,7 @@ def calculate_fov_parameters() -> None:
 def calculate_fps_parameters() -> None:
 	global max_fps_limit, tick_fps
 	max_fps_limit = fps + fps_amplitude
-	tick_fps = fps + fps_amplitude * 2
+	tick_fps = fps + 2 * fps_amplitude
 
 
 calculate_resolution_parameters()

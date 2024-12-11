@@ -25,14 +25,14 @@ def update(delta: float) -> None:
 
 def change_state(new_state: int) -> None:
 	global state
-	if (new_state == state) or (new_state < 0 or 1 < new_state): return
+	if (new_state == state) or not (0 <= new_state <= 1): return
 
 	match state:
 		case 0: Menu.exit()
 		case 1: Game.exit()
 
+	state = new_state
+
 	match new_state:
 		case 0: Menu.enter()
 		case 1: Game.enter()
-
-	state = new_state

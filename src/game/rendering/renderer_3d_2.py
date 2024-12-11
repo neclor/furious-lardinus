@@ -29,7 +29,6 @@ def init() -> None:
 
 
 def update() -> None:
-
 	adjust_ray_number()
 	update_camera()
 	#draw_backgrond()
@@ -167,7 +166,7 @@ def cast_ray(ray_rotation: float) -> list[tuple[pygame.Surface, pygame.Vector2, 
 
 		texture: pygame.Surface = tile["texture"]
 		texture_size: tuple[int, int] = texture.get_size()
-		column_width = texture_size[0] / abs(tile_side_length)
+		column_width = texture_size[0] / tile_side_length
 		ceil_column_width = math.ceil(column_width)
 		scale_x = texture_size[0] * ceil_column_width / column_width
 
