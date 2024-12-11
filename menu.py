@@ -48,7 +48,7 @@ def menu_image_init(DIMENSIONS,menu_music):
 
 
 def text_init():
-    global TITLE_TEXT,QUIT_TEXT,PLAY_TEXT, TITLE_FONT, QUIT_FONT, PLAY_FONT,SETTINGS_FONT,SETTINGS_TEXT,SETTINGS_BUTTON_FONT
+    global TITLE_TEXT,QUIT_TEXT,PLAY_TEXT, TITLE_FONT, QUIT_FONT, PLAY_FONT,SETTINGS_FONT,SETTINGS_TEXT,SETTINGS_BUTTON_FONT,RESUME_TEXT
     TITLE_FONT = pygame.font.Font("menu_fonts\Pixel Game.otf",120)
     QUIT_FONT = pygame.font.Font("menu_fonts\Pixel Game.otf",60)
     PLAY_FONT = pygame.font.Font("menu_fonts\Pixel Game.otf",60)
@@ -58,6 +58,7 @@ def text_init():
     TITLE_TEXT = TITLE_FONT.render("Furious Lardinus", True,(0,0,0))
     QUIT_TEXT = QUIT_FONT.render("QUIT GAME", True,quit_color)
     PLAY_TEXT = PLAY_FONT.render("PLAY",False,play_color)
+    RESUME_TEXT = PLAY_FONT.render("RESUME",False,play_color)
     SETTINGS_TEXT = SETTINGS_FONT.render("SETTINGS",True,settings_color)
 
 
@@ -82,7 +83,15 @@ def button(DIMENSIONS,menu_screen) -> None:
     menu_screen.blit(QUIT_TEXT,(DIMENSIONS[0]/2.0 -210/2, DIMENSIONS[1] / 3.0 + DIMENSIONS[1]/3 +25))
     pygame.draw.rect(menu_screen,BUTTON_COLOR,BUTTON_SETTINGS)
     menu_screen.blit(SETTINGS_TEXT,(DIMENSIONS[0]/2.0 -244/2 + 15,DIMENSIONS[1]/2.0 + DIMENSIONS[1]/3 +25)) 
-   
+
+def button_for_pause_menu(DIMENSIONS,menu_screen) -> None:
+    global BUTTON_QUIT, BUTTON_PLAY,button0_pos,button1_pos,button2_pos
+    pygame.draw.rect(menu_screen,BUTTON_COLOR,BUTTON_QUIT)
+    menu_screen.blit(RESUME_TEXT,(DIMENSIONS[0]/2.0 -162/2, DIMENSIONS[1] / 2.0 +25.0 ))
+    pygame.draw.rect(menu_screen,BUTTON_COLOR,BUTTON_PLAY)
+    menu_screen.blit(QUIT_TEXT,(DIMENSIONS[0]/2.0 -210/2, DIMENSIONS[1] / 3.0 + DIMENSIONS[1]/3 +25))
+    pygame.draw.rect(menu_screen,BUTTON_COLOR,BUTTON_SETTINGS)
+    menu_screen.blit(SETTINGS_TEXT,(DIMENSIONS[0]/2.0 -244/2 + 15,DIMENSIONS[1]/2.0 + DIMENSIONS[1]/3 +25))
 
 def cursor_draw(DIMENSIONS,menu_screen):
     menu_screen.blit(SELECT_BUTTON_CURSOR,(DIMENSIONS[0]/2.0 -384, DIMENSIONS[1] / (3.0-down)))
@@ -90,6 +99,8 @@ def cursor_draw(DIMENSIONS,menu_screen):
 def interactive_element_draw(DIMENSIONS,menu_screen):
     button(DIMENSIONS,menu_screen)
     #cursor_draw(DIMENSIONS,menu_screen)
+def interactive_element_draw_for_pause_menu(DIMENSIONS,menu_screen):
+    button_for_pause_menu(DIMENSIONS,menu_screen)
 
 def check_mouse_On_button():
     global mouse_crs_position,button0_pos,down
@@ -152,8 +163,8 @@ def down_control_for_settings(keys,down,RFPS:float):
     down %= 2
     return down
 
-def button_select(menu_screen,DIMENSIONS,in_menu,RFPS:float,FPS):
-    global down,quit_color,play_color,settings_color,QUIT_TEXT,PLAY_TEXT,key_timing,SETTINGS_TEXT,keys
+def button_select(menu_screen,DIMENSIONS,in_menu,RFPS:float,FPS,pause):
+    global down,quit_color,play_color,settings_color,QUIT_TEXT,PLAY_TEXT,key_timing,SETTINGS_TEXT,keys,RESUME_TEXT
     keys=pygame.key.get_pressed()
     key_timing+=1
     down = down_control(keys,down,RFPS)
@@ -181,10 +192,14 @@ def button_select(menu_screen,DIMENSIONS,in_menu,RFPS:float,FPS):
     elif (down==0 and (keys[pygame.K_RETURN])) or (down==0 and mouse_click()):
         in_menu = False
         start_game()
-
-    QUIT_TEXT = QUIT_FONT.render("QUIT GAME", True,(quit_color))
-    PLAY_TEXT = PLAY_FONT.render("PLAY",False,(play_color))
-    SETTINGS_TEXT = SETTINGS_FONT.render("SETTINGS", False,(settings_color))
+    if pause == False:
+        QUIT_TEXT = QUIT_FONT.render("QUIT GAME", True,(quit_color))
+        PLAY_TEXT = PLAY_FONT.render("PLAY",False,(play_color))
+        SETTINGS_TEXT = SETTINGS_FONT.render("SETTINGS", False,(settings_color))
+    else:
+        QUIT_TEXT = QUIT_FONT.render("QUIT GAME", True,(quit_color))
+        RESUME_TEXT = PLAY_FONT.render("RESUME",False,(play_color))
+        SETTINGS_TEXT = SETTINGS_FONT.render("SETTINGS", False,(settings_color))
     return in_menu
 
 def menu_volume_button(menu_screen, DIMENSIONS):
@@ -302,14 +317,23 @@ def menu(menu_screen,DIMENSIONS, in_menu,RFPS:float,FPS):
     #menu_animation and button_animation/render
     mouse_position()
     button(DIMENSIONS,menu_screen) 
-    button_select(menu_screen,DIMENSIONS,in_menu,RFPS,FPS)
+    button_select(menu_screen,DIMENSIONS,in_menu,RFPS,FPS,pause)
     interactive_element_draw(DIMENSIONS,menu_screen)
     title_animation(menu_screen,DIMENSIONS)
-
-
-    #menu_inputs
     
     return in_menu
 
 
+
+
+"""pause menu"""
+
+pause=False
+def pause_menu(menu_screen,DIMENSIONS,in_menu,RFPS,FPS):
+    menu_BG(menu_screen,DIMENSIONS)
+    #menu_animation and button_animation/render
+    mouse_position()
+    button_for_pause_menu(DIMENSIONS,menu_screen)
+    button_select(menu_screen,DIMENSIONS,in_menu,RFPS,FPS,pause)
+    interactive_element_draw_for_pause_menu(DIMENSIONS,menu_screen)
 

@@ -21,6 +21,17 @@ def main() -> None:
     global playing,in_menu
     pygame.init()
     menu.menu_init(DIMENSIONS,menu_music=True)
+    '''while True:
+        clock.tick(FPS)
+        stat_FPS()
+        playing=menu.pause_menu(window,DIMENSIONS,in_menu,RFPS,FPS)
+        pygame.display.update()
+        for event in pygame.event.get():
+            if event.type == pygame.QUIT:
+                playing = False
+                pygame.quit()
+                quit()
+'''
     while playing:
         clock.tick(FPS)
         stat_FPS()
