@@ -19,19 +19,21 @@ def move_and_collide(self: dict, delta: float) -> tuple[list[dict], bool]:
 	velocity: pygame.Vector2 = self["velocity"]
 	next_position: pygame.Vector2 = self["position"] + velocity * delta
 	self["position"] = next_position
-	self["position"], self["velocity"], collided_objects, collides_with_tile_map = handle_collisions(next_position, velocity, self["radius"])
+	self["position"], self["velocity"], collided_objects, collides_with_tile_map = handle_collisions(next_position, velocity, self)
 	return(collided_objects, collides_with_tile_map)
 
 
-def handle_collisions(position: pygame.Vector2, velocity: pygame.Vector2, radius: int) -> tuple[pygame.Vector2, pygame.Vector2, list[dict], bool]:
-	position, velocity, collided_objects = handle_objects_collisions(position, velocity, radius)
-	position, velocity, collides_with_tile_map = handle_tile_map_collision(position, velocity, radius)
+def handle_collisions(position: pygame.Vector2, velocity: pygame.Vector2, self: dict) -> tuple[pygame.Vector2, pygame.Vector2, list[dict], bool]:
+	position, velocity, collided_objects = handle_objects_collisions(position, velocity, self)
+	position, velocity, collides_with_tile_map = handle_tile_map_collision(position, velocity, self)
 	return (position, velocity, collided_objects, collides_with_tile_map)
 
 
 # Objects collisions
-def handle_objects_collisions(position: pygame.Vector2, velocity: pygame.Vector2, radius: int) -> tuple[pygame.Vector2, pygame.Vector2, list[dict]]:
+def handle_objects_collisions(position: pygame.Vector2, velocity: pygame.Vector2, self: dict) -> tuple[pygame.Vector2, pygame.Vector2, list[dict]]:
 	collided_objects: list[dict] = []
+if self["has_collision"]:
+radius: int = self["radius"]
 	for game_object in Game.object_container:
 		if game_object["has_collision"]:
 			position, velocity, collided_object = handle_object_collision(position, velocity, radius, game_object)
@@ -54,7 +56,8 @@ def handle_object_collision(position: pygame.Vector2, velocity: pygame.Vector2, 
 
 
 # Tile map collisions
-def handle_tile_map_collision(position: pygame.Vector2, velocity: pygame.Vector2, radius: int) -> tuple[pygame.Vector2, pygame.Vector2, bool]:
+def handle_tile_map_collision(position: pygame.Vector2, velocity: pygame.Vector2, self: dict) -> tuple[pygame.Vector2, pygame.Vector2, bool]:
+radius: int = self["radius"]
 	min_tile_index_x: int = int(max(0, (position.x - radius) // Level.tile_size.x))
 	max_tile_index_x: int = int(min((position.x + radius) // Level.tile_size.x, Level.tile_map_size.x - 1))
 	min_tile_index_y: int = int(max(0, (position.y - radius) // Level.tile_size.y))
