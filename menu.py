@@ -91,30 +91,23 @@ def interactive_element_draw(DIMENSIONS,menu_screen):
     button(DIMENSIONS,menu_screen)
     #cursor_draw(DIMENSIONS,menu_screen)
 
-def check_mouse_On_button0():
-    global mouse_crs_position,button0_pos
+def check_mouse_On_button():
+    global mouse_crs_position,button0_pos,down
     if (button0_pos[0]<=mouse_crs_position[0]<=button0_pos[0]+250) and (button0_pos[1]<=mouse_crs_position[1]<=button0_pos[1]+100):
-        return True
-    else:
-        return False
-    
-def check_mouse_On_button1():
+        return 0;down =3
     if (button1_pos[0]<=mouse_crs_position[0]<=button1_pos[0]+250) and (button1_pos[1]<=mouse_crs_position[1]<=button1_pos[1]+100):
-        return True
+        return 1;down=1
+    if (button2_pos[0]<=mouse_crs_position[0]<=button2_pos[0]+250) and (button2_pos[1]<=mouse_crs_position[1]<=button2_pos[1]+100):
+        return 2;down=2
     else:
-        return False
-def check_mouse_On_button2():
-        if (button2_pos[0]<=mouse_crs_position[0]<=button2_pos[0]+250) and (button2_pos[1]<=mouse_crs_position[1]<=button2_pos[1]+100):
-            return True
-        else:
-            return False
-        
+        return -1
+
 def mouse_position():
     global mouse_crs_position
     mouse_crs_position = pygame.mouse.get_pos()
 
 def mouse_click():
-    if (check_mouse_On_button0() or check_mouse_On_button1() or check_mouse_On_button2()):
+    if (check_mouse_On_button() <= 0):
         for event in pygame.event.get():
             if event.type == pygame.MOUSEBUTTONDOWN and event.button == 1: 
                 return True
@@ -134,12 +127,6 @@ def down_control(keys,down,RFPS:float):
     elif keys[pygame.K_UP] and key_timing>RFPS/6:
         down -= 1
         key_timing = 0
-    elif check_mouse_On_button0():
-        down =3
-    elif check_mouse_On_button1():
-        down =1
-    elif check_mouse_On_button2():
-        down = 2
     down %= 3
     return down
 
@@ -151,10 +138,6 @@ def down_control_for_settings(keys,down,RFPS:float):
     elif keys[pygame.K_UP] and settings_key_timing>RFPS/6:
         down -= 1
         settings_key_timing = 0
-    elif check_mouse_On_button0():
-        down =2
-    elif check_mouse_On_button1():
-        down =1
     down %= 2
     return down
 
@@ -177,14 +160,14 @@ def button_select(menu_screen,DIMENSIONS,in_menu,RFPS:float,FPS):
         settings_color=(0,210,0)
 
 
-    if (down==1 and (keys[pygame.K_RETURN])) or (check_mouse_On_button1() and mouse_click()):
+    if (down==1 and (keys[pygame.K_RETURN])) or (check_mouse_On_button()==1 and mouse_click()):
         print('hasquit')
         quit()
         
-    elif (down==2 and (keys[pygame.K_RETURN])) or (check_mouse_On_button2() and mouse_click()):
+    elif (down==2 and (keys[pygame.K_RETURN])) or (check_mouse_On_button()==2 and mouse_click()):
         settings_menu(menu_screen, DIMENSIONS,FPS)
     
-    elif (down==0 and (keys[pygame.K_RETURN])) or (mouse_click() and check_mouse_On_button0()):
+    elif (down==0 and (keys[pygame.K_RETURN])) or (mouse_click() and check_mouse_On_button()==3):
         in_menu = False
         start_game()
 
@@ -217,13 +200,13 @@ def settings_button(menu_screen, DIMENSIONS,RFPS):
     if down ==1:
         quit_color = (0,210,0)
         play_color = (0,0,0)
-    if (check_mouse_On_button0() and mouse_click()) or (down ==0 and (keys[pygame.K_RETURN] and keys_up() and settings_key_timing >15 )):
+    if (check_mouse_On_button()==3 and mouse_click()) or (down ==0 and (keys[pygame.K_RETURN] and keys_up() and settings_key_timing >15 )):
         menu_volume -= 0.25
         settings_key_timing = 0
     if menu_volume<0:
         menu_volume += 1.25
     menu_volume_button(menu_screen, DIMENSIONS)
-    if (check_mouse_On_button1() and mouse_click() ) or (down ==1 and (keys[pygame.K_RETURN] and keys_up())):
+    if (check_mouse_On_button()==1 and mouse_click() ) or (down ==1 and (keys[pygame.K_RETURN] and keys_up())):
         settings_key_timing = 0
         in_settings = False
     pygame.mixer.music.set_volume(menu_volume)
