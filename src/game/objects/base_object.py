@@ -8,7 +8,10 @@ def new(position: pygame.Vector2 = pygame.Vector2()) -> dict:
 	base_object: dict = {
 		"group": "Object",
 		"class": "BaseObject",
-		"has_collision": False,
+
+		"collision_layer": 0,
+		"collision_mask": 0,
+		"has_physical_collision": False,
 
 		"position": position,
 		"radius": 4,
@@ -30,9 +33,17 @@ def new(position: pygame.Vector2 = pygame.Vector2()) -> dict:
 	#pass
 
 
+
+def check_collision(self: dict, game_object: dict) -> None:
+
+
+
+	pass
+
+
+
+
 def overlaps_object(self: dict, game_object: dict) -> bool:
 	return self["position"].distance_to(game_object["position"]) < self["radius"] + game_object["radius"]
 
 
-def free(self: dict) -> None:
-	Game.object_container.remove(self)

@@ -7,20 +7,19 @@ import game.objects.base_object as BaseObject
 
 
 def new(position: pygame.Vector2 = pygame.Vector2(), velocity: pygame.Vector2 = pygame.Vector2()) -> dict:
-	base_mobile_object: dict = {
-		"group": "MobileObject",
-		"class": "BaseMobileObject",
+	base_dynamic_object: dict = {
+		"group": "DynamicObject",
+		"class": "BaseDynamicObject",
 		"velocity": velocity,
 	}
-	return BaseObject.new(position) | base_mobile_object
+	return BaseObject.new(position) | base_dynamic_object
 
 
-def move_and_collide(self: dict, delta: float) -> tuple[list[dict], bool]:
+def move_and_collide(self: dict, delta: float) -> None:
 	velocity: pygame.Vector2 = self["velocity"]
 	next_position: pygame.Vector2 = self["position"] + velocity * delta
-	self["position"] = next_position
-	self["position"], self["velocity"], collided_objects, collides_with_tile_map = handle_collisions(next_position, velocity, self)
-	return(collided_objects, collides_with_tile_map)
+	self["position"], self["velocity"] = handle_collisions(next_position, velocity, self)
+	#return(collided_objects, collides_with_tile_map)
 
 
 def handle_collisions(position: pygame.Vector2, velocity: pygame.Vector2, self: dict) -> tuple[pygame.Vector2, pygame.Vector2, list[dict], bool]:
@@ -30,11 +29,26 @@ def handle_collisions(position: pygame.Vector2, velocity: pygame.Vector2, self: 
 
 
 # Objects collisions
-def handle_objects_collisions(position: pygame.Vector2, velocity: pygame.Vector2, self: dict) -> tuple[pygame.Vector2, pygame.Vector2, list[dict]]:
-	collided_objects: list[dict] = []
-if self["has_collision"]:
-radius: int = self["radius"]
+def handle_objects_collisions(position: pygame.Vector2, velocity: pygame.Vector2, self: dict) -> tuple[pygame.Vector2, pygame.Vector2]:
+	collision_layer: int = self["collision_layer"]
+	collision_mask: int = self["collision_mask"]
+
+	radius: int = self["radius"]
 	for game_object in Game.object_container:
+		if self is game_object: continue
+
+		self_layer_mask_match: bool = False
+		if not( self_layer_mask_match or object_layer_mask_match) continue:
+
+		if overlaps:
+			if self_layer_mask_match: self.collide(game_object):
+			if object_layer_mask_match: game_object.collide(self):
+			if self["has_physical_collision"] and game_object["has_physical_collision"]:
+				handle_object_collision
+
+
+
+
 		if game_object["has_collision"]:
 			position, velocity, collided_object = handle_object_collision(position, velocity, radius, game_object)
 			if collided_object is not None: collided_objects.append(collided_object)

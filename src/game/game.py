@@ -49,9 +49,10 @@ def toggle_pause() -> None:
 
 def update(delta: float) -> None:
 	if pause: return
-
 	global timer
 	timer += delta
+
+
 	for object in object_container:
 		ClassManager.update(object, delta)
 

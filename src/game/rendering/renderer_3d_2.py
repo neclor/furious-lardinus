@@ -72,6 +72,40 @@ def draw_game() -> None:
 		Display.surface.blit(projection[0], projection[1])
 
 
+def get_object_projections() -> list[tuple[pygame.Surface, pygame.Vector2, float]]:
+	object_projections: list[tuple[pygame.Surface, pygame.Vector2, float]] = []
+
+	for game_object in Game.object_container:
+		object_projection: tuple[pygame.Surface, pygame.Vector2, float] | None = get_object_projection(game_object)
+		if object_projection is not None: object_projections.append(object_projection)
+
+	return object_projections
+
+
+def get_object_projection(game_object: dict) -> tuple[pygame.Surface, pygame.Vector2, float] | None:
+	object_radius: int = game_object["radius"]
+
+	relative_object_position: pygame.Vector2 = pygame.Vector2(game_object["position"] - position).rotate_rad(-rotation - Settings.HALF_PI)
+	relative_object_position.y *= -1
+
+	if relative_object_position.y <= 0: return None
+
+	tan_left_relative_angle: float = relative_object_position.y / (relative_object_position.x - object_radius)
+	tan_right_relative_angle: float = relative_object_position.y / (object_radius, relative_object_position.x + object_radius)
+	if object_out_of_view(tan_left_relative_angle, tan_right_relative_angle): return None
+
+	relative_object_bottom: float = game_object["position_z"] - camera_position_z
+	relative_object_top: float = relative_object_bottom - game_object["height"]
+
+	return calculate_projection(tan_left_relative_angle, tan_right_relative_angle, relative_object_position.y, relative_object_top, relative_object_bottom, game_object["sprite"])
+
+
+def object_out_of_view(tan_left_relative_angle: float, tan_right_relative_angle: float) -> bool:
+	return (
+		max(tan_left_relative_angle, tan_right_relative_angle) <= -Settings.tan_half_fov_h or
+		min(tan_left_relative_angle, tan_right_relative_angle) >= Settings.tan_half_fov_h)
+
+
 def get_tile_map_projections() -> list[tuple[pygame.Surface, pygame.Vector2, float]]:
 	tile_projections: list[tuple[pygame.Surface, pygame.Vector2, float]] = []
 
@@ -204,36 +238,3 @@ def calculate_projection(left_ray_relative_angle_tan: float, right_ray_relative_
 	projection_surface = pygame.transform.scale(texture, (math.ceil(projection_width), math.ceil(projection_height)))
 
 	return (projection_surface, projection_position, distance)
-
-
-def get_object_projections() -> list[tuple[pygame.Surface, pygame.Vector2, float]]:
-	tile_projections: list[tuple[pygame.Surface, pygame.Vector2, float]] = []
-
-	for game_object in Game.object_container:
-		object_position: pygame.Vector2 = game_object["position"]
-		object_radius: int = game_object["radius"]
-
-		relative_object_position: pygame.Vector2 = pygame.Vector2(object_position - position).rotate_rad(-(rotation + math.pi / 2))
-		relative_object_position.y *= -1
-
-		if relative_object_position.y <= 0: continue
-
-		left_relative_object_point_x: float = relative_object_position.x - object_radius
-		left_relative_angle: float = math.atan2(left_relative_object_point_x, relative_object_position.y)
-		right_relative_angle: float = math.atan2(relative_object_position.x + object_radius, relative_object_position.y)
-
-		if object_out_of_view(left_relative_angle, right_relative_angle): continue
-
-		relative_object_bottom: float = game_object["position_z"] - camera_position_z
-		relative_object_top: float = relative_object_bottom - game_object["height"]
-		distance: float = pygame.Vector2(left_relative_object_point_x, relative_object_position.y).length() * math.cos(left_relative_angle)
-
-		tile_projections.append(calculate_projection(left_relative_angle, right_relative_angle, distance, relative_object_top, relative_object_bottom, game_object["sprite"]))
-
-	return tile_projections
-
-
-def object_out_of_view(left_relative_angle: float, right_relative_angle: float) -> bool:
-	return (
-		(max(left_relative_angle, right_relative_angle) < -Settings.half_fov_h) or
-		(Settings.half_fov_h < min(left_relative_angle, right_relative_angle)))
