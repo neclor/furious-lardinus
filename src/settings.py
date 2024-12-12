@@ -37,9 +37,10 @@ current_fps: float = fps
 WALL: int = 1
 OBSTACLE: int = 2
 ACTIVE: int = 4
-ENEMY: int = 8
-PLAYER: int = 16
-PROJECTILE: int = 32
+ENTITY: int = 8
+ENEMY: int = 16
+PLAYER: int = 32
+PROJECTILE: int = 64
 
 
 # Calculated parameters

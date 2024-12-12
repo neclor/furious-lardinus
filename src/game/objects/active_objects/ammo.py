@@ -2,12 +2,12 @@ import pygame
 
 
 import game.game as Game
-import game.objects.mobile_objects.entities.player as Player
-import game.object_system.base_object as BaseObject
-import game.objects.interactive_objects.base_interactive_object as BaseInteractiveObject
+import game.game as Player
+import game.game as BaseObject
+import game.game as BaseInteractiveObject
 
 
-AMMO_SPRITE: pygame.Surface = pygame.image.load("assets/sprites/objects/ammo_16.png")
+AMMO_SPRITE: pygame.Surface = pygame.image.load("src/assets/sprites/objects/ammo_16.png")
 AMMO_AMOUNT: int = 25
 
 

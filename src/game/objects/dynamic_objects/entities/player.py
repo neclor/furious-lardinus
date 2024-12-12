@@ -2,21 +2,28 @@ import math
 import pygame
 
 import settings as Settings
-import game.object_system.base_object as BaseObject
-import game.objects.entities.base_entity as BaseEntity
+import game.object_manager as ObjectManager
+import game.object_class_manager as ObjectClassManager
+import game.objects.dynamic_objects.entities.base_entity as BaseEntity
+import game.objects.dynamic_objects.base_dynamic_object as BaseDynamicObject
+
+
+VELOCITY_INERTIA_FACTOR: int = 8
 
 
 def new(position: pygame.Vector2 = pygame.Vector2()) -> dict:
-	player: dict = {
-		"group": "Player",
+	return ObjectClassManager.new_object(BaseEntity.new(position), {
+		"groups": {"Player"},
 		"class": "Player",
-		"sprite": pygame.image.load("src/assets/sprites/test_player_16.png"),
 
+		"collision_layer": Settings.ENTITY | Settings.PLAYER,
+		"collision_mask": Settings.ENTITY | Settings.PLAYER,
 		"rotation": 0.0,
 
-		"weapons": []}
-
-	return BaseEntity.new(position) | player
+		"speed": 32,
+		"max_health": 100,
+		"health": 100,
+	})
 
 
 def update(self: dict, delta: float) -> None:
@@ -25,45 +32,22 @@ def update(self: dict, delta: float) -> None:
 
 
 def move(self: dict, delta: float) -> None:
+	keys = pygame.key.get_pressed()
+	input_direction: pygame.Vector2 = pygame.Vector2(keys[Settings.move_right] - keys[Settings.move_left], keys[Settings.move_backward] - keys[Settings.move_forward])
 
-	def get_input_vector() -> pygame.Vector2:
-		direction: pygame.Vector2 = pygame.Vector2()
-		keys = pygame.key.get_pressed()
-		if keys[Settings.move_forward]:
-			direction.y -= 1
-		if keys[Settings.move_backward]:
-			direction.y += 1
-		if keys[Settings.move_left]:
-			direction.x -= 1
-		if keys[Settings.move_right]:
-			direction.x += 1
-		return direction
+	move_direction: pygame.Vector2 = pygame.Vector2()
+	if input_direction.x != 0 or input_direction.y != 0: move_direction = input_direction.rotate_rad(self["rotation"] + Settings.HALF_PI).normalize()
 
-	direction: pygame.Vector2 = get_input_vector().rotate_rad(self["rotation"] + math.pi / 2)
-	direction = direction.normalize() if direction != pygame.Vector2() else direction
-
-	self["velocity"] = self["velocity"].lerp(direction * self["speed"], min(delta * 8, 1))
-	BaseEntity.move_and_slide(self, delta)
+	self["velocity"] = self["velocity"].lerp(move_direction * self["speed"], min(delta * VELOCITY_INERTIA_FACTOR, 1))
+	BaseDynamicObject.move_and_slide(self, delta)
 
 
 def rotate(self: dict) -> None:
 	rel_x: int = pygame.mouse.get_rel()[0]
-	yaw: float = (rel_x / Settings.resolution[0]) * Settings.fov_h * Settings.camera_sensitivity / 4
+	yaw: float = (rel_x / Settings.resolution[0] / 4) * Settings.fov_h * Settings.camera_sensitivity
 	self["rotation"] = (self["rotation"] + yaw) % math.tau
 
 
-def take_heal(self: dict, heal: int) -> None:
-	if heal < 0:
-		return
-	self["health"] = pygame.math.clamp(self["health"] + heal, 0, self["max_health"])
-
-
-def take_damage(self: dict, damage: int) -> None:
-	BaseEntity.take_damage(self, damage)
-
-	if self["health"] == 0:
-		die(self)
-
-
 def die(self: dict) -> None:
+	self["dead"] = True
 	pass

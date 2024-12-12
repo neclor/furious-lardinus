@@ -1,7 +1,7 @@
 import pygame
 
 
-import game.class_manager as ClassManager
+import game.object_class_manager as ClassManager
 import game.level_manager as LevelManager
 
 
@@ -14,6 +14,7 @@ def add_object(game_object: dict) -> None:
 
 
 def queue_free(game_object: dict) -> None:
+	game_object["freed"] = True
 	remove_queue.append(game_object)
 
 

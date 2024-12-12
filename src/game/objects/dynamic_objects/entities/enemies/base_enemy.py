@@ -1,28 +1,35 @@
 import random
 import pygame
 
+import settings as Settings
 import game.game as Game
-import game.object_system.base_object as BaseObject
-import game.objects.entities.base_entity as BaseEntity
+import game.level_manager as LevelManager
+import game.object_manager as ObjectManager
+import game.object_class_manager as ObjectClassManager
+import game.objects.dynamic_objects.entities.base_entity as BaseEntity
+import game.objects.dynamic_objects.base_dynamic_object as BaseDynamicObject
 
-import game.objects.interactive_objects.medikit as Medikit
-import game.objects.interactive_objects.ammo as Ammo
 
-
-VISION_RANGE: int = 500
+DETECTION_RANGE: int = 320
 
 
 def new(position: pygame.Vector2 = pygame.Vector2()) -> dict:
-	enemy: dict = {
+	return ObjectClassManager.new_object(BaseEntity.new(position), {
+		"groups": {"Enemy"},
 		"class": "BaseEnemy",
-		"sprite": pygame.image.load("src/assets/sprites/enemies/test_enemy_16.png")}
 
-	return BaseEntity.new(position) | enemy
+		"attack_cooldown": 1,
+		"attack_cooldown_left": 0,
+
+		"speed": 32,
+		"max_health": 100,
+		"health": 100,
+	})
 
 
 def update(self: dict, delta: float) -> None:
 	self["velocity"] = get_direction_to_player(self) * self["speed"]
-	BaseEntity.move_and_slide(self, delta)
+	BaseDynamicObject.move_and_slide(self, delta)
 
 
 def get_direction_to_player(self: dict) -> pygame.Vector2:
@@ -41,16 +48,7 @@ def get_direction_to_player(self: dict) -> pygame.Vector2:
 	return pygame.Vector2(0.0, 0.0)
 
 
-def take_damage(self: dict, damage: int) -> None:
-	BaseEntity.take_damage(self, damage)
-
-	if self["health"] == 0:
-		die(self)
-
-
-def die(self: dict) -> None:
-	drop_loot(self)
-	BaseEntity.die(self)
+def fast_ray_cast()
 
 
 def drop_loot(self: dict) -> None:

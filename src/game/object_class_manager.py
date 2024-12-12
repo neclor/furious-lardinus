@@ -31,8 +31,31 @@ import game.objects.dynamic_objects.projectiles.base_projectile as BaseProjectil
 		# WizzardProjectile
 
 
+def new_object(parent_object: dict, new_data: dict) -> dict:
+	new_object: dict = parent_object | new_data
+	new_groups: set | None = new_data.get("groups")
+	if new_groups is not None: new_object["groups"] = parent_object["groups"] | new_groups
+	return new_object
+
+
 def update(self: dict, delta: float) -> None:
+	groups: set = self["groups"]
+	if "Object" in groups:
+		if "DynamicObject" in groups:
+			pass
+		elif "ActiveObject" in groups:
+			pass
+		else:
+			pass
+	else:
+		pass
+
+
+
+
+
 	match self["group"]:
+
 		case "Player":
 			Player.update(self, delta)
 
@@ -43,19 +66,5 @@ def update(self: dict, delta: float) -> None:
 			update_interactive_object(self, delta)
 
 
-def update_enemy(self: dict, delta: float) -> None:
-	match self["class"]:
-		case "":
-			pass
-
-
-def update_interactive_object(self: dict, delta: float) -> None:
-	match self["class"]:
-		case "Ammo":
-			Ammo.update(self)
-		case "Medikit":
-			Medikit.update(self)
-
-
-def object_collided(self: dict, object: dict) -> None:
+def die(self: dict) -> None:
 	pass

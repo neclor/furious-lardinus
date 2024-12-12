@@ -1,11 +1,8 @@
 import pygame
 
 
-import game.object_manager as ObjectManager
-
-
 def new(position: pygame.Vector2 = pygame.Vector2()) -> dict:
-	base_object: dict = {
+	return {
 		"freed": False,
 
 		"groups": {"Object"},
@@ -24,4 +21,3 @@ def new(position: pygame.Vector2 = pygame.Vector2()) -> dict:
 
 		"sprite": None,
 	}
-	return base_object
