@@ -2,7 +2,7 @@ import pygame
 
 
 import menu.menu as Menu
-import game.game as Game
+#import game.game as Game
 
 
 # States = {
@@ -20,7 +20,7 @@ def init() -> None:
 def update(delta: float) -> None:
 	match state:
 		case 0: Menu.update(delta)
-		case 1: Game.update(delta)
+		#case 1: Game.update(delta)
 
 
 def change_state(new_state: int) -> None:
@@ -29,10 +29,10 @@ def change_state(new_state: int) -> None:
 
 	match state:
 		case 0: Menu.exit()
-		case 1: Game.exit()
+		#case 1: Game.exit()
 
 	state = new_state
 
 	match new_state:
 		case 0: Menu.enter()
-		case 1: Game.enter()
+		#case 1: Game.enter()

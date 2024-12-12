@@ -2,7 +2,7 @@ import pygame
 
 
 import game.game as Game
-import game.object_system.base_object as BaseObject
+import game.objects.base_object as BaseObject
 
 
 def new(position: pygame.Vector2 = pygame.Vector2()) -> dict:
