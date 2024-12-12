@@ -3,7 +3,7 @@ import pygame
 
 import game.game as Game
 import game.objects.entities.player as Player
-import game.objects.base_object as BaseObject
+import game.object_system.base_object as BaseObject
 import game.objects.interactive_objects.base_interactive_object as BaseInteractiveObject
 
 

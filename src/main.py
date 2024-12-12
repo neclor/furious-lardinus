@@ -4,7 +4,7 @@ import pygame
 
 import settings as Settings
 import core.events as Events
-import state_machine as StateMachine
+import main_state_machine as StateMachine
 
 
 clock: pygame.time.Clock

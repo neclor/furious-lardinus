@@ -1,7 +1,7 @@
 import pygame
 
 
-import state_machine as StateMachine
+import main_state_machine as StateMachine
 
 
 

@@ -2,7 +2,7 @@ import random
 import pygame
 
 import game.game as Game
-import game.objects.base_object as BaseObject
+import game.object_system.base_object as BaseObject
 import game.objects.entities.base_entity as BaseEntity
 
 import game.objects.interactive_objects.medikit as Medikit

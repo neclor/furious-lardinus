@@ -1,10 +1,21 @@
 import pygame
 
+import settings as Settings
 import core.resource_manager as ResourceManager
 import game.objects.interactive_objects.medikit as Medikit
 
 
-TEST_LEVEL = [
+BASE_TILE: dict = {
+	"class": "Tile",
+	"static": True,
+	"collision_layer": Settings.WALL,
+	"collidable": True,
+	}
+
+
+
+
+TEST_LEVEL_1 = [
 	"..........#....@",
 	"##..#@#...#....@",
 	".#........@....@",
@@ -15,7 +26,7 @@ TEST_LEVEL = [
 	".....###########",
 ]
 
-TEST_LEVEL_2 = [
+TEST_LEVEL = [
 	"................................",
 	"................................",
 	"................................",
@@ -36,16 +47,18 @@ TEST_LEVEL_2 = [
 DUNGEON_TILE_SET: dict = {
 	"tile_size": pygame.Vector2(32, 32),
 	"tiles": {
-		"#": {
+		"#": BASE_TILE | {
 			"transparent": False,
 			"texture": ResourceManager.load_image("src/assets/sprites/wall_32.png"),
+			"position_z" : 0.0,
 			"height": 32,
-			"position_z" : 0.0},
+		},
 		"@": {
 			"transparent": True,
 			"texture": ResourceManager.load_image("src/assets/sprites/wall_32_t.png"),
 			"height": 32,
-			"position_z" : 0.0},
+			"position_z" : 0.0,
+		},
 		"$": {
 			"texture": ResourceManager.load_image("src/assets/sprites/wall_32.png"),
 			"height": -64,

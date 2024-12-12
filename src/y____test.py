@@ -4,7 +4,7 @@ import timeit
 import random
 
 import settings as Settings
-import test2 as tst
+import y____test2 as tst
 
 # TODO: Delete this file
 window: pygame.Surface

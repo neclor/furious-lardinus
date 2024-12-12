@@ -2,7 +2,7 @@ import math
 import pygame
 
 import settings as Settings
-import game.objects.base_object as BaseObject
+import game.object_system.base_object as BaseObject
 import game.objects.entities.base_entity as BaseEntity
 
 
