@@ -13,7 +13,8 @@ import game.objects.dynamic_objects.base_dynamic_object as BaseDynamicObject
 
 
 VELOCITY_INERTIA_FACTOR: int = 4
-
+BOBBING_AMPLITUDE: float = 1
+BOBBING_SPEED: float = 0.1
 
 def new(position: pygame.Vector2 = pygame.Vector2()) -> dict:
 	return ObjectClassManager.new_object(BaseEntity.new(position), {
@@ -25,6 +26,7 @@ def new(position: pygame.Vector2 = pygame.Vector2()) -> dict:
 		"rotation": 0.0,
 
 		"speed": 128,
+		"bobbing_timer": 0,
 
 		"max_health": 100,
 		"health": 100,
@@ -36,7 +38,7 @@ def new(position: pygame.Vector2 = pygame.Vector2()) -> dict:
 def update(self: dict, delta: float) -> None:
 	move(self, delta)
 	rotate(self)
-
+	bobbing(self, delta)
 
 def move(self: dict, delta: float) -> None:
 	keys = pygame.key.get_pressed()
@@ -55,6 +57,15 @@ def rotate(self: dict) -> None:
 	self["rotation"] = (self["rotation"] + yaw) % math.tau
 
 
+def bobbing(self: dict, delta: float) -> None:
+	bob_timer = (self["bobbing_timer"] + self["velocity"].length() * BOBBING_SPEED * delta) % math.tau
+	self["bobbing_timer"] = bob_timer
+	self["position_z"] = math.sin(bob_timer) * BOBBING_AMPLITUDE
+
+
+
 def die(self: dict) -> None:
 	self["dead"] = True
 	LevelManager.load_level()
+	self["health"] = self["max_health"]
+	self["dead"] = False
