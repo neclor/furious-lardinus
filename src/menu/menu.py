@@ -14,6 +14,7 @@ surface: pygame.Surface
 images: dict
 menu_state = MAIN_MENU
 selected: int = 1
+settings_temp: int = 0
 
 def enter() -> None:
 	init()
@@ -68,6 +69,9 @@ def draw_image(image_info: tuple[str, tuple[int, int]]):
 	global surface
 	surface.blit(images[image_info[0]], position_image(image_info[1], images[image_info[0]].get_size()))
 
+def position_image(position: tuple[int, int], dimensions: tuple[int, int]):
+	return (position[0] - dimensions[0] / 2, position[1] - dimensions[1] / 2)
+
 def button_init():
 	pass
 
@@ -78,7 +82,17 @@ def action(action: int):
 		case 1: menu_state = MENU_SETTINGS 							# settings
 		case 2: pygame.event.post(pygame.event.Event(pygame.QUIT))	# quit
 		case 3: print("sound")										# sound
-		case 4: menu_state = MAIN_MENU
+		case 4: menu_state = MAIN_MENU								# return to main menu
+		case 5: increase_temp()										# increase temporary variable for settings change
+		case 6: decrease_temp()										# decrease temporary variable for settings change
+
+def increase_temp():
+	global settings_temp
+	settings_temp += 1
+
+def decrease_temp():
+	global settings_temp
+	settings_temp -= 1
 
 def input_menu(button_number: int):
 	global selected
@@ -123,9 +137,6 @@ def settings_menu():
 		('return', (Settings.half_resolution[0], 500)),
 	]
 	draw(bg, title, buttons)
-
-def position_image(position: tuple[int, int], dimensions: tuple[int, int]):
-	return (position[0] - dimensions[0] / 2, position[1] - dimensions[1] / 2)
 
 def exit() -> None:
 	pass
