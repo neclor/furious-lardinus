@@ -27,7 +27,7 @@ min_point_z: float
 max_point_z: float
 
 
-levels_list: list[str] = [Levels.TUTORIAL_ROOM, Levels.B_37, Levels.END_ROOM]
+levels_list: list[str] = [Levels.TUTORIAL_ROOM, Levels.MIDDLE, Levels.B_37, Levels.END_ROOM]
 current_level: int = 0
 
 
