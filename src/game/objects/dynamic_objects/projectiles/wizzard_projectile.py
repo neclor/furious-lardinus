@@ -12,7 +12,7 @@ import game.objects.dynamic_objects.projectiles.base_projectile as BaseProjectil
 import game.objects.dynamic_objects.entities.base_entity as BaseEntity
 
 
-WIZZARD_PROJECTILE_SPRITE: pygame.Surface = pygame.image.load("src/assets/sprites/projectiles/wizzard_projectile_8.png")
+WIZZARD_PROJECTILE_SPRITE: pygame.Surface = pygame.image.load("src/assets/sprites/projectiles/wizzard_projectile_16.png")
 
 
 def new(damage: int, position: pygame.Vector2 = pygame.Vector2(), velocity: pygame.Vector2 = pygame.Vector2()) -> dict:

@@ -8,7 +8,7 @@ import game.object_manager as ObjectManager
 
 import game.objects.active_objects.ammo as Ammo
 import game.objects.active_objects.medikit as Medikit
-import game.objects.active_objects.exits.door as Door
+import game.objects.active_objects.exit as Exit
 
 
 import game.objects.dynamic_objects.entities.enemies.knight as Knight
@@ -27,10 +27,20 @@ min_point_z: float
 max_point_z: float
 
 
+levels_list: list[str] = [Levels.TUTORIAL_ROOM, Levels.B_37, Levels.END_ROOM]
+current_level: int = 0
+
+
+def next_level() -> None:
+	global current_level
+	if current_level < len(levels_list) + 1: current_level += 1
+	load_level()
+
+
 def load_level() -> None:
 	global floor_color, tile_size, tile_map_size, tile_map, min_point_z, max_point_z
 
-	level_data: dict = parse_level_string(Levels.HUB, Levels.TILE_SET, Levels.OBJECT_SET)
+	level_data: dict = parse_level_string(levels_list[current_level], Levels.TILE_SET, Levels.OBJECT_SET)
 	floor_color = level_data["floor_color"]
 	tile_size = level_data["tile_size"]
 	tile_map_size = level_data["tile_map_size"]
@@ -43,8 +53,6 @@ def load_level() -> None:
 	ObjectManager.game_objects = [Game.player] + level_data["level_objects"]
 	ObjectManager.add_queue = []
 	ObjectManager.remove_queue = []
-
-
 
 
 def parse_level_string(string: str, tile_set: dict, object_set: dict) -> dict:
@@ -102,4 +110,5 @@ def new_level_object(class_name: str | None, position: pygame.Vector2) -> dict |
 		case "Skull": return Skull.new(position)
 		case "Summoner": return Summoner.new(position)
 		case "Wizzard": return Wizzard.new(position)
+		case "Exit": return Exit.new(position)
 	return None

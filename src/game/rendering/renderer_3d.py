@@ -32,7 +32,12 @@ def init() -> None:
 def update() -> None:
 	adjust_ray_number()
 	update_camera()
+	draw_floor()
 	draw_game()
+
+
+def draw_floor() -> None:
+	pygame.draw.rect(Display.surface, LevelManager.floor_color, (0, Settings.half_resolution[1], Settings.resolution[0], Settings.half_resolution[1]))
 
 
 def adjust_ray_number() -> None:
@@ -88,7 +93,7 @@ def get_object_projection(game_object: dict) -> tuple[pygame.Surface, pygame.Vec
 	relative_object_position: pygame.Vector2 = pygame.Vector2(game_object["position"] - position).rotate_rad(-rotation - Settings.HALF_PI)
 	relative_object_position.y *= -1
 
-	if relative_object_position.y <= 0: return None
+	if relative_object_position.y <= 1: return None
 
 	tan_left_relative_angle: float = (relative_object_position.x - object_radius) / relative_object_position.y
 	tan_right_relative_angle: float = (relative_object_position.x + object_radius) / relative_object_position.y

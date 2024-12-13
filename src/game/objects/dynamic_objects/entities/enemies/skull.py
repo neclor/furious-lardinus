@@ -32,8 +32,8 @@ def new(position: pygame.Vector2 = pygame.Vector2()) -> dict:
 
 		"speed": 128,
 
-		"max_health": 100,
-		"health": 100,
+		"max_health": 50,
+		"health": 50,
 
 		"attack_range": 0,
 		"damage": 5,

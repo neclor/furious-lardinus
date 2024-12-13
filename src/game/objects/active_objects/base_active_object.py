@@ -19,8 +19,8 @@ def new(position: pygame.Vector2 = pygame.Vector2()) -> dict:
 		"collision_layer": Settings.ACTIVE,
 		"collision_mask": Settings.PLAYER,
 
-		"radius": 4,
+		"radius": 12,
 
 		"position_z": 0.0,
-		"height": 8,
+		"height": 24,
 	})

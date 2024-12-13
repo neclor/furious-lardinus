@@ -52,5 +52,5 @@ def attack(self: dict) -> None:
 
 
 def create_loot(self: dict) -> None:
-	if random.randint(0, 2) == 0:
-		ObjectManager.add_object(Ammo.new(self["position"].copy()))
+	if random.randint(0, 2) == 0: pass
+	ObjectManager.add_object(Ammo.new(self["position"].copy()))

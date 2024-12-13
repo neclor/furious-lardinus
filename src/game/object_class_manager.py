@@ -9,11 +9,8 @@ import game.objects.active_objects.base_active_object as BaseActiveObject
 import game.objects.active_objects.ammo as Ammo
 		# Medikit
 import game.objects.active_objects.medikit as Medikit
-		# BaseExit
-import game.objects.active_objects.exits.base_exit as BaseExit
-			# Door
-import game.objects.active_objects.exits.door as Door
-
+		# Exit
+import game.objects.active_objects.exit as Exit
 	# BaseDynamicObject
 import game.objects.dynamic_objects.base_dynamic_object as BaseDynamicObject
 		# BaseEntity
@@ -60,8 +57,9 @@ def object_collided(self: dict, game_object: dict) -> None:
 	groups: set = self["groups"]
 	object_class: set = self["class"]
 	if "ActiveObject" in groups:
-		if object_class == "Ammo": pass
-		elif object_class == "Medikit": pass
+		if object_class == "Ammo": Ammo.object_collided(self, game_object)
+		elif object_class == "Medikit": Medikit.object_collided(self, game_object)
+		elif object_class == "Exit": Exit.object_collided(self, game_object)
 	elif "Enemy" in groups:
 		if object_class == "Skull": Skull.object_collided(self, game_object)
 	elif "Projectile":

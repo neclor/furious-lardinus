@@ -3,7 +3,7 @@ import pygame
 
 
 import settings as Settings
-
+import game.level_manager as LevelManager
 
 import game.object_class_manager as ObjectClassManager
 
@@ -57,4 +57,4 @@ def rotate(self: dict) -> None:
 
 def die(self: dict) -> None:
 	self["dead"] = True
-	pass #TODO when player died ???
+	LevelManager.load_level()

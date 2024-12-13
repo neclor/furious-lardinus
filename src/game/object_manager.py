@@ -36,7 +36,7 @@ def remove_object(game_object: dict) -> None:
 def remove_objects() -> None:
 	global remove_queue
 	for game_object in remove_queue:
-		game_objects.remove(game_object)
+		if game_object in game_objects: game_objects.remove(game_object)
 	remove_queue = []
 
 

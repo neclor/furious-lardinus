@@ -30,7 +30,7 @@ def new(position: pygame.Vector2 = pygame.Vector2()) -> dict:
 		"max_health": 100,
 		"health": 100,
 
-		"attack_cooldown": 10,
+		"attack_cooldown": 5,
 		"attack_range": 1024,
 	})
 
@@ -40,5 +40,5 @@ def attack(self: dict) -> None:
 
 
 def create_loot(self: dict) -> None:
-	if random.randint(0, 2) == 0:
-		ObjectManager.add_object(Ammo.new(self["position"].copy()))
+	if random.randint(0, 2) == 0: pass
+	ObjectManager.add_object(Ammo.new(self["position"].copy()))

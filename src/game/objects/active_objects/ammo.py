@@ -8,6 +8,8 @@ import game.objects.active_objects.base_active_object as BaseActiveObject
 import game.objects.base_object as BaseObject
 
 
+import game.weapon as Weapon
+
 AMMO_SPRITE: pygame.Surface = pygame.image.load("src/assets/sprites/objects/ammo_16.png")
 AMMO_AMOUNT: int = 25
 
@@ -23,4 +25,4 @@ def new(position: pygame.Vector2 = pygame.Vector2()) -> dict:
 def object_collided(self: dict, game_object: dict) -> None:
 	groups: set = game_object["groups"]
 	if "Player" in groups:
-		ObjectManager.remove_object(self)
+		if Weapon.add_ammo(AMMO_AMOUNT): ObjectManager.remove_object(self)

@@ -1,4 +1,5 @@
 import math
+import random
 import pygame
 
 
@@ -15,22 +16,25 @@ PLAYER_PROJECTILE_SPEED: int = 256
 
 
 gun: dict = {
+	"name": "1 Gun",
 	"available": True,
 	"sprite": None,
-	"damage": 100,
+	"damage": 20,
 	"max_ammo": math.inf,
 	"ammo": math.inf,
-	"cooldown": 0.5,
+	"cooldown": 0.3,
 }
 shotgun: dict = {
+	"name": "2 Shotgun",
 	"available": True,
 	"sprite": None,
-	"damage": 25,
+	"damage": 30,
 	"max_ammo": 100,
 	"ammo": 100,
 	"cooldown": 0.5,
 }
 assault: dict = {
+	"name": "3 Assault rifle",
 	"available": True,
 	"sprite": None,
 	"damage": 15,
@@ -48,12 +52,22 @@ def update(delta: float) -> None:
 	update_cooldown(delta)
 	check_events()
 
+	if current_weapon is assault:
+		if pygame.mouse.get_pressed()[0]:
+			shoot()
 
-def add_ammo(ammo: int) -> None:
+
+
+def add_ammo(ammo: int) -> bool:
+	ammo_recived = False
 	if shotgun["available"] and shotgun["ammo"] < shotgun["max_ammo"]:
 		shotgun["ammo"] = min(shotgun["ammo"] + ammo, shotgun["max_ammo"])
+		ammo_recived = True
 	if assault["available"] and assault["ammo"] < assault["max_ammo"]:
-		assault["ammo"] = min(assault["ammo"] + ammo, assault["max_ammo"])
+		assault["ammo"] = min(assault["ammo"] + ammo * 2, assault["max_ammo"])
+		ammo_recived = True
+
+	return ammo_recived
 
 
 def update_cooldown(delta: float) -> None:
@@ -65,6 +79,7 @@ def shoot() -> None:
 	global cooldown_left
 	if cooldown_left > 0: return
 	if current_weapon["ammo"] <= 0: return
+	current_weapon["ammo"] -= 1
 	cooldown_left = current_weapon["cooldown"]
 	if current_weapon is gun:
 		gun_shoot()
@@ -81,11 +96,16 @@ def gun_shoot() -> None:
 
 
 def shotgun_shot() -> None:
-	pass
+	position: pygame.Vector2 = Game.player["position"]
+	velocity: pygame.Vector2 = pygame.Vector2(PLAYER_PROJECTILE_SPEED, 0).rotate_rad(Game.player["rotation"])
+	for i in range(5):
+		ObjectManager.add_object(PlayerProjectile.new(current_weapon["damage"], position.copy(), velocity.rotate_rad(random.uniform(-Settings.HALF_PI / 4, Settings.HALF_PI / 4))))
 
 
 def assault_shot() -> None:
-	pass
+	position: pygame.Vector2 = Game.player["position"]
+	velocity: pygame.Vector2 = pygame.Vector2(PLAYER_PROJECTILE_SPEED, 0).rotate_rad(Game.player["rotation"] + random.uniform(-0.1, 0.1))
+	ObjectManager.add_object(PlayerProjectile.new(current_weapon["damage"], position.copy(), velocity))
 
 
 def change_weapon(new_weapon: dict) -> None:
