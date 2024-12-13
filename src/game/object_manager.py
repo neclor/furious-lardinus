@@ -109,7 +109,7 @@ def handle_collision(game_object: dict, detect_collision: bool, game_object_2: d
 	if detect_collision: ClassManager.object_collided(game_object, game_object_2)
 	if detect_collision_2: ClassManager.object_collided(game_object_2, game_object)
 
-	if not (game_object["collidable"] and game_object["collidable"]): return
+	if not (game_object["collidable"] and game_object_2["collidable"]): return
 
 	static: bool = game_object["static"]
 	static_2: bool = game_object_2["static"]
