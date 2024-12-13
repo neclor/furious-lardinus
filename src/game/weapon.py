@@ -16,7 +16,7 @@ PLAYER_PROJECTILE_SPEED: int = 256
 
 
 gun: dict = {
-	"name": "1 Gun",
+	"name": "Gun",
 	"available": True,
 	"sprite": None,
 	"damage": 20,
@@ -25,7 +25,7 @@ gun: dict = {
 	"cooldown": 0.3,
 }
 shotgun: dict = {
-	"name": "2 Shotgun",
+	"name": "Shotgun",
 	"available": True,
 	"sprite": None,
 	"damage": 30,
@@ -34,7 +34,7 @@ shotgun: dict = {
 	"cooldown": 0.5,
 }
 assault: dict = {
-	"name": "3 Assault rifle",
+	"name": "Assault Rifle",
 	"available": True,
 	"sprite": None,
 	"damage": 15,
