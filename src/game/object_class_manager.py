@@ -22,13 +22,21 @@ import game.objects.dynamic_objects.entities.base_entity as BaseEntity
 import game.objects.dynamic_objects.entities.player as Player
 			# BaseEnemy
 import game.objects.dynamic_objects.entities.enemies.base_enemy as BaseEnemy
-				# --
+				# Knight
+import game.objects.dynamic_objects.entities.enemies.knight as Knight
+				# Summoner
+import game.objects.dynamic_objects.entities.enemies.summoner as Summoner
+				# Skull
+import game.objects.dynamic_objects.entities.enemies.skull as Skull
+				# Wizzard
+import game.objects.dynamic_objects.entities.enemies.wizzard as Wizzard
 
 		# BaseProjectile
 import game.objects.dynamic_objects.projectiles.base_projectile as BaseProjectile
-		# PlayerProjectile
-
-		# WizzardProjectile
+			# PlayerProjectile
+import game.objects.dynamic_objects.projectiles.player_projectile as PlayerProjectile
+			# WizzardProjectile
+import game.objects.dynamic_objects.projectiles.wizzard_projectile as WizzardProjectile
 
 
 def new_object(parent_object: dict, new_data: dict) -> dict:
@@ -40,31 +48,48 @@ def new_object(parent_object: dict, new_data: dict) -> dict:
 
 def update(self: dict, delta: float) -> None:
 	groups: set = self["groups"]
-	if "Object" in groups:
-		if "DynamicObject" in groups:
-			pass
-		elif "ActiveObject" in groups:
-			pass
-		else:
-			pass
-	else:
-		pass
+	if "Player" in groups:
+		Player.update(self, delta)
+	elif "Enemy" in groups:
+		BaseEnemy.update(self, delta)
+	elif "Projectile" in groups:
+		BaseProjectile.update(self, delta)
 
 
+def object_collided(self: dict, game_object: dict) -> None:
+	groups: set = self["groups"]
+	object_class: set = self["class"]
+	if "ActiveObject" in groups:
+		if object_class == "Ammo": pass
+		elif object_class == "Medikit": pass
+	elif "Enemy" in groups:
+		if object_class == "Skull": Skull.object_collided(self, game_object)
+	elif "Projectile":
+		if object_class == "PlayerProjectile": PlayerProjectile.object_collided(self, game_object)
+		elif object_class == "WizzardProjectile": WizzardProjectile.object_collided(self, game_object)
 
 
-
-	match self["group"]:
-
-		case "Player":
-			Player.update(self, delta)
-
-		case "Enemy":
-			update_enemy(self, delta)
-
-		case "InteractiveObject":
-			update_interactive_object(self, delta)
+def attack(self: dict) -> None:
+	groups: set = self["groups"]
+	object_class: set = self["class"]
+	if "Enemy" in groups:
+		if object_class == "Knight": Knight.attack(self)
+		elif object_class == "Summoner": Summoner.attack(self)
+		elif object_class == "Summoner": Wizzard.attack(self)
 
 
 def die(self: dict) -> None:
-	pass
+	groups: set = self["groups"]
+	if "Player":
+		Player.die(self)
+	elif "Enemy" in groups:
+		BaseEnemy.die(self)
+
+
+def create_loot(self: dict) -> None:
+	groups: set = self["groups"]
+	object_class: set = self["class"]
+	if "Enemy" in groups:
+		if object_class == "Knight": Knight.create_loot(self)
+		elif object_class == "Summoner": Summoner.create_loot(self)
+		elif object_class == "Summoner": Wizzard.create_loot(self)

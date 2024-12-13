@@ -1,14 +1,18 @@
 import math
 import pygame
 
+
 import settings as Settings
-import game.object_manager as ObjectManager
+
+
 import game.object_class_manager as ObjectClassManager
+
+
 import game.objects.dynamic_objects.entities.base_entity as BaseEntity
 import game.objects.dynamic_objects.base_dynamic_object as BaseDynamicObject
 
 
-VELOCITY_INERTIA_FACTOR: int = 8
+VELOCITY_INERTIA_FACTOR: int = 4
 
 
 def new(position: pygame.Vector2 = pygame.Vector2()) -> dict:
@@ -16,13 +20,16 @@ def new(position: pygame.Vector2 = pygame.Vector2()) -> dict:
 		"groups": {"Player"},
 		"class": "Player",
 
-		"collision_layer": Settings.ENTITY | Settings.PLAYER,
-		"collision_mask": Settings.ENTITY | Settings.PLAYER,
+		"collision_layer": Settings.PLAYER,
+		"collision_mask": Settings.WALL | Settings.OBSTACLE | Settings.ENEMY,
 		"rotation": 0.0,
 
-		"speed": 32,
+		"speed": 128,
+
 		"max_health": 100,
 		"health": 100,
+
+		"height": 32,
 	})
 
 
@@ -50,4 +57,4 @@ def rotate(self: dict) -> None:
 
 def die(self: dict) -> None:
 	self["dead"] = True
-	pass
+	pass #TODO when player died ???

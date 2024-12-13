@@ -1,10 +1,11 @@
 import pygame
 
 
-import game.game as Game
-import game.game as Player
-import game.game as BaseObject
-import game.game as BaseInteractiveObject
+import game.object_class_manager as ObjectClassManager
+import game.object_manager as ObjectManager
+
+import game.objects.active_objects.base_active_object as BaseActiveObject
+import game.objects.base_object as BaseObject
 
 
 AMMO_SPRITE: pygame.Surface = pygame.image.load("src/assets/sprites/objects/ammo_16.png")
@@ -12,14 +13,14 @@ AMMO_AMOUNT: int = 25
 
 
 def new(position: pygame.Vector2 = pygame.Vector2()) -> dict:
-	ammo: dict = {
-		"group": "InteractiveObject",
+	return ObjectClassManager.new_object(BaseActiveObject.new(position), {
 		"class": "Ammo",
+
 		"sprite": AMMO_SPRITE,
-	}
-	return BaseInteractiveObject.new(position) | ammo
+	})
 
 
-def update(self: dict) -> None:
-	if not BaseInteractiveObject.overlaps_player(self): return
-	BaseObject.free()
+def object_collided(self: dict, game_object: dict) -> None:
+	groups: set = game_object["groups"]
+	if "Player" in groups:
+		ObjectManager.remove_object(self)

@@ -169,7 +169,7 @@ def cast_ray(ray_rotation: float) -> list[tuple[pygame.Surface, pygame.Vector2, 
 		relative_max_obscured_point: float = distance * tan_max_obscured_angle
 		if relative_min_obscured_point <= LevelManager.min_point_z - camera_position_z and LevelManager.max_point_z - camera_position_z <= relative_max_obscured_point: break
 
-		if tile_index.x < 0 or LevelManager.tile_map_size.x <= tile_index.x or tile_index.y < 0 or LevelManager.tile_map_size.y <= tile_index.y: continue
+		if not (0 <= tile_index.x < LevelManager.tile_map_size.x and 0 <= tile_index.y < LevelManager.tile_map_size.y): continue
 		tile: dict | None = LevelManager.tile_map[int(tile_index.y)][int(tile_index.x)]
 		if tile is None: continue
 

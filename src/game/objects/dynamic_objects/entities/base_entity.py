@@ -1,9 +1,10 @@
 import pygame
 
 
-import settings as Settings
-import game.object_manager as ObjectManager
 import game.object_class_manager as ObjectClassManager
+import game.object_manager as ObjectManager
+
+
 import game.objects.dynamic_objects.base_dynamic_object as BaseDynamicObject
 
 
@@ -12,11 +13,9 @@ def new(position: pygame.Vector2 = pygame.Vector2()) -> dict:
 		"groups": {"Entity"},
 		"class": "BaseEntity",
 
-		"collision_layer": Settings.ENTITY,
-		"collision_mask": Settings.ENTITY,
 		"collidable": True,
 
-		"speed": 32,
+		"speed": 64,
 
 		"max_health": 100,
 		"health": 100,
@@ -38,4 +37,4 @@ def take_heal(self: dict, heal: int) -> None:
 
 def die(self: dict) -> None:
 	self["dead"] = True
-	ObjectManager.queue_free(self)
+	ObjectManager.remove_object(self)

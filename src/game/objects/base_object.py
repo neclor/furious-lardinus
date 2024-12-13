@@ -14,10 +14,10 @@ def new(position: pygame.Vector2 = pygame.Vector2()) -> dict:
 		"static": True,
 
 		"position": position,
-		"radius": 4,
+		"radius": 16,
 
 		"position_z": 0.0,
-		"height": 16,
+		"height": 32,
 
 		"sprite": None,
 	}

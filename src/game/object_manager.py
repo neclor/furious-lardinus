@@ -6,22 +6,37 @@ import game.level_manager as LevelManager
 
 
 game_objects: list[dict] = []
+add_queue: list[dict] = []
 remove_queue: list[dict] = []
-
-
-def add_object(game_object: dict) -> None:
-	game_objects.append(game_object)
-
-
-def queue_free(game_object: dict) -> None:
-	game_object["freed"] = True
-	remove_queue.append(game_object)
 
 
 def update(delta: float) -> None:
 	update_game_objects(delta)
 	handle_collisions()
 	remove_objects()
+	add_objects()
+
+
+def add_object(game_object: dict) -> None:
+	add_queue.append(game_object)
+
+
+def add_objects() -> None:
+	global game_objects, add_queue
+	game_objects += add_queue
+	add_queue = []
+
+
+def remove_object(game_object: dict) -> None:
+	game_object["freed"] = True
+	remove_queue.append(game_object)
+
+
+def remove_objects() -> None:
+	global remove_queue
+	for game_object in remove_queue:
+		game_objects.remove(game_object)
+	remove_queue = []
 
 
 def update_game_objects(delta: float) -> None:
@@ -121,8 +136,3 @@ def check_collision_layers(game_object_1: dict, game_object_2: dict) -> tuple[bo
 	if collision_mask_2 is not None:
 		detect_collision_2 = (collision_mask_2 & collision_layer_1) > 0
 	return (detect_collision_1, detect_collision_2)
-
-
-def remove_objects() -> None:
-	for game_object in remove_queue:
-		game_objects.remove(game_object)

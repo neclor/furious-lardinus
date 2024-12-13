@@ -9,8 +9,8 @@ button_container: list[dict] = []
 
 
 def enter() -> None:
-	pygame.mouse.set_visible(False)
-	pygame.event.set_grab(True)
+	#pygame.mouse.set_visible(False)
+	#pygame.event.set_grab(True)
 	StateMachine.change_state(StateMachine.GAME)
 
 
