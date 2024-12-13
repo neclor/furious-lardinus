@@ -27,7 +27,7 @@ def init() -> None:
 	images = load_images()
 	pygame.key.set_repeat(200, 200)
 
-def load_images():
+def load_images() -> dict:
 	images: dict = {}
 	title_font = pygame.font.Font("src/assets/fonts/Pixel Game.otf", 200)
 	button_font = pygame.font.Font("src/assets/fonts/Pixel Game.otf", 80)
@@ -72,10 +72,10 @@ def draw_image(image_info: tuple[str, tuple[int, int]]):
 def position_image(position: tuple[int, int], dimensions: tuple[int, int]):
 	return (position[0] - dimensions[0] / 2, position[1] - dimensions[1] / 2)
 
-def button_init():
+def button_init() -> None:
 	pass
 
-def action(action: int):
+def action(action: int) -> None:
 	global menu_state
 	match action:
 		case 0: StateMachine.change_state(1) 						# play
@@ -86,15 +86,15 @@ def action(action: int):
 		case 5: increase_temp()										# increase temporary variable for settings change
 		case 6: decrease_temp()										# decrease temporary variable for settings change
 
-def increase_temp():
+def increase_temp() -> None:
 	global settings_temp
 	settings_temp += 1
 
-def decrease_temp():
+def decrease_temp() -> None:
 	global settings_temp
 	settings_temp -= 1
 
-def input_menu(button_number: int):
+def input_menu(button_number: int) -> None:
 	global selected
 	events = Events.get()
 	for event in events:
@@ -108,12 +108,12 @@ def input_menu(button_number: int):
 	selected = selected % button_number
 
 
-def menu_state_machine(state: int):
+def menu_state_machine(state: int) -> None:
 	match state:
 		case 0: main_menu()
 		case 1: settings_menu()
 
-def main_menu():
+def main_menu() -> None:
 	global button_action
 	button_action = [0, 1, 2]
 	input_menu(3)
@@ -126,7 +126,7 @@ def main_menu():
 	]
 	draw(bg, title, buttons)
 
-def settings_menu():
+def settings_menu() -> None:
 	global button_action
 	button_action = [3, 4]
 	input_menu(2)
