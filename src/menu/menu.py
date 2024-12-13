@@ -6,18 +6,21 @@ import settings as Settings
 import core.events as Events
 
 
-MAIN_MENU = 0
-MENU_SETTINGS = 1
+MAIN_MENU: int = 0
+MENU_SETTINGS: int = 1
+
 
 button_action: list[int] = [] # index represents button position, int represents the actions to take in action()
 surface: pygame.Surface
 images: dict
-menu_state = MAIN_MENU
+menu_state: int = MAIN_MENU
 selected: int = 1
 settings_temp: int = 0
 
+
 def enter() -> None:
 	init()
+
 
 def init() -> None:
 	global surface, images
@@ -26,6 +29,7 @@ def init() -> None:
 	surface = pygame.display.get_surface()
 	images = load_images()
 	pygame.key.set_repeat(200, 200)
+
 
 def load_images() -> dict:
 	images: dict = {}
@@ -48,6 +52,7 @@ def load_images() -> dict:
 	images['returnselected'] = big_button_font.render("return", True, (0, 255, 0))
 	return images
 
+
 def update(delta: float) -> None:
 	menu_state_machine(menu_state)
 
@@ -65,15 +70,19 @@ def draw(bg: tuple[str, tuple[int, int]], title: tuple[str, tuple[int, int]], bu
 		button_count += 1
 	pygame.display.update()
 
+
 def draw_image(image_info: tuple[str, tuple[int, int]]):
 	global surface
 	surface.blit(images[image_info[0]], position_image(image_info[1], images[image_info[0]].get_size()))
 
+
 def position_image(position: tuple[int, int], dimensions: tuple[int, int]):
 	return (position[0] - dimensions[0] / 2, position[1] - dimensions[1] / 2)
 
+
 def button_init() -> None:
 	pass
+
 
 def action(action: int) -> None:
 	global menu_state
@@ -86,13 +95,16 @@ def action(action: int) -> None:
 		case 5: increase_temp()										# increase temporary variable for settings change
 		case 6: decrease_temp()										# decrease temporary variable for settings change
 
+
 def increase_temp() -> None:
 	global settings_temp
 	settings_temp += 1
 
+
 def decrease_temp() -> None:
 	global settings_temp
 	settings_temp -= 1
+
 
 def input_menu(button_number: int) -> None:
 	global selected
@@ -113,6 +125,7 @@ def menu_state_machine(state: int) -> None:
 		case 0: main_menu()
 		case 1: settings_menu()
 
+
 def main_menu() -> None:
 	global button_action
 	button_action = [0, 1, 2]
@@ -126,6 +139,7 @@ def main_menu() -> None:
 	]
 	draw(bg, title, buttons)
 
+
 def settings_menu() -> None:
 	global button_action
 	button_action = [3, 4]
@@ -137,6 +151,7 @@ def settings_menu() -> None:
 		('return', (Settings.half_resolution[0], 500)),
 	]
 	draw(bg, title, buttons)
+
 
 def exit() -> None:
 	pass
