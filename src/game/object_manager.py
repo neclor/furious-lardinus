@@ -109,6 +109,11 @@ def handle_collision(game_object: dict, detect_collision: bool, game_object_2: d
 	if detect_collision: ClassManager.object_collided(game_object, game_object_2)
 	if detect_collision_2: ClassManager.object_collided(game_object_2, game_object)
 
+
+	if game_object["class"] == "WizzardProjectile" or game_object_2["class"] == "WizzardProjectile":
+		print(game_object["class"], game_object["collidable"])
+		print(game_object_2["class"], game_object_2["collidable"])
+
 	if not (game_object["collidable"] and game_object_2["collidable"]): return
 
 	static: bool = game_object["static"]

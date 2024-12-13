@@ -90,8 +90,8 @@ def get_object_projection(game_object: dict) -> tuple[pygame.Surface, pygame.Vec
 
 	if relative_object_position.y <= 0: return None
 
-	tan_left_relative_angle: float = relative_object_position.y / (relative_object_position.x - object_radius)
-	tan_right_relative_angle: float = relative_object_position.y / (relative_object_position.x + object_radius)
+	tan_left_relative_angle: float = (relative_object_position.x - object_radius) / relative_object_position.y
+	tan_right_relative_angle: float = (relative_object_position.x + object_radius) / relative_object_position.y
 	if object_out_of_view(tan_left_relative_angle, tan_right_relative_angle): return None
 
 	relative_object_bottom: float = game_object["position_z"] - camera_position_z
@@ -120,8 +120,8 @@ def get_tile_map_projections() -> list[tuple[pygame.Surface, pygame.Vector2, flo
 def cast_ray(ray_rotation: float) -> list[tuple[pygame.Surface, pygame.Vector2, float]]:
 	tile_projections: list[tuple[pygame.Surface, pygame.Vector2, float]] = []
 
-	ray_rotation = ray_rotation % math.tau
 	ray_relative_angle: float = ray_rotation - rotation
+	ray_rotation = ray_rotation % math.tau
 	ray_sign: pygame.Vector2 = pygame.Vector2((Settings.THREE_HALF_PI < ray_rotation <= math.tau or 0 <= ray_rotation < Settings.HALF_PI) - (Settings.HALF_PI < ray_rotation < Settings.THREE_HALF_PI), (0 < ray_rotation < math.pi) - (math.pi < ray_rotation < math.tau))
 	signed_tile_size: pygame.Vector2 = pygame.Vector2(ray_sign.x * LevelManager.tile_size.x, ray_sign.y * LevelManager.tile_size.y)
 
@@ -148,8 +148,7 @@ def cast_ray(ray_rotation: float) -> list[tuple[pygame.Surface, pygame.Vector2, 
 	tan_max_obscured_angle: float = -1 * Settings.tan_half_fov_v
 	while not line_out_of_bounds(ray_sign, tile_index):
 		delta_next_line: pygame.Vector2 = next_line - ray_position
-		if delta_next_line.x == 0: print(position, ray_sign, ray_position, next_line)
-		delta_ratio: float = delta_next_line.y / delta_next_line.x
+		delta_ratio: float = delta_next_line.y / delta_next_line.x if delta_next_line.x != 0 else math.inf
 		tan_delta_difference: float = abs_ray_tan - abs(delta_ratio)
 		if tan_delta_difference < 0:
 			ray_position = pygame.Vector2(next_line.x, position.y + (next_line.x - position.x) * ray_tan)

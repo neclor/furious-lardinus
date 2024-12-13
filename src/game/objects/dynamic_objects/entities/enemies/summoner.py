@@ -25,13 +25,13 @@ def new(position: pygame.Vector2 = pygame.Vector2()) -> dict:
 
 		"sprite": SUMMONER_SPRITE,
 
-		"speed": 64,
+		"speed": 32,
 
 		"max_health": 100,
 		"health": 100,
 
-		"attack_cooldown": 5,
-		"attack_range": 512,
+		"attack_cooldown": 10,
+		"attack_range": 1024,
 	})
 
 

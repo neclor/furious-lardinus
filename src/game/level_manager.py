@@ -1,15 +1,20 @@
 import pygame
 
+
 import game.game as Game
 import game.levels as Levels
 import game.object_manager as ObjectManager
+
 
 import game.objects.active_objects.ammo as Ammo
 import game.objects.active_objects.medikit as Medikit
 import game.objects.active_objects.exits.door as Door
 
 
+import game.objects.dynamic_objects.entities.enemies.knight as Knight
+import game.objects.dynamic_objects.entities.enemies.skull as Skull
 import game.objects.dynamic_objects.entities.enemies.summoner as Summoner
+import game.objects.dynamic_objects.entities.enemies.wizzard as Wizzard
 
 
 floor_color: pygame.Color
@@ -90,6 +95,10 @@ def parse_level_string(string: str, tile_set: dict, object_set: dict) -> dict:
 
 def new_level_object(class_name: str | None, position: pygame.Vector2) -> dict | None:
 	match class_name:
-		case "Medikit":
-			return Medikit.new(position)
+		case "Ammo": return Ammo.new(position)
+		case "Medikit": return Medikit.new(position)
+		case "Knight": return Knight.new(position)
+		case "Skull": return Skull.new(position)
+		case "Summoner": return Summoner.new(position)
+		case "Wizzard": return Wizzard.new(position)
 	return None

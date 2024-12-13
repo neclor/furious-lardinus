@@ -27,18 +27,18 @@ def new(position: pygame.Vector2 = pygame.Vector2()) -> dict:
 	return ObjectClassManager.new_object(BaseEnemy.new(position), {
 		"class": "Wizzard",
 
-		"position_z": -16.0,
+		"position_z": 0.0,
 		"height": 48,
 
 		"sprite": WIZZARD_SPRITE,
 
-		"speed": 64,
+		"speed": 32,
 
 		"max_health": 100,
 		"health": 100,
 
-		"attack_cooldown": 1,
-		"attack_range": 512,
+		"attack_cooldown": 2,
+		"attack_range": 1024,
 		"damage": 10,
 	})
 

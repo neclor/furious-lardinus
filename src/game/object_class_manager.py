@@ -75,7 +75,7 @@ def attack(self: dict) -> None:
 	if "Enemy" in groups:
 		if object_class == "Knight": Knight.attack(self)
 		elif object_class == "Summoner": Summoner.attack(self)
-		elif object_class == "Summoner": Wizzard.attack(self)
+		elif object_class == "Wizzard": Wizzard.attack(self)
 
 
 def die(self: dict) -> None:

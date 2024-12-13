@@ -57,8 +57,8 @@ def see_player(self: dict) -> bool:
 	position: pygame.Vector2 = self["position"]
 	player_position: pygame.Vector2 = Game.player["position"]
 
-	x: int = position.x // LevelManager.tile_size.x
-	y: int = position.y // LevelManager.tile_size.y
+	x: int = int(position.x // LevelManager.tile_size.x)
+	y: int = int(position.y // LevelManager.tile_size.y)
 	player_x: int = player_position.x // LevelManager.tile_size.x
 	player_y: int = player_position.y // LevelManager.tile_size.y
 
@@ -69,9 +69,9 @@ def see_player(self: dict) -> bool:
 
 	error: int = abs_delta_x - abs_delta_y
 	while True:
-		if 0 <= x < LevelManager.tile_map_size.x and 0 <= y < LevelManager.tile_map_size.y:
-			tile: dict | None = LevelManager.tile_map[y][x]
-			if tile is not None and (tile["collision_layer"] & Settings.WALL > 0): return False
+		if not (0 <= x < LevelManager.tile_map_size.x and 0 <= y < LevelManager.tile_map_size.y): return True
+		tile: dict | None = LevelManager.tile_map[y][x]
+		if tile is not None and (tile["collision_layer"] & Settings.WALL > 0): return False
 
 		if x == player_x and y == player_y: return True
 

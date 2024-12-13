@@ -28,7 +28,7 @@ SECRET_TILE: dict = BASE_TILE | {
 	"class": "SecretTile",
 	"collidable": False,
 }
-print()
+
 
 TILE_SET: dict = {
 	"tile_size": pygame.Vector2(64, 64),
@@ -46,21 +46,25 @@ TILE_SET: dict = {
 }
 
 
-
 OBJECT_SET: dict = {
 	"objects": {
+        "A": "Ammo",
 		"M": "Medikit",
+        "K": "Knight",
+        "C": "Skull",
+        "U": "Summoner",
+        "W": "Wizzard",
 	}
 }
 
 
 HUB: str = '''
 #ffffff/
-..#....1111/
-?.........1/
-....S.....1/
-.#.....?..1/
-...#.111111
+S....1...W1/
+?....1....1/
+.....1U...1/
+.....1..C.1/
+.#.#.1.K..1/
 '''
 
 
