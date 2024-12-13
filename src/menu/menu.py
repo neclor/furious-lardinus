@@ -12,26 +12,26 @@ MENU_SETTINGS: int = 1
 
 button_action: list[int] = [] # index represents button position, int represents the actions to take in action()
 surface: pygame.Surface
-images: dict
+menu_images: dict
 menu_state: int = MAIN_MENU
 selected: int = 1
 settings_temp: int = 0
 
 
-def enter() -> None:
-	init()
+def menu_enter() -> None:
+	menu_init()
 
 
-def init() -> None:
+def menu_init() -> None:
 	global surface, images
 	pygame.mouse.set_visible(True)
 	pygame.event.set_grab(False)
 	surface = pygame.display.get_surface()
-	images = load_images()
+	images = menu_load_images()
 	pygame.key.set_repeat(200, 200)
 
 
-def load_images() -> dict:
+def menu_load_images() -> dict:
 	images: dict = {}
 	title_font = pygame.font.Font("src/assets/fonts/Pixel Game.otf", 200)
 	button_font = pygame.font.Font("src/assets/fonts/Pixel Game.otf", 80)
@@ -53,38 +53,34 @@ def load_images() -> dict:
 	return images
 
 
-def update(delta: float) -> None:
+def menu_update(delta: float) -> None:
 	menu_state_machine(menu_state)
 
 
-def draw(bg: tuple[str, tuple[int, int]], title: tuple[str, tuple[int, int]], buttons: list[tuple[str, tuple[int, int]]]):
+def menu_draw(bg: tuple[str, tuple[int, int]], title: tuple[str, tuple[int, int]], buttons: list[tuple[str, tuple[int, int]]]):
 	global surface
-	draw_image(bg)
-	draw_image(title)
+	menu_draw_image(bg)
+	menu_draw_image(title)
 	button_count = 0
 	for button in buttons:
 		if button_count == selected:
-			draw_image((button[0]+'selected', button[1]))
+			menu_draw_image((button[0]+'selected', button[1]))
 		else:
-			draw_image(button)
+			menu_draw_image(button)
 		button_count += 1
 	pygame.display.update()
 
 
-def draw_image(image_info: tuple[str, tuple[int, int]]):
+def menu_draw_image(image_info: tuple[str, tuple[int, int]]):
 	global surface
-	surface.blit(images[image_info[0]], position_image(image_info[1], images[image_info[0]].get_size()))
+	surface.blit(images[image_info[0]], menu_position_image(image_info[1], images[image_info[0]].get_size()))
 
 
-def position_image(position: tuple[int, int], dimensions: tuple[int, int]):
+def menu_position_image(position: tuple[int, int], dimensions: tuple[int, int]):
 	return (position[0] - dimensions[0] / 2, position[1] - dimensions[1] / 2)
 
 
-def button_init() -> None:
-	pass
-
-
-def action(action: int) -> None:
+def menu_action(action: int) -> None:
 	global menu_state
 	match action:
 		case 0: StateMachine.change_state(1) 						# play
@@ -92,21 +88,21 @@ def action(action: int) -> None:
 		case 2: pygame.event.post(pygame.event.Event(pygame.QUIT))	# quit
 		case 3: print("sound")										# sound
 		case 4: menu_state = MAIN_MENU								# return to main menu
-		case 5: increase_temp()										# increase temporary variable for settings change
-		case 6: decrease_temp()										# decrease temporary variable for settings change
+		case 5: menu_increase_temp()										# increase temporary variable for settings change
+		case 6: menu_decrease_temp()										# decrease temporary variable for settings change
 
 
-def increase_temp() -> None:
+def menu_increase_temp() -> None:
 	global settings_temp
 	settings_temp += 1
 
 
-def decrease_temp() -> None:
+def menu_decrease_temp() -> None:
 	global settings_temp
 	settings_temp -= 1
 
 
-def input_menu(button_number: int) -> None:
+def menu_input(button_number: int) -> None:
 	global selected
 	events = Events.get()
 	for event in events:
@@ -116,20 +112,20 @@ def input_menu(button_number: int) -> None:
 			if event.key == Settings.move_backward:
 				selected += 1
 			if event.key == pygame.K_RETURN:
-				action(button_action[selected])
+				menu_action(button_action[selected])
 	selected = selected % button_number
 
 
 def menu_state_machine(state: int) -> None:
 	match state:
-		case 0: main_menu()
-		case 1: settings_menu()
+		case 0: menu_main()
+		case 1: menu_settings()
 
 
-def main_menu() -> None:
+def menu_main() -> None:
 	global button_action
 	button_action = [0, 1, 2]
-	input_menu(3)
+	menu_input(3)
 	bg = ('bg', Settings.half_resolution)
 	title = ('title', (Settings.half_resolution[0], 200))
 	buttons = [
@@ -137,21 +133,21 @@ def main_menu() -> None:
 		('settings', (Settings.half_resolution[0], 500)),
 		('quit', (Settings.half_resolution[0], 600)),
 	]
-	draw(bg, title, buttons)
+	menu_draw(bg, title, buttons)
 
 
-def settings_menu() -> None:
+def menu_settings() -> None:
 	global button_action
 	button_action = [3, 4]
-	input_menu(2)
+	menu_input(2)
 	bg = ('bg', Settings.half_resolution)
 	title = ('settings', (Settings.half_resolution[0], 200))
 	buttons = [
 		('sound', (Settings.half_resolution[0], 400)),
 		('return', (Settings.half_resolution[0], 500)),
 	]
-	draw(bg, title, buttons)
+	menu_draw(bg, title, buttons)
 
 
-def exit() -> None:
+def menu_exit() -> None:
 	pass
