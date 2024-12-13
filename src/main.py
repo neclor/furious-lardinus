@@ -1,3 +1,8 @@
+# Pavlov Aleksandr s2400691
+# lardinois joachim s2402075
+# Gendebien Alexandre s2404939
+
+
 import sys
 import pygame
 

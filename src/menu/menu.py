@@ -23,11 +23,11 @@ def menu_enter() -> None:
 
 
 def menu_init() -> None:
-	global surface, images
+	global surface, menu_images
 	pygame.mouse.set_visible(True)
 	pygame.event.set_grab(False)
 	surface = pygame.display.get_surface()
-	images = menu_load_images()
+	menu_images = menu_load_images()
 	pygame.key.set_repeat(200, 200)
 
 
@@ -73,7 +73,7 @@ def menu_draw(bg: tuple[str, tuple[int, int]], title: tuple[str, tuple[int, int]
 
 def menu_draw_image(image_info: tuple[str, tuple[int, int]]):
 	global surface
-	surface.blit(images[image_info[0]], menu_position_image(image_info[1], images[image_info[0]].get_size()))
+	surface.blit(menu_images[image_info[0]], menu_position_image(image_info[1], menu_images[image_info[0]].get_size()))
 
 
 def menu_position_image(position: tuple[int, int], dimensions: tuple[int, int]):

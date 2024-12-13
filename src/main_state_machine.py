@@ -19,7 +19,7 @@ def init() -> None:
 
 def update(delta: float) -> None:
 	match state:
-		case 0: Menu.update(delta)
+		case 0: Menu.menu_update(delta)
 		case 1: Game.update(delta)
 
 
@@ -28,11 +28,11 @@ def change_state(new_state: int) -> None:
 	if (new_state == state) or not (0 <= new_state <= 1): return
 
 	match state:
-		case 0: Menu.exit()
+		case 0: Menu.menu_exit()
 		case 1: Game.exit()
 
 	state = new_state
 
 	match new_state:
-		case 0: Menu.enter()
+		case 0: Menu.menu_enter()
 		case 1: Game.enter()
