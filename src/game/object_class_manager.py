@@ -27,6 +27,7 @@ import game.objects.dynamic_objects.entities.enemies.summoner as Summoner
 import game.objects.dynamic_objects.entities.enemies.skull as Skull
 				# Wizzard
 import game.objects.dynamic_objects.entities.enemies.wizzard as Wizzard
+import game.objects.dynamic_objects.entities.enemies.boss as Boss
 
 		# BaseProjectile
 import game.objects.dynamic_objects.projectiles.base_projectile as BaseProjectile
@@ -74,6 +75,7 @@ def attack(self: dict) -> None:
 		if object_class == "Knight": Knight.attack(self)
 		elif object_class == "Summoner": Summoner.attack(self)
 		elif object_class == "Wizzard": Wizzard.attack(self)
+		elif object_class == "Boss": Boss.attack(self)
 
 
 def die(self: dict) -> None:
@@ -91,3 +93,4 @@ def create_loot(self: dict) -> None:
 		if object_class == "Knight": Knight.create_loot(self)
 		elif object_class == "Summoner": Summoner.create_loot(self)
 		elif object_class == "Wizzard": Wizzard.create_loot(self)
+		elif object_class == "Boss": Boss.create_loot(self)

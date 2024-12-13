@@ -15,7 +15,7 @@ font: pygame.font.Font
 
 def init() -> None:
 	global font
-	font = pygame.font.Font(None, 64)
+	font = pygame.font.Font("src/assets/fonts/Pixel_Game.otf", 64)
 
 
 def update() -> None:

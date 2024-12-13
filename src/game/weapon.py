@@ -12,7 +12,7 @@ import game.object_manager as ObjectManager
 import game.objects.dynamic_objects.projectiles.player_projectile as PlayerProjectile
 
 
-PLAYER_PROJECTILE_SPEED: int = 256
+PLAYER_PROJECTILE_SPEED: int = 320
 
 
 gun: dict = {

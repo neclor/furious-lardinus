@@ -15,7 +15,7 @@ import game.objects.dynamic_objects.entities.enemies.knight as Knight
 import game.objects.dynamic_objects.entities.enemies.skull as Skull
 import game.objects.dynamic_objects.entities.enemies.summoner as Summoner
 import game.objects.dynamic_objects.entities.enemies.wizzard as Wizzard
-
+import game.objects.dynamic_objects.entities.enemies.boss as Boss
 
 floor_color: pygame.Color
 
@@ -111,4 +111,5 @@ def new_level_object(class_name: str | None, position: pygame.Vector2) -> dict |
 		case "Summoner": return Summoner.new(position)
 		case "Wizzard": return Wizzard.new(position)
 		case "Exit": return Exit.new(position)
+		case "Boss": return Boss.new(position)
 	return None

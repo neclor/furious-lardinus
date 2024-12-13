@@ -33,9 +33,9 @@ def menu_init() -> None:
 
 def menu_load_images() -> dict:
 	images: dict = {}
-	title_font = pygame.font.Font("src/assets/fonts/Pixel Game.otf", 200)
-	button_font = pygame.font.Font("src/assets/fonts/Pixel Game.otf", 80)
-	big_button_font = pygame.font.Font("src/assets/fonts/Pixel Game.otf", 120)
+	title_font = pygame.font.Font("src/assets/fonts/Pixel_Game.otf", 200)
+	button_font = pygame.font.Font("src/assets/fonts/Pixel_Game.otf", 80)
+	big_button_font = pygame.font.Font("src/assets/fonts/Pixel_Game.otf", 120)
 	images['bg'] = pygame.image.load("src/assets/sprites/menu/BG.png")
 	images['bg'] = pygame.transform.scale(images['bg'], Settings.resolution)
 	images['title'] = title_font.render("furious lardinus", True, (0, 0, 0))
