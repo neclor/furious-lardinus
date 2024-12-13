@@ -20,6 +20,12 @@ def new(damage: int, position: pygame.Vector2 = pygame.Vector2(), velocity: pyga
 		"class": "WizzardProjectile",
 
 		"collision_mask": Settings.WALL | Settings.PLAYER,
+
+		"radius": 8,
+
+		"position_z": -8.0,
+		"height": 16,
+
 		"sprite": WIZZARD_PROJECTILE_SPRITE,
 	})
 

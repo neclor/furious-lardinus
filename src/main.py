@@ -28,7 +28,7 @@ def run() -> None:
 	while True:
 		update()
 		Events.update()
-		handle_events()
+		check_events()
 		StateMachine.update(clock.get_time() / 1000)
 		pygame.display.set_caption(str(int(clock.get_fps())))
 
@@ -38,7 +38,7 @@ def update():
 	Settings.current_fps = clock.get_fps()
 
 
-def handle_events() -> None:
+def check_events() -> None:
 	for event in Events.get():
 		if event.type == pygame.QUIT:
 			pygame.quit()

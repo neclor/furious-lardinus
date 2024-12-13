@@ -8,19 +8,19 @@ import game.object_class_manager as ObjectClassManager
 import game.object_manager as ObjectManager
 
 
-import game.objects.dynamic_objects.base_dynamic_object as BaseDynamicObject
+import game.objects.dynamic_objects.projectiles.base_projectile as BaseProjectile
 import game.objects.dynamic_objects.entities.base_entity as BaseEntity
 
 
-WIZZARD_PROJECTILE_SPRITE: pygame.Surface = pygame.image.load("src/assets/sprites/projectiles/wizzard_projectile_8.png")
+PLAYER_PROJECTILE_SPRITE: pygame.Surface = pygame.image.load("src/assets/sprites/projectiles/player_projectile_8.png")
 
 
-def new(position: pygame.Vector2 = pygame.Vector2(), velocity: pygame.Vector2 = pygame.Vector2()) -> dict:
-	return ObjectClassManager.new_object(BaseDynamicObject.new(position, velocity), {
+def new(damage: int, position: pygame.Vector2 = pygame.Vector2(), velocity: pygame.Vector2 = pygame.Vector2()) -> dict:
+	return ObjectClassManager.new_object(BaseProjectile.new(damage, position, velocity), {
 		"class": "PlayerProjectile",
 
 		"collision_mask": Settings.WALL | Settings.ENEMY,
-		"sprite": WIZZARD_PROJECTILE_SPRITE,
+		"sprite": PLAYER_PROJECTILE_SPRITE,
 	})
 
 

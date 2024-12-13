@@ -25,6 +25,10 @@ move_backward: int = pygame.K_s
 move_left: int = pygame.K_a
 move_right: int = pygame.K_d
 
+gun: int = pygame.K_1
+shotgun: int = pygame.K_2
+assault: int = pygame.K_3
+
 
 # Advanced
 MIN_FOV_H: float = math.pi / 3

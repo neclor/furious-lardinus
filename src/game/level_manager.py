@@ -56,15 +56,16 @@ def parse_level_string(string: str, tile_set: dict, object_set: dict) -> dict:
 	string = string.rstrip("/")
 	rows: list[str] = string.split("/")
 
-	floor_color: pygame.Color = pygame.Color(rows[0])
-	tile_map_size: pygame.Vector2 = pygame.Vector2(len(rows[1]), len(rows) - 1)
+	name: str = rows[0]
+	floor_color: pygame.Color = pygame.Color(rows[1])
+	tile_map_size: pygame.Vector2 = pygame.Vector2(len(rows[2]), len(rows) - 2)
 
 	spawn_point: pygame.Vector2 = pygame.Vector2()
 	min_point_z: float = 0
 	max_point_z: float = 0
 	tile_map: list[list[dict | None]] = []
 	level_objects: list[dict] = []
-	for y, row in enumerate(rows[1:]):
+	for y, row in enumerate(rows[2:]):
 		tile_row: list[dict | None] = []
 		for x, char in enumerate(row):
 			tile_center_position: pygame.Vector2 = pygame.Vector2(x * tile_size.x + tile_size.x // 2, y * tile_size.y + tile_size.y // 2)

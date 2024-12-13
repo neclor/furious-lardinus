@@ -80,7 +80,7 @@ def attack(self: dict) -> None:
 
 def die(self: dict) -> None:
 	groups: set = self["groups"]
-	if "Player":
+	if "Player" in groups:
 		Player.die(self)
 	elif "Enemy" in groups:
 		BaseEnemy.die(self)
@@ -92,4 +92,4 @@ def create_loot(self: dict) -> None:
 	if "Enemy" in groups:
 		if object_class == "Knight": Knight.create_loot(self)
 		elif object_class == "Summoner": Summoner.create_loot(self)
-		elif object_class == "Summoner": Wizzard.create_loot(self)
+		elif object_class == "Wizzard": Wizzard.create_loot(self)
