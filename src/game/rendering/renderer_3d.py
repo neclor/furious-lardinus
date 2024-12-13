@@ -4,6 +4,7 @@ import pygame
 import settings as Settings
 import game.rendering.display as Display
 import game.game as Game
+import game.object_manager as ObjectManager
 import game.level_manager as LevelManager
 
 
@@ -74,7 +75,7 @@ def draw_game() -> None:
 def get_object_projections() -> list[tuple[pygame.Surface, pygame.Vector2, float]]:
 	object_projections: list[tuple[pygame.Surface, pygame.Vector2, float]] = []
 
-	for game_object in Game.object_container:
+	for game_object in ObjectManager.game_objects:
 		object_projection: tuple[pygame.Surface, pygame.Vector2, float] | None = get_object_projection(game_object)
 		if object_projection is not None: object_projections.append(object_projection)
 
@@ -147,6 +148,7 @@ def cast_ray(ray_rotation: float) -> list[tuple[pygame.Surface, pygame.Vector2, 
 	tan_max_obscured_angle: float = -1 * Settings.tan_half_fov_v
 	while not line_out_of_bounds(ray_sign, tile_index):
 		delta_next_line: pygame.Vector2 = next_line - ray_position
+		if delta_next_line.x == 0: print(position, ray_sign, ray_position, next_line)
 		delta_ratio: float = delta_next_line.y / delta_next_line.x
 		tan_delta_difference: float = abs_ray_tan - abs(delta_ratio)
 		if tan_delta_difference < 0:

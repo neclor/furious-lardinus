@@ -23,6 +23,8 @@ def enter() -> None:
 	mouse_visible(False)
 	Display.init()
 
+	start_game()
+
 
 def toggle_pause() -> None:
 	pause = not pause
@@ -37,7 +39,8 @@ def mouse_visible(visible: bool) -> None:
 def start_game() -> None:
 	global player
 	player = Player.new()
-	ObjectManager.add_object(player)
+	LevelManager.load_level()
+
 
 
 def update(delta: float) -> None:

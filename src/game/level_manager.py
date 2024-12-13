@@ -25,17 +25,21 @@ max_point_z: float
 def load_level() -> None:
 	global floor_color, tile_size, tile_map_size, tile_map, min_point_z, max_point_z
 
-	level_data: dict = parse_level_string()
-	floor_color = level_data["floor_colo"]
+	level_data: dict = parse_level_string(Levels.HUB, Levels.TILE_SET, Levels.OBJECT_SET)
+	floor_color = level_data["floor_color"]
 	tile_size = level_data["tile_size"]
 	tile_map_size = level_data["tile_map_size"]
 	tile_map = level_data["tile_map"]
 	min_point_z = level_data["min_point_z"]
 	max_point_z = level_data["max_point_z"]
 
+	Game.player["position"] = level_data["spawn_point"]
 
-	tile_size, tile_map_size, tile_map, Game.object_container = Levels.load_level(Levels.TEST_LEVEL, Levels.DUNGEON_TILE_SET, Levels.DUNGEON_OBJECT_SET)
-	Game.object_container.append(Game.player)
+	ObjectManager.game_objects = [Game.player] + level_data["level_objects"]
+	ObjectManager.add_queue = []
+	ObjectManager.remove_queue = []
+
+
 
 
 def parse_level_string(string: str, tile_set: dict, object_set: dict) -> dict:
@@ -64,7 +68,7 @@ def parse_level_string(string: str, tile_set: dict, object_set: dict) -> dict:
 			tile: dict | None = tiles.get(char)
 			tile_row.append(tile)
 			if tile is not None:
-				tile_bottom: float = tile["position"]
+				tile_bottom: float = tile["position_z"]
 				tile_top: float = tile_bottom - tile["height"]
 				min_point_z = min(tile_top, tile_bottom, min_point_z)
 				max_point_z = max(tile_top, tile_bottom, max_point_z)
@@ -80,7 +84,7 @@ def parse_level_string(string: str, tile_set: dict, object_set: dict) -> dict:
 		"min_point_z": min_point_z,
 		"max_point_z": max_point_z,
 		"spawn_point": spawn_point,
-		"objects": level_objects,
+		"level_objects": level_objects,
 	}
 
 

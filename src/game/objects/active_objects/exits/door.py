@@ -10,7 +10,7 @@ import game.objects.active_objects.base_active_object as BaseActiveObject
 import game.objects.active_objects.exits.base_exit as BaseExit
 
 
-DOOR_SPRITE: pygame.Surface = pygame.image.load("assets/sprites/objects/interactive_object/exits/door.png")
+DOOR_SPRITE: pygame.Surface = pygame.image.load("src/assets/sprites/objects/door.png")
 
 
 def new(position: pygame.Vector2 = pygame.Vector2()) -> dict:

@@ -28,32 +28,20 @@ SECRET_TILE: dict = BASE_TILE | {
 	"class": "SecretTile",
 	"collidable": False,
 }
-
+print()
 
 TILE_SET: dict = {
 	"tile_size": pygame.Vector2(64, 64),
 	"tiles": {
-		"#": BASE_TILE | {
+		"1": BASE_TILE | {
 			"texture": ResourceManager.load_image("src/assets/sprites/wall_32.png"),
 		},
-		"@": {
-			"transparent": True,
+		"#": TRANSPARENT_TILE | {
 			"texture": ResourceManager.load_image("src/assets/sprites/wall_32_t.png"),
-			"height": 64,
-			"position_z" : 0.0,
 		},
-		"$": {
+		"?": SECRET_TILE | {
 			"texture": ResourceManager.load_image("src/assets/sprites/wall_32.png"),
-			"height": -64,
-			"position_z" : -32.0},
-		"1": {
-			"texture": ResourceManager.load_image("src/assets/sprites/wall_32.png"),
-			"height": 8,
-			"position_z" : 0.0},
-		"2": {
-			"texture": ResourceManager.load_image("src/assets/sprites/wall_32.png"),
-			"height": 4,
-			"position_z" : 0.0},
+		}
 	}
 }
 
@@ -68,11 +56,11 @@ OBJECT_SET: dict = {
 
 HUB: str = '''
 #ffffff/
-.........../
-.........../
-....S....../
-.........../
-...........
+..#....1111/
+?.........1/
+....S.....1/
+.#.....?..1/
+...#.111111
 '''
 
 
