@@ -58,8 +58,17 @@ def handle_objects_collisions(game_object: dict, index: int) -> None:
 
 
 def handle_object_collision(game_object: dict, game_object_2: dict) -> None:
+	w_p = False
+	if game_object["class"] == "WizzardProjectile" or game_object_2["class"] == "WizzardProjectile":
+		w_p = True
+		print("wp")
+
 	detect_collision, detect_collision_2 = check_collision_layers(game_object, game_object_2)
 	if not (detect_collision or detect_collision_2): return
+
+	if w_p:
+		print(game_object["class"], detect_collision)
+		print(game_object_2["class"], detect_collision_2)
 
 	position: pygame.Vector2 = game_object["position"]
 	position_2: pygame.Vector2 = game_object_2["position"]
@@ -110,9 +119,9 @@ def handle_collision(game_object: dict, detect_collision: bool, game_object_2: d
 	if detect_collision_2: ClassManager.object_collided(game_object_2, game_object)
 
 
-	if game_object["class"] == "WizzardProjectile" or game_object_2["class"] == "WizzardProjectile":
-		print(game_object["class"], game_object["collidable"])
-		print(game_object_2["class"], game_object_2["collidable"])
+	if game_object["class"] == "WizzardProjectile" or game_object_2["class"] == "WizzardProjectile": pass
+	print(game_object["class"], game_object["collidable"])
+	print(game_object_2["class"], game_object_2["collidable"])
 
 	if not (game_object["collidable"] and game_object_2["collidable"]): return
 

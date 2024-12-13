@@ -45,4 +45,4 @@ def attack(self: dict) -> None:
 
 def create_loot(self: dict) -> None:
 	if random.randint(0, 2) == 0:
-		ObjectManager.add_object(Medikit.new(self["position"]))
+		ObjectManager.add_object(Medikit.new(self["position"].copy()))

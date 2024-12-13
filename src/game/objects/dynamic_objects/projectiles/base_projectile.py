@@ -19,11 +19,10 @@ def new(damage: int, position: pygame.Vector2 = pygame.Vector2(), velocity: pyga
 		"collision_layer": Settings.PROJECTILE,
 		"collidable": False,
 
-		"position": position,
-		"radius": 4,
+		"radius": 6,
 
-		"position_z": -12.0,
-		"height": 8,
+		"position_z": -26.0,
+		"height": 12,
 
 		"damage": damage
 	})

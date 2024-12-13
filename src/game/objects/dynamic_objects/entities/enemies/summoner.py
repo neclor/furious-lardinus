@@ -36,9 +36,9 @@ def new(position: pygame.Vector2 = pygame.Vector2()) -> dict:
 
 
 def attack(self: dict) -> None:
-	ObjectManager.add_object(Skull.new(self["position"]))
+	ObjectManager.add_object(Skull.new(self["position"].copy()))
 
 
 def create_loot(self: dict) -> None:
 	if random.randint(0, 2) == 0:
-		ObjectManager.add_object(Ammo.new(self["position"]))
+		ObjectManager.add_object(Ammo.new(self["position"].copy()))

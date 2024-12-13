@@ -48,9 +48,9 @@ def attack(self: dict) -> None:
 	vector_to_player: pygame.Vector2 = Game.player["position"] - position
 	distance: float = vector_to_player.length()
 	if distance > 0:
-		ObjectManager.add_object(WizzardProjectile.new(self["damage"], position, vector_to_player.normalize() * WIZZARD_PROJECTILE_SPEED))
+		ObjectManager.add_object(WizzardProjectile.new(self["damage"], position.copy(), vector_to_player.normalize() * WIZZARD_PROJECTILE_SPEED))
 
 
 def create_loot(self: dict) -> None:
 	if random.randint(0, 2) == 0:
-		ObjectManager.add_object(Ammo.new(self["position"]))
+		ObjectManager.add_object(Ammo.new(self["position"].copy()))

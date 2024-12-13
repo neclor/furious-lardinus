@@ -32,6 +32,7 @@ def new(position: pygame.Vector2 = pygame.Vector2()) -> dict:
 
 
 def update(self: dict, delta: float) -> None:
+	self["velocity"] = pygame.Vector2()
 	update_cooldown(self, delta)
 	if not see_player(self): return
 	move_and_attack(self)
