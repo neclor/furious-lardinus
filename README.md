@@ -1,7 +1,7 @@
 # Furious Lardinus
 
 ## About
-This is 2.5D retro shooterwhere you need to kill enemies and complete levels.
+A 2.5D retro shooter where you kill enemies, complete levels, collect supplies, and uncover secrets.  
 Made for a programming course.
 
 
