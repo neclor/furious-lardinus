@@ -4,11 +4,6 @@
 A 2.5D retro shooter where you kill enemies, complete levels, collect supplies, and uncover secrets.  
 Made for a university programming course.
 
-
-## How to play?
-Just play
-
-
 ## Requirements
 Make sure you have `Python 3.10` or higher.<br>
 The following libraries are also required:
