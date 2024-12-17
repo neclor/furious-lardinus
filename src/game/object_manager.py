@@ -13,7 +13,6 @@ remove_queue: list[dict] = []
 def update(delta: float) -> None:
 	update_game_objects(delta)
 	handle_collisions()
-
 	remove_objects()
 	add_objects()
 

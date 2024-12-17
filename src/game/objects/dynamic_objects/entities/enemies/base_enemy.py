@@ -60,17 +60,17 @@ def see_player(self: dict) -> bool:
 
 	x: int = int(position.x // LevelManager.tile_size.x)
 	y: int = int(position.y // LevelManager.tile_size.y)
-	player_x: int = player_position.x // LevelManager.tile_size.x
-	player_y: int = player_position.y // LevelManager.tile_size.y
+	player_x: int = int(player_position.x // LevelManager.tile_size.x)
+	player_y: int = int(player_position.y // LevelManager.tile_size.y)
 
 	ray_sign_x: int = 1 if x < player_x else (-1 if x > player_x else 0)
-	ray_sign_y: int = 1 if y < player_x else (-1 if y > player_x else 0)
+	ray_sign_y: int = 1 if y < player_y else (-1 if y > player_y else 0)
 	abs_delta_x: int = abs(x - player_x)
 	abs_delta_y: int = abs(y - player_y)
 
 	error: int = abs_delta_x - abs_delta_y
 	while True:
-		if not (0 <= x < LevelManager.tile_map_size.x and 0 <= y < LevelManager.tile_map_size.y): return True
+		if not (0 <= x < LevelManager.tile_map_size.x and 0 <= y < LevelManager.tile_map_size.y): return False
 		tile: dict | None = LevelManager.tile_map[y][x]
 		if tile is not None and (tile["collision_layer"] & Settings.WALL > 0): return False
 
