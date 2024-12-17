@@ -2,7 +2,7 @@
 
 ## About
 A 2.5D retro shooter where you kill enemies, complete levels, collect supplies, and uncover secrets.  
-Made for a programming course.
+Made for a university programming course.
 
 
 ## How to play?
